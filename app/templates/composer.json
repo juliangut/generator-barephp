@@ -1,0 +1,49 @@
+{
+  "name": "<%= project.name %>",
+<% if (project.description) { -%>
+  "description": "<%= project.description %>",
+<% } -%>
+<% if (project.keywords) { -%>
+  "keywords": [
+    "<%= project.keywords.join('\',\n  \'') %>"
+  ],
+<% } -%>
+<% if (project.homepage) { -%>
+  "homepage": "<%= project.homepage %>",
+<% } -%>
+<% if (project.license != 'none') { -%>
+  "license": "<%= project.license %>",
+<% } -%>
+  "authors": [
+    {
+      "name": "<%= owner.name %>"<% if (owner.email) { -%>,
+
+      "email": "<%= owner.email %>"<% } -%><% if (owner.homepage) { -%>,
+
+      "homepage": "<%= owner.homepage %>"
+      <% } -%>
+
+    }
+  ],
+  "require": {
+    "php": ">=5.5"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~4.5",
+    "squizlabs/php_codesniffer": "~2",
+    "phpmd/phpmd": "~2.2",
+    "sebastian/phpcpd": "~2.0"
+  },
+  "autoload": {
+    "psr-4": {
+    },
+    "psr-0": {
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+    },
+    "psr-0": {
+    }
+  }
+}
