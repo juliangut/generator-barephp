@@ -1,5 +1,7 @@
 !.gitignore
 composer.phar
+<%= dirs.dist %>/
+<%= dirs.tmp %>/
 vendor/
 node_modules/
 

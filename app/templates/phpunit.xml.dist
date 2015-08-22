@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <phpunit
-        bootstrap="./<%= dirs.tests %>/bootstrap.php"
+        bootstrap="./<%= dirs.test %>/bootstrap.php"
         backupGlobals="false"
         backupStaticAttributes="false"
         colors="true"
@@ -17,14 +17,14 @@
         >
     <testsuites>
         <testsuite name="<%= project.name %> PHPUnit tests">
-            <directory suffix="Test.php">./<%= dirs.tests %></directory>
+            <directory suffix="Test.php">./<%= dirs.test %></directory>
         </testsuite>
     </testsuites>
 
     <!-- Code Coverage reports -->
     <logging>
         <log type="coverage-html"
-            target="./<%= dirs.build %>/logs/coverage"
+            target="./<%= dirs.tmp %>/logs/coverage"
             title="howden_m6"
             charset="UTF-8"
             yui="true"
@@ -32,14 +32,14 @@
             lowUpperBound="35"
             highLowerBound="70"
         />
-        <log type="coverage-clover" target="./<%= dirs.build %>/logs/clover.xml"/>
-        <log type="junit" target="./<%= dirs.build %>/logs/junit.xml" logIncompleteSkipped="false"/>
+        <log type="coverage-clover" target="./<%= dirs.tmp %>/logs/clover.xml"/>
+        <log type="junit" target="./<%= dirs.tmp %>/logs/junit.xml" logIncompleteSkipped="false"/>
     </logging>
 
     <!-- Code Coverage reports filter -->
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./<%= dirs.source %></directory>
+            <directory suffix=".php">./<%= dirs.src %></directory>
         </whitelist>
     </filter>
 

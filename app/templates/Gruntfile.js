@@ -11,8 +11,8 @@ module.exports = function(grunt) {
                 swapPath: '/tmp'
             },
             application: [
-                './<%= dirs.source %>/**/*.php',
-                './<%= dirs.tests %>/**/*.php'
+                './<%= dirs.src %>/**/*.php',
+                './<%= dirs.test %>/**/*.php'
             ]
         },
         phpcs: {
@@ -22,8 +22,8 @@ module.exports = function(grunt) {
             },
             application: {
                 dir: [
-                    './<%= dirs.source %>',
-                    './<%= dirs.tests %>'
+                    './<%= dirs.src %>',
+                    './<%= dirs.test %>'
                 ]
             }
         },
@@ -34,7 +34,7 @@ module.exports = function(grunt) {
                 reportFormat: 'text'
             },
             application: {
-                dir: './<%= dirs.source %>'
+                dir: './<%= dirs.src %>'
             }
         },
         phpcpd: {
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
                 ignoreExitCode: true
             },
             application: {
-                dir: './<%= dirs.source %>'
+                dir: './<%= dirs.src %>'
             }
         },
         phpunit: {

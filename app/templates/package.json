@@ -1,7 +1,7 @@
 {
   "name": "<%= underscoreString.slugify(project.name) %>",
-<% if (project.description) { -%>
-  "description": "<%= project.description %>",
+<% if (project.desc) { -%>
+  "description": "<%= project.desc %>",
 <% } -%>
 <% if (project.keywords) { -%>
   "keywords": [

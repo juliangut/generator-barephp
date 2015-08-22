@@ -1,10 +1,10 @@
 <?php
 /**
- * <%= project.description %><% if (project.homepage) { -%> (<%= project.homepage %>)<% } -%>
+ * <%= project.desc %><% if (project.homepage) { -%> (<%= project.homepage %>)<% } -%>
 
-<% if (project.source) { -%>
+<% if (project.src) { -%>
  *
- * @link <%= project.source %> for the canonical source repository
+ * @link <%= project.src %> for the canonical source repository
 <% } -%>
  */
 

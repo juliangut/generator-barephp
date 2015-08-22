@@ -6,5 +6,5 @@
     <rule ref="PSR2"/>
 
     <!-- exclude files/directories -->
-    <exclude-pattern>./<%= dirs.build %>/*</exclude-pattern>
+    <exclude-pattern>./<%= dirs.dist %>/*</exclude-pattern>
 </ruleset>

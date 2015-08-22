@@ -1,6 +1,6 @@
 {
   "name": "generator-barephp",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Barebones PHP project scaffold Yeoman generator",
   "homepage": "https://github.com/juliangut/generator-barephp",
   "license": "BSD-3-Clause",
@@ -21,8 +21,8 @@
   "main": "app/index.js",
   "dependencies": {
     "chalk": "^1.1.0",
-    "ini": "^1.3.4",
     "mkdirp": "^0.5.1",
+    "shelljs": "^0.5.3",
     "underscore.string": "^3.1.1",
     "util": "^0.10.3",
     "yeoman-generator": "^0.20.2",

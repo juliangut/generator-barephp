@@ -1,9 +1,11 @@
 # language: php
 filter:
   excluded_paths:
-    - <%= dirs.build %>/*
-    - <%= dirs.tests %>/*
+    - <%= dirs.test %>/*
+    - <%= dirs.dist %>/*
+    - <%= dirs.tmp %>/*
     - vendor/*
+    - node_modules/*
 
 coding_style:
   php:
@@ -64,17 +66,17 @@ tools:
       include_standards:
         - phpcs.xml
     filter:
-      paths: ['<%= dirs.source %>']
+      paths: ['<%= dirs.src %>']
   php_cpd:
     enabled: true
-    excluded_dirs: [<%= dirs.build %>, <%= dirs.tests %>, vendor]
+    excluded_dirs: [<%= dirs.test %>, <%= dirs.dist %>, <%= dirs.tmp %>, vendor, node_modules]
   php_mess_detector:
     enabled: true
     config:
       ruleset: phpmd.xml
   php_loc:
     enabled: true
-    excluded_dirs: [<%= dirs.build %>, <%= dirs.tests %>, vendor]
+    excluded_dirs: [<%= dirs.test %>, <%= dirs.dist %>, <%= dirs.tmp %>, vendor, node_modules]
   php_pdepend: true
   php_analyzer: true
   sensiolabs_security_checker: true

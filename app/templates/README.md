@@ -7,9 +7,9 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= project.name %>)
 
 # <%= project.name %>
-<% if (project.description) { -%>
+<% if (project.desc) { -%>
 
-<%= project.description %>
+<%= project.desc %>
 <% } -%>
 
 ## Contributing
