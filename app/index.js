@@ -218,7 +218,7 @@ BarePHP.prototype.askForLicense = function() {
     ];
 
   this.prompt(prompts, function(props) {
-    var licenseFile = 'LICENSE-newbsd';
+    var licenseFile = '_LICENSE-newbsd';
 
     this.project.license = props.license;
 
@@ -226,19 +226,19 @@ BarePHP.prototype.askForLicense = function() {
       case 'BSD-3-clause':
         break;
       case 'BSD-2-clause':
-        licenseFile = 'LICENSE-freebsd';
+        licenseFile = '_LICENSE-freebsd';
         break;
       case 'MIT':
-        licenseFile = 'LICENSE-mit';
+        licenseFile = '_LICENSE-mit';
         break;
       case 'GPL':
-        licenseFile = 'LICENSE-gpl';
+        licenseFile = '_LICENSE-gpl';
         break;
       case 'LGPL':
-        licenseFile = 'LICENSE-lgpl';
+        licenseFile = '_LICENSE-lgpl';
         break;
       case 'Apache':
-        licenseFile = 'LICENSE-apache';
+        licenseFile = '_LICENSE-apache';
         break;
     }
 
@@ -295,14 +295,14 @@ BarePHP.prototype.writing = {
   },
 
   writeFiles: function() {
-    this.template('composer.json', 'composer.json');
-    this.template('package.json', 'package.json');
-    this.template('Gruntfile.js', 'Gruntfile.js');
+    this.template('_composer.json', 'composer.json');
+    this.template('_package.json', 'package.json');
+    this.template('_Gruntfile.js', 'Gruntfile.js');
 
-    this.template('bootstrap.php', this.dirs.test + '/bootstrap.php');
-    this.template('phpcs.xml.dist', 'phpcs.xml.dist');
-    this.template('phpmd.xml.dist', 'phpmd.xml.dist');
-    this.template('phpunit.xml.dist', 'phpunit.xml.dist');
+    this.template('_bootstrap.php', this.dirs.test + '/bootstrap.php');
+    this.template('_phpcs.xml.dist', 'phpcs.xml.dist');
+    this.template('_phpmd.xml.dist', 'phpmd.xml.dist');
+    this.template('_phpunit.xml.dist', 'phpunit.xml.dist');
   },
 
   writeGitFiles: function() {
@@ -313,14 +313,14 @@ BarePHP.prototype.writing = {
 
   writeXtraFiles: function() {
     if (this.control.travis) {
-      this.template('travis.yaml', '.travis.yaml');
+      this.template('_travis.yaml', '.travis.yaml');
     }
     if (this.control.scrutinizer) {
-      this.template('scrutinizer.yaml', '.scrutinizer.yaml');
+      this.template('_scrutinizer.yaml', '.scrutinizer.yaml');
     }
     if (this.control.docs) {
-      this.template('CONTRIBUTING.md', 'CONTRIBUTING.md');
-      this.template('README.md', 'README.md');
+      this.template('_CONTRIBUTING.md', 'CONTRIBUTING.md');
+      this.template('_README.md', 'README.md');
     }
     if (this.control.license) {
       this.template(this.project.licenseFile, 'LICENSE');
