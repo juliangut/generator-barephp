@@ -3,10 +3,21 @@
   "version": "0.1.2",
   "description": "Barebones PHP project scaffold Yeoman generator",
   "homepage": "https://github.com/juliangut/generator-barephp",
+  "bugs": "https://github.com/juliangut/generator-barephp/issues",
   "license": "BSD-3-Clause",
   "keywords": [
     "yeoman-generator",
-    "php"
+    "php",
+    "composer",
+    "grunt",
+    "phplint",
+    "phpunit",
+    "phpcs",
+    "phpmd",
+    "phpcpd",
+    "travis",
+    "coveralls",
+    "scrutinizer"
   ],
   "author": {
     "name": "Julián Gutiérrez",
@@ -17,15 +28,30 @@
     "type": "git",
     "url": "git://git@github.com/juliangut/generator-barephp.git"
   },
-  "bugs": "https://github.com/juliangut/generator-barephp/issues",
+  "scripts": {
+    "test": "mocha"
+  },
   "main": "app/index.js",
   "dependencies": {
+    "yo": ">=1.0.0",
+    "yeoman-generator": "^0.21.0",
     "chalk": "^1.1.0",
     "mkdirp": "^0.5.1",
     "shelljs": "^0.5.3",
     "underscore.string": "^3.1.1",
     "util": "^0.10.3",
-    "yeoman-generator": "^0.20.2",
     "yosay": "^1.0.5"
+  },
+  "devDependencies": {
+    "grunt": "~0.4",
+    "time-grunt": "~1.2",
+    "load-grunt-tasks": "~3.2",
+    "grunt-contrib-jshint": "~0.11",
+    "jshint-stylish": "~2.0",
+    "mocha": "~2.2"
+  },
+  "engines": {
+    "node": ">=0.10.0",
+    "npm": ">=1.2.10"
   }
 }

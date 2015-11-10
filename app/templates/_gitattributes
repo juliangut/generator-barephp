@@ -2,23 +2,28 @@
 
 .gitattributes text
 .gitignore     text
+.editorconfig  text
+.travis        text
+.coveralls     text
+.scrutinizer   text
 
 /.gitattributes   export-ignore
 /.gitignore       export-ignore
+/.editorconfig    export-ignore
 <% if (control.travis) { -%>
 /.travis.yml      export-ignore
+<% } -%>
+<% if (control.coveralls) { -%>
+/.coveralls.yml   export-ignore
 <% } -%>
 <% if (control.scrutinizer) { -%>
 /.scrutinizer.yml export-ignore
 <% } -%>
 <% if (control.docs) { -%>
-
 /README.md        export-ignore
 /CONTRIBUTING.md  export-ignore
 <% } -%>
-
-/<%= dirs.test %>             export-ignore
-/phpcs.xml.dist   export-ignore
-/phpmd.xml.dist   export-ignore
-/phpunit.xml.dist export-ignore
+/<%= dirs.tests %>            export-ignore
 /Gruntfile.js     export-ignore
+/phpmd.xml        export-ignore
+/phpunit.xml      export-ignore

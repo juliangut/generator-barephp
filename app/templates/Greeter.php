@@ -10,6 +10,12 @@
  */
 <% } -%>
 
-session_start();
+namespace Jgut\Generator\BarePHP;
 
-require_once dirname(__DIR__) . '/vendor/autoload.php';
+class Greeter
+{
+    public function greet($name = 'Julian')
+    {
+        return 'Hello ' . $name;
+    }
+}

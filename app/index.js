@@ -1,27 +1,25 @@
 'use strict';
 
-var yeoman = require('yeoman-generator')
-  , util = require('util')
-  , path = require('path')
-  , fs = require('fs')
-  , yosay = require('yosay')
-  , chalk = require('chalk')
-  , _ = require('underscore.string')
-  , mkdirp = require('mkdirp');
-require('shelljs/global');
+var yeoman = require('yeoman-generator'),
+  util = require('util'),
+  path = require('path'),
+  yosay = require('yosay'),
+  chalk = require('chalk'),
+  _ = require('underscore.string'),
+  mkdirp = require('mkdirp'),
+  shell = require('shelljs');
 
-var BarePHP = module.exports = function BarePHP(args, options) {
+var BarePHP = module.exports = function BarePHP() {
   yeoman.generators.Base.apply(this, arguments);
 
   this.getUserHome = function() {
     return process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-  }
+  };
 
   this.dirs = {
     src: 'src',
-    test: 'test',
-    dist: 'dist',
-    tmp: '.tmp'
+    tests: 'tests',
+    dist: 'build'
   };
 
   this.project = {
@@ -45,15 +43,15 @@ var BarePHP = module.exports = function BarePHP(args, options) {
     travis: false,
     scrutinizer: false,
     docs: false
-  }
+  };
 
   this.underscoreString = _;
 
-  if (!which('git')) {
+  if (!shell.which('git')) {
     this.ownerName = this.getUserHome().split(path.sep).pop();
   } else {
-    this.owner.name = _.trim(exec('git config --global user.name', { silent: true }).output, '\n');
-    this.owner.email = _.trim(exec('git config --global user.email', { silent: true }).output, '\n');
+    this.owner.name = _.trim(shell.exec('git config --global user.name', { silent: true }).output, '\n');
+    this.owner.email = _.trim(shell.exec('git config --global user.email', { silent: true }).output, '\n');
   }
 };
 
@@ -97,30 +95,30 @@ BarePHP.prototype.askForProject = function () {
   var done = this.async(),
     prompts = [
       {
-        name: 'name',
+        name: 'projectname',
         message: 'What is the name of your project?',
         default: path.join(this.getUserHome().split(path.sep).pop(), '/', _.slugify(process.cwd().split(path.sep).pop()))
       },
       {
-        name: 'desc',
+        name: 'projectdesc',
         message: 'Add a project description'
       },
       {
-        name: 'keywords',
+        name: 'projectkeywords',
         message: 'What are the project keywords?',
         default: this.project.keywords
       },
       {
-        name: 'homepage',
+        name: 'projecthomepage',
         message: 'What is the project homepage?'
       }
     ];
 
   this.prompt(prompts, function(props) {
-    this.project.name     = props.name;
-    this.project.desc     = props.desc;
-    this.project.keywords = props.keywords.replace(new RegExp(' +', 'g'), ' ').split(' ') || '';
-    this.project.homepage = props.homepage;
+    this.project.name     = props.projectname;
+    this.project.desc     = props.projectdesc;
+    this.project.keywords = props.projectkeywords.replace(new RegExp(' +', 'g'), ' ').split(' ') || '';
+    this.project.homepage = props.projecthomepage;
 
     done();
   }.bind(this));
@@ -154,30 +152,24 @@ BarePHP.prototype.askForDirs = function() {
       {
         name: 'src',
         message: 'What is the source code directory?',
-        default: this.dirs.source
+        default: this.dirs.src
       },
       {
-        name: 'test',
+        name: 'tests',
         message: 'What is the tests directory?',
-        default: this.dirs.test
+        default: this.dirs.tests
       },
       {
         name: 'dist',
-        message: 'What is the distribution directory?',
+        message: 'What is the build directory?',
         default: this.dirs.dist
-      },
-      {
-        name: 'tmp',
-        message: 'What is the temporal directory?',
-        default: this.dirs.tmp
       }
     ];
 
   this.prompt(prompts, function(props) {
     this.dirs.src  = props.src;
-    this.dirs.test = props.test;
+    this.dirs.tests = props.tests;
     this.dirs.dist = props.dist;
-    this.dirs.tmp  = props.tmp;
 
     done();
   }.bind(this));
@@ -254,11 +246,16 @@ BarePHP.prototype.askForInstall = function() {
       {
         type: 'checkbox',
         name: 'xtras',
-        message: 'Which ones would you like to include?',
+        message: 'Which files would you like to include?',
         choices: [
           {
             value: 'travis',
             name: 'Travis',
+            checked: true
+          },
+          {
+            value: 'coveralls',
+            name: 'Coveralls',
             checked: true
           },
           {
@@ -268,7 +265,7 @@ BarePHP.prototype.askForInstall = function() {
           },
           {
             value: 'docs',
-            name: 'Documentation',
+            name: 'Base documentation',
             checked: true
           }
         ]
@@ -279,6 +276,7 @@ BarePHP.prototype.askForInstall = function() {
     var hasMod = function (mod) { return props.xtras.indexOf(mod) !== -1; };
 
     this.control.travis = hasMod('travis');
+    this.control.coveralls = hasMod('coveralls');
     this.control.scrutinizer = hasMod('scrutinizer');
     this.control.docs = hasMod('docs');
 
@@ -289,9 +287,14 @@ BarePHP.prototype.askForInstall = function() {
 BarePHP.prototype.writing = {
   createDirs: function() {
     mkdirp(this.dirs.src);
-    mkdirp(this.dirs.test);
+    mkdirp(this.dirs.tests + '/BarePHP');
     mkdirp(this.dirs.dist);
-    mkdirp(this.dirs.tmp);
+  },
+
+  copyFiles: function() {
+    this.copy('editorconfig', '.editorconfig');
+    this.copy('Greeter.php', this.dirs.src + '/Greeter.php');
+    this.copy('GreeterTest.php', this.dirs.tests + '/BarePHP/GreeterTest.php');
   },
 
   writeFiles: function() {
@@ -299,24 +302,25 @@ BarePHP.prototype.writing = {
     this.template('_package.json', 'package.json');
     this.template('_Gruntfile.js', 'Gruntfile.js');
 
-    this.template('_bootstrap.php', this.dirs.test + '/bootstrap.php');
-    this.template('_phpcs.xml.dist', 'phpcs.xml.dist');
-    this.template('_phpmd.xml.dist', 'phpmd.xml.dist');
-    this.template('_phpunit.xml.dist', 'phpunit.xml.dist');
+    this.template('_bootstrap.php', this.dirs.tests + '/bootstrap.php');
+    this.template('_phpunit.xml', 'phpunit.xml');
+    this.copy('phpmd.xml', 'phpmd.xml');
   },
 
   writeGitFiles: function() {
-    this.copy('gitignore', '.gitignore');
-    this.copy('gitattributes', '.gitattributes');
-    this.copy('editorconfig', '.editorconfig');
+    this.template('_gitignore', '.gitignore');
+    this.template('_gitattributes', '.gitattributes');
   },
 
   writeXtraFiles: function() {
     if (this.control.travis) {
-      this.template('_travis.yaml', '.travis.yaml');
+      this.template('_travis.yml', '.travis.yml');
+    }
+    if (this.control.coveralls) {
+      this.template('_coveralls.yml', '.coveralls.yml');
     }
     if (this.control.scrutinizer) {
-      this.template('_scrutinizer.yaml', '.scrutinizer.yaml');
+      this.template('_scrutinizer.yml', '.scrutinizer.yml');
     }
     if (this.control.docs) {
       this.template('_CONTRIBUTING.md', 'CONTRIBUTING.md');
@@ -334,10 +338,15 @@ BarePHP.prototype.install = function () {
   this.installDependencies({
     bower: false,
     callback: function() {
-      var message = '\n' + chalk.green(projectName) + ' project is set up and ready' +
-        '\nRemember to run ' + chalk.yellow.bold('composer install') + ' before starting development';
+      var message = '\nProject ' + chalk.green(projectName) + ' is set up and ready';
+
+      if (shell.which('composer')) {
+        shell.exec('composer install');
+      } else {
+        message += '\nRemember to run ' + chalk.yellow.bold('composer install') + ' before starting development';
+      }
 
       console.log(message);
     }
   });
-}
+};

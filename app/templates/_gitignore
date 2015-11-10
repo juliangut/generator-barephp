@@ -1,0 +1,6 @@
+!.gitignore
+composer.phar
+vendor/
+!composer.lock
+<%= dirs.dist %>/
+node_modules/

@@ -3,7 +3,7 @@
 
 [![Build status](https://img.shields.io/travis/<%= project.name %>.svg?style=flat-square)](https://travis-ci.org/<%= project.name %>)
 [![Code Quality](https://img.shields.io/scrutinizer/g/<%= project.name %>.svg?style=flat-square)](https://scrutinizer-ci.com/g/<%= project.name %>)
-[![Code Coverage](https://img.shields.io/scrutinizer/coverage/g/<%= project.name %>.svg?style=flat-square)](https://scrutinizer-ci.com/g/<%= project.name %>)
+[![Code Coverage](https://img.shields.io/coveralls/<%= project.name %>.svg?style=flat-square)](https://coveralls.io/github/<%= project.name %>)
 [![Total Downloads](https://img.shields.io/packagist/dt/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= project.name %>)
 
 # <%= project.name %>

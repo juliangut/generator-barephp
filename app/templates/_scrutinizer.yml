@@ -1,11 +1,9 @@
 # language: php
+
 filter:
-  excluded_paths:
-    - <%= dirs.test %>/*
-    - <%= dirs.dist %>/*
-    - <%= dirs.tmp %>/*
-    - vendor/*
-    - node_modules/*
+  paths:
+    - <%= dirs.src %>/*
+    - <%= dirs.tests %>/*
 
 coding_style:
   php:
@@ -58,25 +56,23 @@ checks:
     fix_identation_4spaces: true
 
 tools:
-  external_code_coverage:
-    timeout: 600
   php_code_coverage: false
   php_code_sniffer:
+    enabled: true
     config:
-      include_standards:
-        - phpcs.xml
+      standard: 'PSR2'
     filter:
-      paths: ['<%= dirs.src %>']
+      paths: [<%= dirs.src %>, <%= dirs.tests %>]
   php_cpd:
     enabled: true
-    excluded_dirs: [<%= dirs.test %>, <%= dirs.dist %>, <%= dirs.tmp %>, vendor, node_modules]
+    excluded_dirs: [<%= dirs.dist %>, <%= dirs.tests %>, vendor]
   php_mess_detector:
     enabled: true
     config:
       ruleset: phpmd.xml
   php_loc:
     enabled: true
-    excluded_dirs: [<%= dirs.test %>, <%= dirs.dist %>, <%= dirs.tmp %>, vendor, node_modules]
+    excluded_dirs: [<%= dirs.dist %>, <%= dirs.tests %>, vendor]
   php_pdepend: true
   php_analyzer: true
   sensiolabs_security_checker: true

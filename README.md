@@ -1,17 +1,18 @@
-# Generator-Barephp
+# Generator-BarePHP
 
 Fed up to create the same files once and again every time you start a project?
 
 Let Yeoman do the heavy lifting and get your project scaffolded and ready to start developing with this Yeoman generator, it will prepare a barebones PHP project structure ready to develop in a breeze.
 
 ### Features
-* Git ready (ignore Linux, OSX and Windows system files)
+* Git ready
 * Composer ready (non opinionated)
 * Awesome Grunt integration
 * Already configured Travis integration (PHP 5.5, 5.6 and 7)
+* Coveralls integration (use with Travis)
 * Scrutinizer integration (configuration file)
 * editorconfig integration
-* QA utilities (PHPUnit, PHPCS, PHPMD, PHPCPD) configured and integrated in Grunt
+* QA utilities (PHP linting, PHPUnit, PHPCS, PHPMD, PHPCPD) configured and integrated with Grunt
 * License selector
 * Basic documentation structure in Markdown
 
@@ -33,7 +34,7 @@ $ npm install -g yo
 
 ### Yeoman Generators
 
-Yeoman travels light. He didn't pack any generators when he moved in. You can think of a generator like a plug-in. You get to choose what type of application you wish to create, such as a Backbone application or even a Chrome extension.
+Yeoman travels light. He didn't pack any generators when he moved in. You can think of a generator like a plug-in. You get to choose what type of application you wish to create, such as a PHP application.
 
 To install `generator-barephp` from npm, run:
 
@@ -41,16 +42,21 @@ To install `generator-barephp` from npm, run:
 npm install -g generator-barephp
 ```
 
-Finally, initiate the generator:
-```
-yo barephp
-```
-
 ### Getting To Know Yeoman
 
 Yeoman has a heart of gold. He's a person with feelings and opinions, but he's very easy to work with. If you think he's too opinionated, he can be easily convinced.
 
 If you'd like to get to know Yeoman better and meet some of his friends, [Grunt](http://gruntjs.com) and [Bower](http://bower.io), check out the complete [Getting Started Guide](https://github.com/yeoman/yeoman/wiki/Getting-Started).
+
+## Usage
+
+Once the generator is installed you can start using it by initiating the generator:
+
+```
+yo barephp
+```
+
+> The generator assumes your "project name", prompted for by yeoman, is your package name and default github repository (github_user/repository)
 
 ## Contributing
 

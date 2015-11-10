@@ -25,6 +25,9 @@
 
     }
   ],
+  "support": {
+    "issues": "https://github.com/<%= project.name %>/issues"
+  },
   "require": {
     "php": ">=5.5"
   },
@@ -36,14 +39,12 @@
   },
   "autoload": {
     "psr-4": {
-    },
-    "psr-0": {
+      "Jgut\\Generator\\BarePHP\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-    },
-    "psr-0": {
+      "Jgut\\Generator\\BarePHP\\Tests\\": "tests/BarePHP"
     }
   }
 }
