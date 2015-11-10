@@ -1,3 +1,6 @@
+[![License](https://img.shields.io/packagist/l/juliangut/generator-barephp.svg?style=flat-square)](https://github.com/juliangut/generator-barephp/blob/master/LICENSE)
+[![Build status](https://img.shields.io/travis/juliangut/generator-barephp.svg?style=flat-square)](https://travis-ci.org/juliangut/generator-barephp)
+
 # Generator-BarePHP
 
 Fed up to create the same files once and again every time you start a project?
