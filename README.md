@@ -3,21 +3,26 @@
 
 # Generator-BarePHP
 
-Fed up to create the same files once and again every time you start a project?
+Fed up creating the same files once and again every time you start a new PHP project?
 
-Let Yeoman do the heavy lifting and get your project scaffolded and ready to start developing with this Yeoman generator, it will prepare a barebones PHP project structure ready to develop in a breeze.
+Let Yeoman do the heavy lifting and get your project scaffolded and ready to start developing in a breeze with this Yeoman generator, it will prepare a barebones PHP project structure ready to develop for you, you only have to worry about your actual code.
 
 ### Features
+
 * Git ready
 * Composer ready (non opinionated)
+* Packagist ready
 * Awesome Grunt integration
 * Already configured Travis integration (PHP 5.5, 5.6 and 7)
-* Coveralls integration (use with Travis)
-* Scrutinizer integration (configuration file)
-* editorconfig integration
+* Coveralls integration (triggered by Travis)
+* Scrutinizer integration
+* Editorconfig integration
+* Testing set up and integrated with Grunt
 * QA utilities (PHP linting, PHPUnit, PHPCS, PHPMD, PHPCPD) configured and integrated with Grunt
 * License selector
 * Basic documentation structure in Markdown
+
+> Be aware that defined project name is assumed to be composer package name AND github account
 
 ## Getting Started
 
@@ -63,7 +68,7 @@ yo barephp
 
 ## Contributing
 
-Found a bug or have a feature request? [Please open a new issue](issues). Have a look at existing issues before.
+Found a bug or have a feature request? [Please open a new issue](https://github.com/juliangut/generator-barephp/issues). Have a look at existing issues before.
 
 See file [CONTRIBUTING.md](CONTRIBUTING.md)
 
