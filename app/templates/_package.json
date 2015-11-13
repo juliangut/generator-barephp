@@ -18,7 +18,6 @@
 
     "url": "<%= owner.homepage %>"
     <% } -%>
-
   },
   "dependencies": {
   },

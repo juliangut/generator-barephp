@@ -22,7 +22,6 @@
 
       "homepage": "<%= owner.homepage %>"
       <% } -%>
-
     }
   ],
   "support": {
