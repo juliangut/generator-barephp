@@ -1,14 +1,15 @@
 <?php
-<% if (project.src || project.homepage) { -%>
 /**
+<% if (project.desc || project.homepage) { -%>
  * <%= project.desc %><% if (project.homepage) { -%> (<%= project.homepage %>)<% } -%>
 
-<% if (project.src) { -%>
  *
- * @link <%= project.src %> for the canonical source repository
+<% } -%>
+ * @link https://github.com/<%= project.name %> for the canonical source repository
+<% if (control.license) { -%>
+ * @license https://github.com/<%= project.name %>/blob/master/LICENSE
 <% } -%>
  */
-<% } -%>
 
 namespace Jgut\Generator\BarePHP\Tests;
 

@@ -290,25 +290,21 @@ BarePHP.prototype.writing = {
     mkdirp(this.dirs.tests + '/BarePHP');
   },
 
-  copyFiles: function() {
-    this.copy('editorconfig', '.editorconfig');
-    this.copy('Greeter.php', this.dirs.src + '/Greeter.php');
-    this.copy('GreeterTest.php', this.dirs.tests + '/BarePHP/GreeterTest.php');
-  },
-
   writeFiles: function() {
+    this.copy('editorconfig', '.editorconfig');
+    this.template('_gitattributes', '.gitattributes');
+    this.template('_gitignore', '.gitignore');
+
     this.template('_composer.json', 'composer.json');
     this.template('_package.json', 'package.json');
     this.template('_Gruntfile.js', 'Gruntfile.js');
 
     this.template('_bootstrap.php', this.dirs.tests + '/bootstrap.php');
-    this.template('_phpunit.xml', 'phpunit.xml');
-    this.copy('phpmd.xml', 'phpmd.xml');
-  },
+    this.template('_Greeter.php', this.dirs.src + '/Greeter.php');
+    this.template('_GreeterTest.php', this.dirs.tests + '/BarePHP/GreeterTest.php');
 
-  writeGitFiles: function() {
-    this.template('_gitignore', '.gitignore');
-    this.template('_gitattributes', '.gitattributes');
+    this.copy('phpmd.xml', 'phpmd.xml');
+    this.template('_phpunit.xml', 'phpunit.xml');
   },
 
   writeXtraFiles: function() {
