@@ -4,8 +4,10 @@
   "description": "<%= project.desc %>",
 <% } -%>
 <% if (project.keywords) { -%>
-  "keywords": [
-    "<%= project.keywords.join('\',\n  \'') %>"
+  "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { %>
+    "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { %>,<% } -%>
+    <% } -%>
+
   ],
 <% } -%>
 <% if (project.homepage) { -%>

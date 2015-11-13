@@ -117,7 +117,10 @@ BarePHP.prototype.askForProject = function () {
   this.prompt(prompts, function(props) {
     this.project.name     = props.projectname;
     this.project.desc     = props.projectdesc;
-    this.project.keywords = props.projectkeywords.replace(new RegExp(' +', 'g'), ' ').split(' ') || '';
+
+    props.projectkeywords = props.projectkeywords.replace(/\s+/g, ' ').replace(/\s$/, '');
+    this.project.keywords = props.projectkeywords.length ? props.projectkeywords.split(' ') : [];
+
     this.project.homepage = props.projecthomepage;
 
     done();
