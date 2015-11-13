@@ -14,6 +14,9 @@
 <% if (project.homepage) { -%>
   "homepage": "<%= project.homepage %>",
 <% } -%>
+<% if (project.license != '') { -%>
+  "license": "<%= project.license %>",
+<% } -%>
   "author": {
     "name": "<%= owner.name %>"<% if (owner.email) { -%>,
 
