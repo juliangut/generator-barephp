@@ -288,7 +288,6 @@ BarePHP.prototype.writing = {
   createDirs: function() {
     mkdirp(this.dirs.src);
     mkdirp(this.dirs.tests + '/BarePHP');
-    mkdirp(this.dirs.dist);
   },
 
   copyFiles: function() {
