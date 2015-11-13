@@ -5,18 +5,18 @@
 
  *
 <% } -%>
- * @link https://github.com/<%= project.name %> for the canonical source repository
+ * @link https://github.com/<%= owner.account %>/<%= project.name %> for the canonical source repository
 <% if (control.license) { -%>
- * @license https://github.com/<%= project.name %>/blob/master/LICENSE
+ * @license https://github.com/<%= owner.account %>/<%= project.name %>/blob/master/LICENSE
 <% } -%>
  */
 
-namespace Jgut\Generator\BarePHP\Tests;
+namespace <%= project.namespace %>\Tests;
 
-use Jgut\Generator\BarePHP\Greeter;
+use <%= project.namespace %>\Greeter;
 
 /**
- * @covers \Jgut\Generator\BarePHP\Greeter
+ * @covers \<%= project.namespace %>\Greeter
  */
 class GreeterTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,7 +28,7 @@ class GreeterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Jgut\Generator\BarePHP\Greeter::greet
+     * @covers \<%= project.namespace %>\Greeter::greet
      */
     public function testDefaultGreet()
     {
@@ -36,8 +36,8 @@ class GreeterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \Jgut\Generator\BarePHP\Greeter::greet
      * @dataProvider greetingsProvider
+     * @covers \<%= project.namespace %>\Greeter::greet
      */
     public function testGreet($name)
     {

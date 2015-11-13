@@ -1,8 +1,9 @@
 {
-  "name": "<%= underscoreString.slugify(project.name) %>",
+  "name": "<%= owner.account %>-<%= project.name %>",
 <% if (project.desc) { -%>
   "description": "<%= project.desc %>",
 <% } -%>
+  "version": "0.1.0",
 <% if (project.keywords) { -%>
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { %>
     "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { %>,<% } -%>
@@ -35,6 +36,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:<%= project.name %>.git"
+    "url": "git@github.com:<%= owner.account %>/<%= project.name %>.git"
   }
 }

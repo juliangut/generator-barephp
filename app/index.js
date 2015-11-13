@@ -22,19 +22,21 @@ var BarePHP = module.exports = function BarePHP() {
     dist: 'build'
   };
 
+  this.owner = {
+    account: '',
+    name: '',
+    email: '',
+    homepage: ''
+  };
+
   this.project = {
-    name: 'name',
+    name: '',
     desc: '',
     keywords: 'php',
     homepage: '',
     license: '',
-    licenseFile: ''
-  };
-
-  this.owner = {
-    name: '',
-    email: '',
-    homepage: ''
+    licenseFile: '',
+    namespace: ''
   };
 
   this.control = {
@@ -59,13 +61,18 @@ util.inherits(BarePHP, yeoman.generators.Base);
 
 BarePHP.prototype.welcome = function () {
   this.log(
-    yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Travis, Grunt, and many more integrations')
+    yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Travis, Grunt, and many more integrations!')
   );
 };
 
 BarePHP.prototype.askForOwner = function () {
   var done = this.async(),
     prompts = [
+    {
+      name: 'account',
+      message: 'What is your Github account?',
+      default: this.getUserHome().split(path.sep).pop()
+    },
     {
       name: 'name',
       message: 'What is your name?',
@@ -83,9 +90,10 @@ BarePHP.prototype.askForOwner = function () {
   ];
 
   this.prompt(prompts, function(props) {
-    this.owner.name     = props.name;
-    this.owner.email    = props.email;
-    this.owner.homepage = props.homepage;
+    this.owner.account  = _.trim(props.account).split(' ').shift();
+    this.owner.name     = _.trim(props.name);
+    this.owner.email    = _.trim(props.email).split(' ').shift();
+    this.owner.homepage = _.trim(props.homepage).split(' ').shift();
 
     done();
   }.bind(this));
@@ -96,32 +104,32 @@ BarePHP.prototype.askForProject = function () {
     prompts = [
       {
         name: 'projectname',
-        message: 'What is the name of your project?',
-        default: path.join(this.getUserHome().split(path.sep).pop(), '/', _.slugify(process.cwd().split(path.sep).pop()))
+        message: 'What is the name of the project?',
+        default: _.camelize(process.cwd().split(path.sep).pop())
       },
       {
         name: 'projectdesc',
-        message: 'Add a project description'
+        message: 'What is the project description?'
       },
       {
         name: 'projectkeywords',
-        message: 'What are the project keywords?',
+        message: 'What are the project keywords? (separated by spaces)',
         default: this.project.keywords
       },
       {
         name: 'projecthomepage',
-        message: 'What is the project homepage?'
+        message: 'What is the project\'s homepage?'
       }
     ];
 
   this.prompt(prompts, function(props) {
-    this.project.name     = props.projectname;
-    this.project.desc     = props.projectdesc;
-
-    props.projectkeywords = props.projectkeywords.replace(/\s+/g, ' ').replace(/\s$/, '');
+    props.projectkeywords = _.trim(props.projectkeywords).replace(/\s+/g, ' ');
     this.project.keywords = props.projectkeywords.length ? props.projectkeywords.split(' ') : [];
 
-    this.project.homepage = props.projecthomepage;
+    this.project.name      = _.trim(props.projectname).replace(/\s+/g, '_');
+    this.project.desc      = _.trim(props.projectdesc);
+    this.project.homepage  = _.trim(props.projecthomepage).split(' ').shift();
+    this.project.namespace = _.capitalize(this.owner.account) + '\\' + _.capitalize(this.project.name);
 
     done();
   }.bind(this));
@@ -290,7 +298,7 @@ BarePHP.prototype.askForInstall = function() {
 BarePHP.prototype.writing = {
   createDirs: function() {
     mkdirp(this.dirs.src);
-    mkdirp(this.dirs.tests + '/BarePHP');
+    mkdirp(this.dirs.tests + '/' + _.capitalize(this.project.name));
   },
 
   writeFiles: function() {
@@ -304,7 +312,7 @@ BarePHP.prototype.writing = {
 
     this.template('_bootstrap.php', this.dirs.tests + '/bootstrap.php');
     this.template('_Greeter.php', this.dirs.src + '/Greeter.php');
-    this.template('_GreeterTest.php', this.dirs.tests + '/BarePHP/GreeterTest.php');
+    this.template('_GreeterTest.php', this.dirs.tests + '/' + _.capitalize(this.project.name) + '/GreeterTest.php');
 
     this.copy('phpmd.xml', 'phpmd.xml');
     this.template('_phpunit.xml', 'phpunit.xml');

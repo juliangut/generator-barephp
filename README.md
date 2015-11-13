@@ -6,9 +6,9 @@
 
 # Generator-BarePHP
 
-Fed up creating the same files once and again every time you start a new PHP project?
+When you start a new PHP project there are many configuration files to be created in order to set the project ready to start developing. Normally you'd just copy/paste them from another project but this is error prone, you'll forget to copy some files and many times you'll forget to change names or routes on those files.
 
-Let Yeoman do the heavy lifting and get your project scaffolded and ready to start developing in a breeze with this Yeoman generator, it will prepare a barebones PHP project structure ready to develop for you, you only have to worry about your actual code.
+If you're fed up creating the same files once and again every time you start a new PHP project and feel you're wasting your time allow Yeoman do the heavy lifting and get your project scaffolded and ready to start developing in a breeze with this generator, it will prepare a barebones PHP project structure ready to develop for you, seat and focus on the actual code.
 
 ### Features
 
@@ -24,8 +24,6 @@ Let Yeoman do the heavy lifting and get your project scaffolded and ready to sta
 * QA utilities (PHP linting, PHPUnit, PHPCS, PHPMD, PHPCPD) configured and integrated with Grunt
 * License selector
 * Basic documentation structure in Markdown
-
-> Be aware that defined project name is assumed to be composer package name AND github account
 
 ## Getting Started
 
@@ -61,20 +59,20 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 
 ## Usage
 
-Once the generator is installed you can start using it by initiating the generator:
+Once the generator is installed you can start using it by initiating the generator and answering his questions:
 
 ```
 yo barephp
 ```
 
-> The generator assumes your "project name", prompted for by yeoman, is your package name and default github repository (github_user/repository)
+> Be aware that `github account` and `project name` provided to the generator will be used as composer package name AND project namespace. Should you need to change them review composer.json and provided template clases
 
 ## Contributing
 
 Found a bug or have a feature request? [Please open a new issue](https://github.com/juliangut/generator-barephp/issues). Have a look at existing issues before.
 
-See file [CONTRIBUTING.md](CONTRIBUTING.md)
+See file [CONTRIBUTING.md](https://github.com/juliangut/generator-barephp/blob/master/CONTRIBUTING.md)
 
 ## License
 
-See file [LICENSE](LICENSE) included with the source code for a copy of the license terms.
+See file [LICENSE](https://github.com/juliangut/generator-barephp/blob/master/LICENSE) included with the source code for a copy of the license terms.

@@ -17,7 +17,6 @@
     <!-- Unused method parameter -->
     <rule ref="rulesets/unusedcode.xml/UnusedFormalParameter"/>
 
-
     <!-- Naming rules -->
     <!-- <rule ref="rulesets/naming.xml" /> -->
     <!-- Class constructors should be __construct -->
@@ -49,7 +48,6 @@
         </properties>
     </rule>
 
-
     <!-- Design rules -->
     <!-- <rule ref="rulesets/design.xml" /> -->
     <!-- Arbitrary exit code -->
@@ -77,7 +75,6 @@
         </properties>
     </rule>
 
-
     <!-- Controversial rules -->
     <!-- <rule ref="rulesets/controversial.xml" /> -->
     <!-- Avoid superglobals -->
@@ -92,7 +89,6 @@
     <rule ref="rulesets/controversial.xml/CamelCaseParameterName" />
     <!-- Use camelCase class method variable names -->
     <!-- <rule ref="rulesets/controversial.xml/CamelCaseVariableName" /> -->
-
 
     <!-- Code size rules -->
     <!-- <rule ref="rulesets/codesize.xml" /> -->

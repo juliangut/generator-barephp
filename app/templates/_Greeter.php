@@ -5,13 +5,13 @@
 
  *
 <% } -%>
- * @link https://github.com/<%= project.name %> for the canonical source repository
+ * @link https://github.com/<%= owner.account %>/<%= project.name %> for the canonical source repository
 <% if (control.license) { -%>
- * @license https://github.com/<%= project.name %>/blob/master/LICENSE
+ * @license https://github.com/<%= owner.account %>/<%= project.name %>/blob/master/LICENSE
 <% } -%>
  */
 
-namespace Jgut\Generator\BarePHP;
+namespace <%= project.namespace %>;
 
 class Greeter
 {

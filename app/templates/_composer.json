@@ -1,5 +1,5 @@
 {
-  "name": "<%= project.name %>",
+  "name": "<%= owner.account %>/<%= project.name %>",
 <% if (project.desc) { -%>
   "description": "<%= project.desc %>",
 <% } -%>
@@ -27,7 +27,7 @@
     }
   ],
   "support": {
-    "issues": "https://github.com/<%= project.name %>/issues"
+    "issues": "https://github.com/<%= owner.account %>/<%= project.name %>/issues"
   },
   "require": {
     "php": ">=5.5"
@@ -40,12 +40,12 @@
   },
   "autoload": {
     "psr-4": {
-      "Jgut\\Generator\\BarePHP\\": "src"
+      "<%= project.namespace.replace('\\', '\\\\') %>\\": "src"
     }
   },
   "autoload-dev": {
     "psr-4": {
-      "Jgut\\Generator\\BarePHP\\Tests\\": "tests/BarePHP"
+      "<%= project.namespace.replace('\\', '\\\\') %>\\Tests\\": "tests/<%= underscoreString.capitalize(project.name) %>"
     }
   }
 }
