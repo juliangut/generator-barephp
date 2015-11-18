@@ -31,7 +31,7 @@ module.exports = function(grunt) {
     phpmd: {
       options: {
         bin: 'vendor/bin/phpmd',
-        rulesets: 'phpmd.xml',
+        rulesets: 'unusedcode,naming,design,controversial,codesize',
         reportFormat: 'text'
       },
       application: {

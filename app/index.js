@@ -314,7 +314,6 @@ BarePHP.prototype.writing = {
     this.template('_Greeter.php', this.dirs.src + '/Greeter.php');
     this.template('_GreeterTest.php', this.dirs.tests + '/' + _.capitalize(this.project.name) + '/GreeterTest.php');
 
-    this.copy('phpmd.xml', 'phpmd.xml');
     this.template('_phpunit.xml', 'phpunit.xml');
   },
 
