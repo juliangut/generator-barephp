@@ -35,7 +35,6 @@ describe('yo barephp usage', function () {
       'README.md',
       'composer.json',
       'package.json',
-      'phpmd.xml',
       'phpunit.xml'
     ]);
   });
