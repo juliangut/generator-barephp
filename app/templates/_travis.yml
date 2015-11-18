@@ -22,7 +22,7 @@ before_script:
 
 script:
   - vendor/bin/phpcs --standard=PSR2 <%= dirs.src %> <%= dirs.tests %>
-  - vendor/bin/phpmd <%= dirs.src %> text phpmd.xml.dist
+  - vendor/bin/phpmd <%= dirs.src %> text unusedcode,naming,design,controversial,codesize
   - vendor/bin/phpcpd <%= dirs.src %>
 <% if (!control.coveralls) { -%>
   - vendor/bin/phpunit
