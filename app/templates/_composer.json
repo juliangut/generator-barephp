@@ -5,8 +5,7 @@
 <% } -%>
 <% if (project.keywords) { -%>
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { %>
-    "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { %>,<% } -%>
-    <% } -%>
+    "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { %>,<% } -%><% } -%>
 
   ],
 <% } -%>
@@ -23,8 +22,11 @@
       "email": "<%= owner.email %>"<% } -%><% if (owner.homepage) { -%>,
 
       "homepage": "<%= owner.homepage %>"
-      <% } -%>
     }
+<% } else { -%>
+
+    }
+<% } -%>
   ],
   "support": {
     "issues": "https://github.com/<%= owner.account %>/<%= project.name %>/issues"

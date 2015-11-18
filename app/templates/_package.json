@@ -6,8 +6,7 @@
   "version": "0.1.0",
 <% if (project.keywords) { -%>
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { %>
-    "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { %>,<% } -%>
-    <% } -%>
+    "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { %>,<% } -%><% } -%>
 
   ],
 <% } -%>
@@ -23,8 +22,11 @@
     "email": "<%= owner.email %>"<% } -%><% if (owner.homepage) { -%>,
 
     "url": "<%= owner.homepage %>"
-    <% } -%>
   },
+<% } else { -%>
+
+  },
+<% } -%>
   "dependencies": {
   },
   "devDependencies": {
