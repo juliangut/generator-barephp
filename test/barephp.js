@@ -12,11 +12,12 @@ describe('yo barephp usage', function () {
         'skip-install': true
       })
       .withPrompts({
+        account: 'juliangut',
         name: 'Julián Gutiérrez',
         email: 'juliangut@gmail',
         homepage: 'juliangut.com',
         projectname: 'Jgut/GeneratorBarePHP',
-        xtras: 'travis, coveralls, scrutinizer, docs'
+        xtras: 'travis, coveralls, scrutinizer, homestead, docs'
       })
       .on('end', done);
   });
@@ -33,6 +34,7 @@ describe('yo barephp usage', function () {
       'Gruntfile.js',
       'LICENSE',
       'README.md',
+      'Vagrantfile',
       'composer.json',
       'package.json',
       'phpunit.xml'

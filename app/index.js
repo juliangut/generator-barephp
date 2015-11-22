@@ -16,12 +16,6 @@ var BarePHP = module.exports = function BarePHP() {
     return process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
   };
 
-  this.dirs = {
-    src: 'src',
-    tests: 'tests',
-    dist: 'build'
-  };
-
   this.owner = {
     account: '',
     name: '',
@@ -44,7 +38,15 @@ var BarePHP = module.exports = function BarePHP() {
     license: true,
     travis: false,
     scrutinizer: false,
+    homestead: false,
     docs: false
+  };
+
+  this.dirs = {
+    src: 'src',
+    tests: 'tests',
+    public: 'public',
+    dist: 'build'
   };
 
   this.underscoreString = _;
@@ -113,7 +115,7 @@ BarePHP.prototype.askForProject = function () {
       },
       {
         name: 'projectkeywords',
-        message: 'What are the project keywords? (separated by spaces)',
+        message: 'What are the project keywords?',
         default: this.project.keywords
       },
       {
@@ -123,7 +125,7 @@ BarePHP.prototype.askForProject = function () {
     ];
 
   this.prompt(prompts, function(props) {
-    props.projectkeywords = _.trim(props.projectkeywords).replace(/\s+/g, ' ');
+    props.projectkeywords = _.trim(_.trim(props.projectkeywords).replace(/,\s*/g, ' ').replace(/\s+/g, ' '));
     this.project.keywords = props.projectkeywords.length ? props.projectkeywords.split(' ') : [];
 
     this.project.name      = _.trim(props.projectname).replace(/\s+/g, '_');
@@ -135,58 +137,7 @@ BarePHP.prototype.askForProject = function () {
   }.bind(this));
 };
 
-BarePHP.prototype.askForChangeDirs = function() {
-  var done = this.async(),
-    prompts = [
-      {
-        type: 'confirm',
-        name: 'changeDirs',
-        message: 'Whould you like to change default directories?',
-        default: false
-      }
-    ];
-
-  this.prompt(prompts, function(props) {
-    this.control.dirs = props.changeDirs;
-
-    done();
-  }.bind(this));
-};
-
-BarePHP.prototype.askForDirs = function() {
-  if (!this.control.dirs) {
-    return;
-  }
-
-  var done = this.async(),
-    prompts = [
-      {
-        name: 'src',
-        message: 'What is the source code directory?',
-        default: this.dirs.src
-      },
-      {
-        name: 'tests',
-        message: 'What is the tests directory?',
-        default: this.dirs.tests
-      },
-      {
-        name: 'dist',
-        message: 'What is the build directory?',
-        default: this.dirs.dist
-      }
-    ];
-
-  this.prompt(prompts, function(props) {
-    this.dirs.src  = props.src;
-    this.dirs.tests = props.tests;
-    this.dirs.dist = props.dist;
-
-    done();
-  }.bind(this));
-};
-
-BarePHP.prototype.askForUseLicense = function() {
+BarePHP.prototype.askForLicenseUse = function() {
   var done = this.async(),
     prompts = [
       {
@@ -275,6 +226,11 @@ BarePHP.prototype.askForInstall = function() {
             checked: true
           },
           {
+            value: 'homestead',
+            name: 'Homestead',
+            checked: true
+          },
+          {
             value: 'docs',
             name: 'Base documentation',
             checked: true
@@ -289,7 +245,71 @@ BarePHP.prototype.askForInstall = function() {
     this.control.travis = hasMod('travis');
     this.control.coveralls = hasMod('coveralls');
     this.control.scrutinizer = hasMod('scrutinizer');
+    this.control.homestead = hasMod('homestead');
     this.control.docs = hasMod('docs');
+
+    done();
+  }.bind(this));
+};
+
+BarePHP.prototype.askForChangeDirs = function() {
+  var done = this.async(),
+    prompts = [
+      {
+        type: 'confirm',
+        name: 'changeDirs',
+        message: 'Whould you like to change default directories?',
+        default: false
+      }
+    ];
+
+  this.prompt(prompts, function(props) {
+    this.control.dirs = props.changeDirs;
+
+    done();
+  }.bind(this));
+};
+
+BarePHP.prototype.askForCustomDirs = function() {
+  if (!this.control.dirs) {
+    return;
+  }
+
+  var done = this.async(),
+    prompts = [
+      {
+        name: 'src',
+        message: 'What is the source code directory?',
+        default: this.dirs.src
+      },
+      {
+        name: 'tests',
+        message: 'What is the tests directory?',
+        default: this.dirs.tests
+      },
+      {
+        name: 'dist',
+        message: 'What is the build directory?',
+        default: this.dirs.dist
+      }
+    ];
+
+    if (this.control.homestead) {
+      prompts.push({
+        name: 'public',
+        message: 'What is the public directory?',
+        default: this.dirs.public
+      });
+    }
+
+  this.prompt(prompts, function(props) {
+    this.dirs.src  = props.src;
+    this.dirs.tests = props.tests;
+    this.dirs.dist = props.dist;
+
+    if (this.control.homestead) {
+      this.dirs.public = props.public;
+    }
 
     done();
   }.bind(this));
@@ -326,6 +346,16 @@ BarePHP.prototype.writing = {
     }
     if (this.control.scrutinizer) {
       this.template('_scrutinizer.yml', '.scrutinizer.yml');
+    }
+    if (this.control.homestead) {
+      mkdirp(this.dirs.public);
+      this.template('_index.php', this.dirs.public + '/index.php');
+
+      mkdirp('.vagrant');
+      this.template('_Homestead.yml', '.vagrant/Homestead.yml');
+      this.copy('aliases', '.vagrant/aliases');
+      this.copy('after.sh', '.vagrant/after.sh');
+      this.copy('Vagrantfile', 'Vagrantfile');
     }
     if (this.control.docs) {
       this.template('_CONTRIBUTING.md', 'CONTRIBUTING.md');

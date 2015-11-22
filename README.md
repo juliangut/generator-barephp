@@ -14,16 +14,19 @@ If you're fed up creating the same files once and again every time you start a n
 
 * Git ready
 * Composer ready (non opinionated)
-* Packagist ready
+* Prepared for Packagist
+* Laravel/Homestead integration
 * Awesome Grunt integration
-* Already configured Travis integration (PHP 5.5, 5.6 and 7)
+* Already configured Travis integration (PHP 5.5, 5.6, 7 and HHVM)
 * Coveralls integration (triggered by Travis)
 * Scrutinizer integration
 * Editorconfig integration
-* Testing set up and integrated with Grunt
-* QA utilities (PHP linting, PHPUnit, PHPCS, PHPMD, PHPCPD) configured and integrated with Grunt
-* License selector
+* Testing environment already set up and integrated with Grunt
+* QA utilities (PHP linting, PHPUnit, PHPCS, PHPMD, PHPCPD, Clim, Security-checker) configured and integrated with Grunt
 * Basic documentation structure in Markdown
+* License selector
+
+> And more to come
 
 ## Getting Started
 

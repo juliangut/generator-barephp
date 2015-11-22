@@ -12,5 +12,9 @@
 <% if (control.scrutinizer) { -%>
 .scrutinizer.yml export-ignore
 <% } -%>
+<% if (control.homestead) { -%>
+Vagrantfile      export-ignore
+.vagrant/        export-ignore
+<% } -%>
 Gruntfile.js     export-ignore
 phpunit.xml      export-ignore
