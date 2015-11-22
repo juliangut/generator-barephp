@@ -48,6 +48,21 @@ module.exports = function(grunt) {
         dir: '<%= dirs.src %>'
       }
     },
+    climb: {
+      options: {
+        bin: 'vendor/bin/climb'
+      },
+      application: {
+      }
+    },
+    security_checker: {
+      options: {
+        bin: 'vendor/bin/security-checker'
+      },
+      application: {
+        file: 'composer.lock'
+      }
+    },
     phpunit: {
       options: {
         bin: 'vendor/bin/phpunit',
@@ -59,11 +74,13 @@ module.exports = function(grunt) {
     }
   });
 
+  grunt.registerTask('check', ['phplint', 'phpcs', 'phpmd', 'phpcpd']);
+  grunt.registerTask('security', ['climb', 'security_checker']);
+  grunt.registerTask('test', ['phpunit']);
+
   grunt.task.registerTask('build', 'Project build', function() {
     grunt.log.writeln('Task ready to be implemented');
   });
 
-  grunt.registerTask('check', ['phplint', 'phpcs', 'phpmd', 'phpcpd']);
-  grunt.registerTask('test', ['phpunit']);
-  grunt.registerTask('default', ['check', 'test']);
+  grunt.registerTask('default', ['check', 'security', 'test']);
 };
