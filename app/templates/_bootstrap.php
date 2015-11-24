@@ -7,6 +7,7 @@
 <% } -%>
  * @link https://github.com/<%= owner.account %>/<%= project.name %> for the canonical source repository
 <% if (control.license) { -%>
+ *
  * @license https://github.com/<%= owner.account %>/<%= project.name %>/blob/master/LICENSE
 <% } -%>
  */

@@ -1,0 +1,38 @@
+preset: psr2
+
+enabled:
+  - concat_with_spaces
+  - duplicate_semicolon
+  - function_typehint_space
+  - multiline_array_trailing_comma
+  - multiline_spaces_before_semicolon
+  - newline_after_open_tag
+  - operators_spaces
+  - phpdoc_align
+  - phpdoc_indent
+  - phpdoc_inline_tag
+  - phpdoc_no_empty_return
+  - phpdoc_no_access
+  - phpdoc_no_package
+  - phpdoc_order
+  - phpdoc_property
+  - phpdoc_scalar
+  - phpdoc_separation
+  - phpdoc_to_comment
+  - phpdoc_trim
+  - phpdoc_type_to_var
+  - phpdoc_types
+  - phpdoc_var_without_name
+  - remove_leading_slash_use
+  - remove_lines_between_uses
+  - return
+  - short_array_syntax
+  - single_array_no_trailing_comma
+  - single_blank_line_before_namespace
+  - spaces_before_semicolon
+  - spaces_cast
+  - standardize_not_equal
+  - trim_array_spaces
+  - unary_operators_spaces
+  - unused_use
+  - whitespacy_lines

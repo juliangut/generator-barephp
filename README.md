@@ -13,13 +13,14 @@ If you're fed up creating the same files once and again every time you start a n
 ### Features
 
 * Git ready
-* Composer ready (non opinionated)
+* Composer ready (php >=5.5)
 * Prepared for Packagist
 * Laravel/Homestead integration
 * Awesome Grunt integration
 * Already configured Travis integration (PHP 5.5, 5.6, 7 and HHVM)
 * Coveralls integration (triggered by Travis)
 * Scrutinizer integration
+* StyleCI integration
 * Editorconfig integration
 * Testing environment already set up and integrated with Grunt
 * QA utilities (PHP linting, PHPUnit, PHPCS, PHPMD, PHPCPD, Clim, Security-checker) configured and integrated with Grunt
@@ -69,6 +70,15 @@ yo barephp
 ```
 
 > Be aware that `github account` and `project name` provided to the generator will be used as composer package name AND project namespace. Should you need to change them review composer.json and provided template clases
+
+### Post configuration
+
+`barephp` generator comes with many configured services ready to be used but some of them need extra setup
+
+* [Travis](https://travis-ci.org). You need to activate the repository in your profile page
+* [Coveralls](https://coveralls.io). Get [here](https://coveralls.io/repos/new) and activate the repository
+* [Scrutinizer](https://scrutinizer-ci.com). The repository has to be added to Scrutinizer
+* [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account). And assign StyleCI repo id to the badge on README.md file
 
 ## Contributing
 

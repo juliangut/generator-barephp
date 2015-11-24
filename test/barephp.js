@@ -17,7 +17,7 @@ describe('yo barephp usage', function () {
         email: 'juliangut@gmail',
         homepage: 'juliangut.com',
         projectname: 'Jgut/GeneratorBarePHP',
-        xtras: 'travis, coveralls, scrutinizer, homestead, docs'
+        xtras: 'travis, coveralls, scrutinizer, styleci, homestead, docs'
       })
       .on('end', done);
   });
@@ -29,6 +29,7 @@ describe('yo barephp usage', function () {
       '.gitattributes',
       '.gitignore',
       '.scrutinizer.yml',
+      '.styleci.yml',
       '.travis.yml',
       'CONTRIBUTING.md',
       'Gruntfile.js',

@@ -38,6 +38,7 @@ var BarePHP = module.exports = function BarePHP() {
     license: true,
     travis: false,
     scrutinizer: false,
+    styleci: false,
     homestead: false,
     docs: false
   };
@@ -226,6 +227,11 @@ BarePHP.prototype.askForInstall = function() {
             checked: true
           },
           {
+            value: 'styleci',
+            name: 'StyleCI',
+            checked: true
+          },
+          {
             value: 'homestead',
             name: 'Homestead',
             checked: true
@@ -245,6 +251,7 @@ BarePHP.prototype.askForInstall = function() {
     this.control.travis = hasMod('travis');
     this.control.coveralls = hasMod('coveralls');
     this.control.scrutinizer = hasMod('scrutinizer');
+    this.control.styleci = hasMod('styleci');
     this.control.homestead = hasMod('homestead');
     this.control.docs = hasMod('docs');
 
@@ -346,6 +353,9 @@ BarePHP.prototype.writing = {
     }
     if (this.control.scrutinizer) {
       this.template('_scrutinizer.yml', '.scrutinizer.yml');
+    }
+    if (this.control.styleci) {
+      this.template('styleci.yml', '.styleci.yml');
     }
     if (this.control.homestead) {
       mkdirp(this.dirs.public);

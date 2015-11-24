@@ -6,6 +6,9 @@
 <% if (control.travis) { -%>
 [![Build status](https://img.shields.io/travis/<%= owner.account %>/<%= project.name %>.svg?style=flat-square)](https://travis-ci.org/<%= owner.account %>/<%= project.name %>)
 <% } -%>
+<% if (control.styleci) { -%>
+[![Style](https://styleci.io/repos/{xxxxx}/shield)](https://styleci.io/repos/{xxxxx})
+<% } -%>
 <% if (control.scrutinuzer) { -%>
 [![Code Quality](https://img.shields.io/scrutinizer/g/<%= owner.account %>/<%= project.name %>.svg?style=flat-square)](https://scrutinizer-ci.com/g/<%= owner.account %>/<%= project.name %>)
 <% } -%>
@@ -14,6 +17,10 @@
 <% } -%>
 [![Total Downloads](https://img.shields.io/packagist/dt/<%= owner.account %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= owner.account %>/<%= project.name %>)
 
+<% if (control.styleci) { -%>
+> Remember to assign StyleCI repository id to the badge above
+
+<% } -%>
 # <%= project.name %>
 <% if (project.desc) { -%>
 

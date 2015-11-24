@@ -7,6 +7,7 @@
 <% } -%>
  * @link https://github.com/<%= owner.account %>/<%= project.name %> for the canonical source repository
 <% if (control.license) { -%>
+ *
  * @license https://github.com/<%= owner.account %>/<%= project.name %>/blob/master/LICENSE
 <% } -%>
  */
@@ -37,6 +38,7 @@ class GreeterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider greetingsProvider
+     *
      * @covers \<%= project.namespace %>\Greeter::greet
      */
     public function testGreet($name)
