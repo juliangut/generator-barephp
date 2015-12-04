@@ -9,7 +9,7 @@
 <% if (control.styleci) { -%>
 [![Style](https://styleci.io/repos/{xxxxx}/shield)](https://styleci.io/repos/{xxxxx})
 <% } -%>
-<% if (control.scrutinuzer) { -%>
+<% if (control.scrutinizer) { -%>
 [![Code Quality](https://img.shields.io/scrutinizer/g/<%= owner.account %>/<%= project.name %>.svg?style=flat-square)](https://scrutinizer-ci.com/g/<%= owner.account %>/<%= project.name %>)
 <% } -%>
 <% if (control.coveralls) { -%>
