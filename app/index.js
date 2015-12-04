@@ -234,7 +234,7 @@ BarePHP.prototype.askForInstall = function() {
           {
             value: 'homestead',
             name: 'Homestead',
-            checked: true
+            checked: false
           },
           {
             value: 'docs',
@@ -362,6 +362,7 @@ BarePHP.prototype.writing = {
       this.template('_index.php', this.dirs.public + '/index.php');
 
       mkdirp('.vagrant');
+      this.copy('vagrant_gitignore', '.vagrant/.gitignore');
       this.template('_Homestead.yml', '.vagrant/Homestead.yml');
       this.copy('aliases', '.vagrant/aliases');
       this.copy('after.sh', '.vagrant/after.sh');
