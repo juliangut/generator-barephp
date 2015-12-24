@@ -31,6 +31,8 @@
   "support": {
     "issues": "https://github.com/<%= owner.account %>/<%= project.name %>/issues"
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
     "php": ">=5.5"
   },
@@ -57,5 +59,10 @@
     "psr-4": {
       "<%= project.namespace.replace('\\', '\\\\') %>\\Tests\\": "tests/<%= underscoreString.capitalize(project.name) %>"
     }
+  },
+  "bin": [
+  ],
+  "config": {
+    "preferred-install": "dist"
   }
 }
