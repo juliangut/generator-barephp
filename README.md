@@ -23,7 +23,7 @@ If you're fed up creating the same files once and again every time you start a n
 * StyleCI integration
 * Editorconfig integration
 * Testing environment already set up and integrated with Grunt
-* QA utilities (PHP linting, PHPUnit, PHPCS, PHPMD, PHPCPD, Clim, Security-checker) configured and integrated with Grunt
+* QA utilities (PHP linting, PHPUnit, PHPCS, PHPMD, PHPCPD, Climb, Security-checker) configured and integrated with Grunt
 * Basic documentation structure in Markdown
 * License selector
 
