@@ -22,10 +22,10 @@ If you're fed up creating the same files once and again every time you start a n
 * Scrutinizer integration
 * StyleCI integration
 * Editorconfig integration
-* Testing environment already set up and integrated with Grunt
-* QA utilities (PHP linting, PHPUnit, PHPCS, PHPMD, PHPCPD, Climb, Security-checker) configured and integrated with Grunt
+* Testing environment already set up and integrated into Grunt
+* QA utilities (Linting, PHPUnit, PHPCS, PHPMD, PHPCPD, Climb, Security-checker) configured and integrated into Grunt
 * Basic documentation structure in Markdown
-* License selector
+* License selection
 
 > And more to come
 
@@ -63,22 +63,22 @@ If you'd like to get to know Yeoman better and meet some of his friends, [Grunt]
 
 ## Usage
 
-Once the generator is installed you can start using it by initiating the generator and answering his questions:
+Once the generator is installed (see previous points) you can start using it by initiating the generator and answering his questions:
 
 ```
 yo barephp
 ```
 
-> Be aware that `github account` and `project name` provided to the generator will be used as composer package name AND project namespace. Should you need to change them review composer.json and provided template clases
+### Post run configuration
 
-### Post configuration
-
-`barephp` generator comes with many configured services ready to be used but some of them need extra setup
+`barephp` generator comes with many preconfigured services ready to be used but some of them need extra setup
 
 * [Travis](https://travis-ci.org). You need to activate the repository in your profile page
 * [Coveralls](https://coveralls.io). Get [here](https://coveralls.io/repos/new) and activate the repository
 * [Scrutinizer](https://scrutinizer-ci.com). The repository has to be added to Scrutinizer
-* [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account). And assign StyleCI repo id to the badge on README.md file
+* [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account). And assign StyleCI repository id to the badge on README.md file
+
+> `github account` and `project name` provided to the generator will be used as composer package name AND project namespace, and assumed to be your account on other services such as Travis, Scrutinizer or Coveralls. Should you need to change them review README.md, composer.json, package.json and provided template clases files.
 
 ## Contributing
 

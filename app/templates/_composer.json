@@ -41,7 +41,7 @@
     "squizlabs/php_codesniffer": "^2.0",
     "phpmd/phpmd": "^2.0",
     "sebastian/phpcpd": "^2.0",
-    "vinkla/climb": "^0.6",
+    "vinkla/climb": "^0.8",
     "sensiolabs/security-checker": "^3.0"<% if (control.homestead) { -%>,
 
     "laravel/homestead": "^2.1"

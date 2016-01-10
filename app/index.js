@@ -209,7 +209,7 @@ BarePHP.prototype.askForInstall = function() {
       {
         type: 'checkbox',
         name: 'xtras',
-        message: 'Which files would you like to include?',
+        message: 'Which extra files would you like to include?',
         choices: [
           {
             value: 'travis',
@@ -234,7 +234,7 @@ BarePHP.prototype.askForInstall = function() {
           {
             value: 'homestead',
             name: 'Homestead',
-            checked: false
+            checked: true
           },
           {
             value: 'docs',
@@ -265,7 +265,7 @@ BarePHP.prototype.askForChangeDirs = function() {
       {
         type: 'confirm',
         name: 'changeDirs',
-        message: 'Whould you like to change default directories?',
+        message: 'Whould you like to change default directories (src/tests/build)?',
         default: false
       }
     ];
@@ -286,7 +286,7 @@ BarePHP.prototype.askForCustomDirs = function() {
     prompts = [
       {
         name: 'src',
-        message: 'What is the source code directory?',
+        message: 'What is the source directory?',
         default: this.dirs.src
       },
       {
@@ -324,6 +324,8 @@ BarePHP.prototype.askForCustomDirs = function() {
 
 BarePHP.prototype.writing = {
   createDirs: function() {
+    console.log('\nWriting project files ...\n');
+
     mkdirp(this.dirs.src);
     mkdirp(this.dirs.tests + '/' + _.capitalize(this.project.name));
   },
@@ -363,7 +365,7 @@ BarePHP.prototype.writing = {
 
       mkdirp('.vagrant');
       this.copy('vagrant_gitignore', '.vagrant/.gitignore');
-      this.template('_Homestead.yml', '.vagrant/Homestead.yml');
+      this.template('_homestead.yml', '.vagrant/homestead.yml');
       this.copy('aliases', '.vagrant/aliases');
       this.copy('after.sh', '.vagrant/after.sh');
       this.copy('Vagrantfile', 'Vagrantfile');
@@ -384,12 +386,12 @@ BarePHP.prototype.install = function () {
   this.installDependencies({
     bower: false,
     callback: function() {
-      var message = '\nProject ' + chalk.green(projectName) + ' is set up and ready';
+      var message = '\nProject ' + chalk.green.bold(projectName) + ' is set up and ready';
 
       if (shell.which('composer')) {
         shell.exec('composer install');
       } else {
-        message += '\nRemember to run ' + chalk.yellow.bold('composer install') + ' before starting development';
+        message += '\nRun ' + chalk.yellow.bold('composer install') + ' before starting development';
       }
 
       console.log(message);
