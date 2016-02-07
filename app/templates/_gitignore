@@ -3,7 +3,5 @@ composer.phar
 vendor/
 !composer.lock
 node_modules/
+bower_components/
 <%= dirs.dist %>/
-<% if (control.homestead) { -%>
-.vagrant/
-<% } -%>

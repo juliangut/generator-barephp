@@ -1,6 +1,6 @@
 {
   "name": "generator-barephp",
-  "version": "0.6.4",
+  "version": "0.7.0",
   "description": "Barebones PHP project scaffold Yeoman generator",
   "homepage": "https://github.com/juliangut/generator-barephp",
   "bugs": "https://github.com/juliangut/generator-barephp/issues",
@@ -15,9 +15,11 @@
     "phpcs",
     "phpmd",
     "phpcpd",
+    "packagist",
     "travis",
     "coveralls",
-    "scrutinizer"
+    "scrutinizer",
+    "styleci"
   ],
   "author": {
     "name": "Julián Gutiérrez",
@@ -33,13 +35,14 @@
   },
   "main": "app/index.js",
   "dependencies": {
-    "yo": ">=1.0.0",
-    "yeoman-generator": "^0.21.0",
     "chalk": "^1.1.0",
     "mkdirp": "^0.5.1",
     "shelljs": "^0.5.3",
     "underscore.string": "^3.1.1",
     "util": "^0.10.3",
+    "validator": "^4.7.1",
+    "yeoman-generator": "^0.21.0",
+    "yo": ">=1.0.0",
     "yosay": "^1.0.5"
   },
   "devDependencies": {

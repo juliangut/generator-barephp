@@ -1,11 +1,14 @@
 ---
 version: "< 0.4.0"
-ip: "192.168.100.100"
-memory: 2048
-cpus: 1
-hostname: <%= project.name %>
 name: <%= project.name %>
 provider: virtualbox
+memory: 2048
+cpus: 1
+ip: "192.168.100.100"
+hostname: <%= project.name %>.app
+hostaliases: <% if (control.phpmyadmin) { -%>
+
+  - phpmyadmin-<%= project.name %>.app<% } -%>
 
 authorize: ~/.ssh/id_rsa.pub
 
@@ -19,6 +22,10 @@ folders:
 sites:
   - map: <%= project.name %>.app
     to: "/home/vagrant/<%= project.name %>/<%= dirs.public %>"
+<% if (control.phpmyadmin) { -%>
+  - map: mysql-<%= project.name %>.app
+    to: "/var/www/html/phpmyadmin"
+<% } -%>
 
 databases:
   - <%= project.name %>

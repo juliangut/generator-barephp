@@ -8,26 +8,30 @@
 
 When you start a new PHP project there are many configuration files to be created in order to set the project ready to start developing. Normally you'd just copy/paste them from another project but this is error prone, you'll forget to copy some files and many times you'll forget to change names or routes on those files.
 
-If you're fed up creating the same files once and again every time you start a new PHP project and feel you're wasting your time allow Yeoman do the heavy lifting and get your project scaffolded and ready to start developing in a breeze with this generator, it will prepare a barebones PHP project structure ready to develop for you, seat and focus on the actual code.
+If you're fed up scaffolding your projects with the same files once and again and feel you're wasting your time allow Yeoman do the heavy lifting and get your project scaffolded and ready to start developing in a breeze with this generator, it will prepare a barebones PHP project structure ready to develop for you, seat and focus on the actual code.
 
 ### Features
 
-* Git ready
+* Git by default
+* Integration into Github or Bitbucket
 * Composer ready (php >=5.5)
-* Prepared for Packagist
-* Laravel/Homestead integration
+* Compatibility and general purpose packages included
+* Project ready to be included into Packagist
+* Laravel Homestead integration (PhpMyAdmin integrated)
+* Integration with Vagrant hostupdater plugin
 * Awesome Grunt integration
 * Already configured Travis integration (PHP 5.5, 5.6, 7 and HHVM)
 * Coveralls integration (triggered by Travis)
 * Scrutinizer integration
 * StyleCI integration
-* Editorconfig integration
-* Testing environment already set up and integrated into Grunt
-* QA utilities (Linting, PHPUnit, PHPCS, PHPMD, PHPCPD, Climb, Security-checker) configured and integrated into Grunt
+* Editorconfig file
+* PHPUnit testing environment already set up and integrated into Grunt
+* QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Climb, Security-checker) configured and integrated into Grunt
+* Basic annotated kickoff files
 * Basic documentation structure in Markdown
 * License selection
 
-> And more to come
+> And many more to come
 
 ## Getting Started
 
@@ -73,12 +77,17 @@ yo barephp
 
 `barephp` generator comes with many preconfigured services ready to be used but some of them need extra setup
 
+* [Packagist](https://packagist.org). Your package must be [submit](https://packagist.org/packages/submit)
 * [Travis](https://travis-ci.org). You need to activate the repository in your profile page
-* [Coveralls](https://coveralls.io). Get [here](https://coveralls.io/repos/new) and activate the repository
+* [Coveralls](https://coveralls.io). Activate [here](https://coveralls.io/repos/new) the repository
 * [Scrutinizer](https://scrutinizer-ci.com). The repository has to be added to Scrutinizer
-* [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account). And assign StyleCI repository id to the badge on README.md file
+* [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account).
 
-> `github account` and `project name` provided to the generator will be used as composer package name AND project namespace, and assumed to be your account on other services such as Travis, Scrutinizer or Coveralls. Should you need to change them review README.md, composer.json, package.json and provided template clases files.
+If you install Laravel Homestead then Vagrant will be automatically configured to serve your project from "`project_name`.app" url.
+
+If you installed PhpMyAdmin within Laravel Homested it will be available at "phpmyadmin-`project_name`.app" url.
+
+If you have installed Vagrant plugin [vagrant_hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) then `./etc/hosts` will be automatically updated every time you start Vagrant, otherwise you should include the referenced IP yourself.
 
 ## Contributing
 

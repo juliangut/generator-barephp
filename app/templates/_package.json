@@ -1,20 +1,19 @@
 {
   "name": "<%= owner.account %>-<%= project.name %>",
-<% if (project.desc) { -%>
   "description": "<%= project.desc %>",
-<% } -%>
-  "version": "0.1.0",
-<% if (project.keywords) { -%>
+  "version": "0.0.1",
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { %>
     "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { %>,<% } -%><% } -%>
 
   ],
-<% } -%>
 <% if (project.homepage) { -%>
   "homepage": "<%= project.homepage %>",
-<% } -%>
-<% if (project.license != '') { -%>
+<% }
+if (project.license != '') { -%>
   "license": "<%= project.license %>",
+<% }
+if (control.repository) { -%>
+"bugs": "<%= repository.homepage %>/issues",
 <% } -%>
   "author": {
     "name": "<%= owner.name %>"<% if (owner.email) { -%>,
@@ -40,9 +39,9 @@
     "grunt-phpcpd": "~0.1.3",
     "grunt-climb": "^0.4.0",
     "grunt-security-checker": "^0.2.0"
-  },
+  }<% if (control.repository) { -%>,
   "repository": {
     "type": "git",
-    "url": "git@github.com:<%= owner.account %>/<%= project.name %>.git"
-  }
+    "url": "<%= repository.url %>"
+  }<% } -%>
 }

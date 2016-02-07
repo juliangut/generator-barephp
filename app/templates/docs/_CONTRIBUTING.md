@@ -12,7 +12,7 @@ Find here a few rules to follow in order to keep the code clean and easy to revi
 - Keep documentation **updated**
 - Just **one pull request per feature** at a time
 <% if (control.travis) { -%>
-- Check that **[Travis CI](https://travis-ci.org/<%= owner.account %>/<%= project.name %>)** build passed
+- Check that **[Travis CI](https://travis-ci.org/<%= accounts.travis %>/<%= project.name %>)** build passed
 <% } -%>
 
 [Grunt](http://gruntjs.com/) tasks are provided to help you keep code quality and run the test suite:

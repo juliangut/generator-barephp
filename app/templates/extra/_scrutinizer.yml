@@ -4,6 +4,9 @@ filter:
   paths:
     - <%= dirs.src %>/*
     - <%= dirs.tests %>/*
+<% if (control.homestead) { -%>
+    - <%= dirs.public %>/*
+<% } -%>
 
 coding_style:
   php:
@@ -62,7 +65,8 @@ tools:
     config:
       standard: 'PSR2'
     filter:
-      paths: [<%= dirs.src %>, <%= dirs.tests %>]
+      paths: [<%= dirs.src %>, <%= dirs.tests %><% if (control.homestead) { -%>, <%= dirs.public %><% } -%>]
+
   php_cpd:
     enabled: true
     excluded_dirs: [<%= dirs.dist %>, <%= dirs.tests %>, vendor]
