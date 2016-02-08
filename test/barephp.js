@@ -12,12 +12,13 @@ describe('yo barephp usage', function () {
         'skip-install': true
       })
       .withPrompts({
-        account: 'juliangut',
         name: 'Julián Gutiérrez',
-        email: 'juliangut@gmail',
+        email: 'juliangut@gmail.com',
         homepage: 'juliangut.com',
-        projectname: 'Jgut/GeneratorBarePHP',
-        xtras: 'travis, coveralls, scrutinizer, styleci, homestead, docs'
+        useRepository: true,
+        type: 'github',
+        account: 'juliangut',
+        xtras: 'packagist, travis, coveralls, scrutinizer, styleci, homestead, docs'
       })
       .on('end', done);
   });
