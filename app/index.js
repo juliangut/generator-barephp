@@ -167,7 +167,7 @@ BarePHP.prototype.askForRepository = function () {
 
   this.prompt(prompts, function(props) {
     this.repository.type     = props.type.toLowerCase();
-    this.accounts.repository = _.cleanDiacritics(_.clean(props.account)).replace(/\s+/g, '_')
+    this.accounts.repository = _.cleanDiacritics(_.clean(props.account)).replace(/\s+/g, '_');
 
     switch (this.repository.type) {
       case 'github':
