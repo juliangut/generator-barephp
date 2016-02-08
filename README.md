@@ -3,12 +3,13 @@
 
 [![Build status](https://img.shields.io/travis/juliangut/generator-barephp.svg?style=flat-square)](https://travis-ci.org/juliangut/generator-barephp)
 [![Total Downloads](https://img.shields.io/npm/dt/generator-barephp.svg?style=flat-square)](https://npmjs.org/package/generator-barephp)
+[![Monthly Downloads](https://img.shields.io/npm/dm/generator-barephp.svg?style=flat-square)](https://npmjs.org/package/generator-barephp)
 
 # Generator-BarePHP
 
 When you start a new PHP project there are many configuration files to be created in order to set the project ready to start developing. Normally you'd just copy/paste them from another project but this is error prone, you'll forget to copy some files and many times you'll forget to change names or routes on those files.
 
-If you're fed up scaffolding your projects with the same files once and again and feel you're wasting your time allow Yeoman do the heavy lifting and get your project scaffolded and ready to start developing in a breeze with this generator, it will prepare a barebones PHP project structure ready to develop for you, seat and focus on the actual code.
+If you're fed up scaffolding your projects with the same files once and again and feel you're wasting your time allow Yeoman do the heavy lifting and get your project scaffold and ready to start developing in a breeze with this generator, it will prepare a bare bones PHP project structure ready to develop for you, seat and focus on the actual code.
 
 ### Features
 
