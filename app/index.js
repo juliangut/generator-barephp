@@ -28,6 +28,7 @@ var BarePHP = module.exports = function BarePHP() {
   this.project = {
     name: '',
     description: '',
+    type: 'library',
     keywords: '',
     homepage: '',
     license: '',
@@ -197,6 +198,13 @@ BarePHP.prototype.askForProject = function () {
           message: 'What is the project description?'
         },
         {
+          type: 'list',
+          name: 'type',
+          message: 'What type is the project?',
+          choices: ['library', 'project', 'metapackage', 'composer-plugin'],
+          default: this.project.type
+        },
+        {
           name: 'keywords',
           message: 'What are the project keywords?',
           default: this.project.keywords
@@ -208,6 +216,7 @@ BarePHP.prototype.askForProject = function () {
 
     this.project.name        = _.clean(props.name).replace(/\s+/g, '_');
     this.project.description = _.trim(props.description);
+    this.project.type        = props.type.toLowerCase();
     this.project.keywords    = props.keywords.length ? props.keywords.split(' ') : [];
 
     this.project.namespace   = _.capitalize(_.trim(props.name));
