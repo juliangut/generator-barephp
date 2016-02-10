@@ -31,6 +31,8 @@ var BarePHP = module.exports = function BarePHP() {
     type: 'library',
     keywords: '',
     homepage: '',
+    phpversion: 5.5,
+    testphpversion: 5.6,
     license: '',
     licenseFile: '',
     namespace: ''
@@ -208,6 +210,13 @@ BarePHP.prototype.askForProject = function () {
           name: 'keywords',
           message: 'What are the project keywords?',
           default: this.project.keywords
+        },
+        {
+          type: 'list',
+          name: 'phpversion',
+          message: 'What is the minimum supported PHP version for the project?',
+          choices: ['5.5', '5.6', '7.0'],
+          default: this.project.phpversion.toString()
         }
       ];
 
@@ -218,6 +227,11 @@ BarePHP.prototype.askForProject = function () {
     this.project.description = _.trim(props.description);
     this.project.type        = props.type.toLowerCase();
     this.project.keywords    = props.keywords.length ? props.keywords.split(' ') : [];
+    this.project.phpversion  = parseFloat(props.phpversion);
+
+    if (this.project.phpversion > this.project.testphpversion) {
+      this.project.testphpversion = this.project.phpversion;
+    }
 
     this.project.namespace   = _.capitalize(_.trim(props.name));
 

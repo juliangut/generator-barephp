@@ -3,9 +3,15 @@ language: php
 sudo: false
 
 php:
+<% if (project.phpversion <= 5.5) { -%>
   - 5.5
+<% } -%>
+<% if (project.phpversion <= 5.6) { -%>
   - 5.6
+<% } -%>
+<% if (project.phpversion <= 7.0) { -%>
   - 7.0
+<% } -%>
   - hhvm
 
 matrix:
@@ -17,22 +23,22 @@ before_script:
   - travis_retry composer self-update
   - travis_retry composer install --no-interaction --prefer-source
 <% if (control.coveralls) { -%>
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then travis_retry composer require satooshi/php-coveralls:dev-master --no-interaction ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '<%= project.testphpversion %>' ]]; then travis_retry composer require satooshi/php-coveralls:dev-master --no-interaction ; fi
 <% } -%>
 
 script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then vendor/bin/phpcs --standard=PSR2 <%= dirs.src %> <%= dirs.tests %> ; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then vendor/bin/phpmd <%= dirs.src %> text unusedcode,naming,design,controversial,codesize ; fi
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then vendor/bin/phpcpd <%= dirs.src %> ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '<%= project.testphpversion %>' ]]; then vendor/bin/phpcs --standard=PSR2 <%= dirs.src %> <%= dirs.tests %> ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '<%= project.testphpversion %>' ]]; then vendor/bin/phpmd <%= dirs.src %> text unusedcode,naming,design,controversial,codesize ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '<%= project.testphpversion %>' ]]; then vendor/bin/phpcpd <%= dirs.src %> ; fi
 <% if (!control.coveralls) { -%>
   - vendor/bin/phpunit
 <% } -%>
 <% if (control.coveralls) { -%>
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml ; fi
-  - if [[ "$TRAVIS_PHP_VERSION" != '5.6' ]]; then vendor/bin/phpunit ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '<%= project.testphpversion %>' ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" != '<%= project.testphpversion %>' ]]; then vendor/bin/phpunit ; fi
 <% } -%>
 <% if (control.coveralls) { -%>
 
 after_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '5.6' ]]; then php vendor/bin/coveralls -v ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '<%= project.testphpversion %>' ]]; then php vendor/bin/coveralls -v ; fi
 <% } -%>
