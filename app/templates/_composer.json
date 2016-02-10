@@ -1,5 +1,5 @@
 {
-  "name": "<%= owner.account %>/<%= project.name %>",
+  "name": "<% if (control.repository) { -%><%= accounts.packagist %><% } else { -%><%= owner.canonical %><% } -%>/<%= project.name %>",
   "description": "<%= project.desc %>",
   "type": "<%= project.type %>",
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { %>

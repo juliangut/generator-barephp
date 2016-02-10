@@ -33,12 +33,13 @@ var BarePHP = module.exports = function BarePHP() {
     homepage: '',
     phpversion: 5.5,
     testphpversion: 5.6,
-    license: '',
-    licenseFile: '',
+    license: 'BSD-3-Clause',
+    licenseFile: 'bsd-new',
     namespace: ''
   };
 
   this.control = {
+    quick: false,
     dirs: false,
     repository: true,
     license: true,
@@ -49,7 +50,7 @@ var BarePHP = module.exports = function BarePHP() {
     styleci: true,
     homestead: true,
     docs: true,
-    phpmyadmin: true
+    phpmyadmin: false
   };
 
   this.repository = {
@@ -68,7 +69,7 @@ var BarePHP = module.exports = function BarePHP() {
   };
 
   this.homestead = {
-    format: 'JSON'
+    format: 'json'
   };
 
   this.dirs = {
@@ -94,6 +95,24 @@ BarePHP.prototype.welcome = function () {
   this.log(
     yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Travis, Grunt, and many, many more integrations!')
   );
+};
+
+BarePHP.prototype.askForMode = function() {
+  var done = this.async(),
+      prompts = [
+        {
+          type: 'confirm',
+          name: 'quick',
+          message: 'Would you like the quick assistant?',
+          default: this.control.quick
+        }
+      ];
+
+  this.prompt(prompts, function(props) {
+    this.control.quick = props.quick;
+
+    done();
+  }.bind(this));
 };
 
 BarePHP.prototype.askForOwner = function () {
@@ -170,7 +189,13 @@ BarePHP.prototype.askForRepository = function () {
 
   this.prompt(prompts, function(props) {
     this.repository.type     = props.type.toLowerCase();
-    this.accounts.repository = _.cleanDiacritics(_.clean(props.account)).replace(/\s+/g, '_');
+
+    this.accounts.repository  = _.cleanDiacritics(_.clean(props.account)).replace(/\s+/g, '_');
+    this.accounts.packagist   = this.accounts.repository;
+    this.accounts.travis      = this.accounts.repository;
+    this.accounts.coveralls   = this.accounts.repository;
+    this.accounts.scrutinizer = this.accounts.repository;
+    this.accounts.styleci     = 'XXXXXXXX';
 
     switch (this.repository.type) {
       case 'github':
@@ -194,7 +219,29 @@ BarePHP.prototype.askForProject = function () {
           name: 'name',
           message: 'What is the project name?',
           default: _.camelize(process.cwd().split(path.sep).pop())
-        },
+        }
+      ];
+
+  this.prompt(prompts, function(props) {
+    this.project.name        = _.clean(props.name).replace(/\s+/g, '_');
+    this.project.namespace   = _.capitalize(_.camelize(_.trim(props.name)));
+
+    if (this.control.repository) {
+      this.repository.homepage += this.project.name;
+      this.repository.url      += this.project.name + '.git';
+    }
+
+    done();
+  }.bind(this));
+};
+
+BarePHP.prototype.askForProjectContinue = function () {
+  if (this.control.quick) {
+    return;
+  }
+
+  var done = this.async(),
+      prompts = [
         {
           name: 'description',
           message: 'What is the project description?'
@@ -212,58 +259,21 @@ BarePHP.prototype.askForProject = function () {
           default: this.project.keywords
         },
         {
-          type: 'list',
-          name: 'phpversion',
-          message: 'What is the minimum supported PHP version for the project?',
-          choices: ['5.5', '5.6', '7.0'],
-          default: this.project.phpversion.toString()
+          name: 'homepage',
+          message: 'What is the project homepage?',
+          default: this.control.repository ? this.repository.homepage : ''
         }
       ];
 
   this.prompt(prompts, function(props) {
     props.keywords = _.clean(props.keywords);
 
-    this.project.name        = _.clean(props.name).replace(/\s+/g, '_');
     this.project.description = _.trim(props.description);
     this.project.type        = props.type.toLowerCase();
     this.project.keywords    = props.keywords.length ? props.keywords.split(' ') : [];
-    this.project.phpversion  = parseFloat(props.phpversion);
-
-    if (this.project.phpversion > this.project.testphpversion) {
-      this.project.testphpversion = this.project.phpversion;
-    }
-
-    this.project.namespace   = _.capitalize(_.trim(props.name));
-
-    if (this.control.repository) {
-      this.repository.homepage += this.project.name;
-      this.repository.url      += this.project.name + '.git';
-    }
-
-    done();
-  }.bind(this));
-};
-
-BarePHP.prototype.askForProjectContinue= function () {
-  var done = this.async(),
-      prompts = [
-        {
-          name: 'homepage',
-          message: 'What is the project homepage?',
-          default: this.control.repository ? this.repository.homepage : ''
-        },
-        {
-          name: 'namespace',
-          message: 'What is the namespace of the project?',
-          default: _.camelize(_.cleanDiacritics(_.clean(this.owner.name))) + '\\' + this.project.namespace
-        }
-      ];
-
-  this.prompt(prompts, function(props) {
     this.project.homepage  = _.trim(props.homepage).split(' ').shift();
-    this.project.namespace = _.capitalize(_.trim(props.namespace));
 
-    if (!validator.isURL(this.project.homepage)) {
+    if (this.project.homepage !== '' && !validator.isURL(this.project.homepage)) {
       throw new Error(util.format('"%s" is not a valid URL', this.project.homepage));
     }
 
@@ -271,7 +281,42 @@ BarePHP.prototype.askForProjectContinue= function () {
   }.bind(this));
 };
 
+BarePHP.prototype.askForProjectContinue2 = function () {
+  var done = this.async(),
+      prompts = [
+        {
+          type: 'list',
+          name: 'phpversion',
+          message: 'What is the minimum supported PHP version for the project?',
+          choices: ['5.5', '5.6', '7.0'],
+          default: this.project.phpversion.toString()
+        },
+        {
+          name: 'namespace',
+          message: 'What is the base namespace of the project?',
+          default: this.control.repository
+            ? _.capitalize(_.camelize(this.accounts.repository))
+            : _.camelize(_.cleanDiacritics(_.clean(this.owner.name)))
+        }
+      ];
+
+  this.prompt(prompts, function(props) {
+    this.project.namespace   = _.capitalize(_.camelize(_.trim(props.namespace))) + '\\' + this.project.namespace;
+    this.project.phpversion  = parseFloat(props.phpversion);
+
+    if (this.project.phpversion > this.project.testphpversion) {
+      this.project.testphpversion = this.project.phpversion;
+    }
+
+    done();
+  }.bind(this));
+};
+
 BarePHP.prototype.askForLicenseUse = function() {
+  if (this.control.quick) {
+    return;
+  }
+
   var done = this.async(),
       prompts = [
         {
@@ -290,7 +335,7 @@ BarePHP.prototype.askForLicenseUse = function() {
 };
 
 BarePHP.prototype.askForLicense = function() {
-  if (!this.control.license) {
+  if (!this.control.license || this.control.quick) {
     return;
   }
 
@@ -301,7 +346,7 @@ BarePHP.prototype.askForLicense = function() {
           name: 'license',
           message: 'What is the license you want to use?',
           choices: ['BSD-3-Clause', 'BSD-2-Clause', 'BSD-4-Clause', 'MIT', 'GPL-3.0', 'LGPL-3.0', 'Apache-2.0', 'Proprietary'],
-          default: 'BSD-3-Clause'
+          default: this.project.license
         }
       ];
 
@@ -344,6 +389,10 @@ BarePHP.prototype.askForLicense = function() {
 };
 
 BarePHP.prototype.askForInstall = function() {
+  if (this.control.quick) {
+    return;
+  }
+
   var done = this.async(),
       prompts = [
         {
@@ -406,7 +455,7 @@ BarePHP.prototype.askForInstall = function() {
 };
 
 BarePHP.prototype.askForPackagistAccount = function() {
-  if (!this.control.packagist) {
+  if (!this.control.packagist || this.control.quick) {
     return;
   }
 
@@ -415,7 +464,7 @@ BarePHP.prototype.askForPackagistAccount = function() {
         {
           name: 'account',
           message: 'What is your Packagist account name?',
-          default: this.control.repository ? this.accounts.repository : this.owner.canonical
+          default: this.control.repository ? this.accounts.packagist : this.owner.canonical
         }
       ];
 
@@ -427,7 +476,7 @@ BarePHP.prototype.askForPackagistAccount = function() {
 };
 
 BarePHP.prototype.askForTravisAccount = function() {
-  if (!this.control.travis) {
+  if (!this.control.travis || this.control.quick) {
     return;
   }
 
@@ -436,7 +485,7 @@ BarePHP.prototype.askForTravisAccount = function() {
         {
           name: 'account',
           message: 'What is your Travis account name?',
-          default: this.control.repository ? this.accounts.repository : this.owner.canonical
+          default: this.control.repository ? this.accounts.travis : this.owner.canonical
         }
       ];
 
@@ -448,7 +497,7 @@ BarePHP.prototype.askForTravisAccount = function() {
 };
 
 BarePHP.prototype.askForCoverallsAccount = function() {
-  if (!this.control.coveralls) {
+  if (!this.control.coveralls || this.control.quick) {
     return;
   }
 
@@ -457,7 +506,7 @@ BarePHP.prototype.askForCoverallsAccount = function() {
         {
           name: 'account',
           message: 'What is your Coveralls account name?',
-          default: this.control.repository ? this.accounts.repository : this.owner.canonical
+          default: this.control.repository ? this.accounts.coveralls : this.owner.canonical
         }
       ];
 
@@ -469,7 +518,7 @@ BarePHP.prototype.askForCoverallsAccount = function() {
 };
 
 BarePHP.prototype.askForScrutinizerAccount = function() {
-  if (!this.control.scrutinizer) {
+  if (!this.control.scrutinizer || this.control.quick) {
     return;
   }
 
@@ -478,7 +527,7 @@ BarePHP.prototype.askForScrutinizerAccount = function() {
         {
           name: 'account',
           message: 'What is your Scrutinizer account name?',
-          default: this.control.repository ? this.accounts.repository : this.owner.canonical
+          default: this.control.repository ? this.accounts.scrutinizer : this.owner.canonical
         }
       ];
 
@@ -490,7 +539,7 @@ BarePHP.prototype.askForScrutinizerAccount = function() {
 };
 
 BarePHP.prototype.askForStyleciAccount = function() {
-  if (!this.control.styleci) {
+  if (!this.control.styleci || this.control.quick) {
     return;
   }
 
@@ -504,13 +553,16 @@ BarePHP.prototype.askForStyleciAccount = function() {
 
   this.prompt(prompts, function(props) {
     this.accounts.styleci = _.clean(props.account).replace(/\s+/g, '_');
+    if (this.accounts.styleci === '') {
+      this.accounts.styleci = 'XXXXXXXX';
+    }
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForHomestead = function() {
-  if (!this.control.homestead) {
+  if (!this.control.homestead || this.control.quick) {
     return;
   }
 
@@ -620,7 +672,7 @@ BarePHP.prototype.writing = {
     console.log('\nWriting project files ...\n');
 
     mkdirp(this.dirs.src);
-    mkdirp(this.dirs.tests + '/' + _.capitalize(this.project.name));
+    mkdirp(this.dirs.tests + '/' + _.capitalize(_.camelize(this.project.name)));
 
     if (this.control.homestead) {
       mkdirp('.vagrant');
@@ -638,7 +690,7 @@ BarePHP.prototype.writing = {
     this.template('_Gruntfile.js', 'Gruntfile.js');
 
     this.template('code/_Greeter.php', this.dirs.src + '/Greeter.php');
-    this.template('code/_GreeterTest.php', this.dirs.tests + '/' + _.capitalize(this.project.name) + '/GreeterTest.php');
+    this.template('code/_GreeterTest.php', this.dirs.tests + '/' + _.capitalize(_.camelize(this.project.name)) + '/GreeterTest.php');
     this.template('code/_bootstrap.php', this.dirs.tests + '/bootstrap.php');
 
     this.template('_phpunit.xml', 'phpunit.xml');

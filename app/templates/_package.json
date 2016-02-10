@@ -1,5 +1,5 @@
 {
-  "name": "<%= owner.account %>-<%= project.name %>",
+  "name": "<% if (control.repository) { -%><%= accounts.packagist %><% } else { -%><%= owner.canonical %><% } -%>-<%= project.name %>",
   "description": "<%= project.desc %>",
   "version": "0.0.1",
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { %>
@@ -13,7 +13,7 @@ if (project.license != '') { -%>
   "license": "<%= project.license %>",
 <% }
 if (control.repository) { -%>
-"bugs": "<%= repository.homepage %>/issues",
+  "bugs": "<%= repository.homepage %>/issues",
 <% } -%>
   "author": {
     "name": "<%= owner.name %>"<% if (owner.email) { -%>,
@@ -40,8 +40,12 @@ if (control.repository) { -%>
     "grunt-climb": "^0.4.0",
     "grunt-security-checker": "^0.2.0"
   }<% if (control.repository) { -%>,
+
   "repository": {
     "type": "git",
     "url": "<%= repository.url %>"
-  }<% } -%>
+  }
+<% } else { -%>
+
+<% } -%>
 }

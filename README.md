@@ -14,25 +14,32 @@ If you're fed up scaffolding your projects with the same files once and again an
 ### Features
 
 * Git by default
-* Integration into Github or Bitbucket
-* Composer ready (php >=5.5)
+* Integration with Github and Bitbucket accounts
+* Composer ready
+* Select minimum supported PHP version
 * Compatibility and general purpose packages included
 * Project ready to be included into Packagist
-* Laravel Homestead integration (PhpMyAdmin integrated)
+* Laravel Homestead integration (optionally with PhpMyAdmin)
 * Integration with Vagrant hostupdater plugin
 * Awesome Grunt integration
 * Already configured Travis integration (PHP 5.5, 5.6, 7 and HHVM)
 * Coveralls integration (triggered by Travis)
 * Scrutinizer integration
 * StyleCI integration
-* Editorconfig file
+* Editorconfig definitions file
 * PHPUnit testing environment already set up and integrated into Grunt
 * QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Climb, Security-checker) configured and integrated into Grunt
-* Basic annotated kickoff files
+* Basic annotated kickoff code (with tests)
 * Basic documentation structure in Markdown
-* License selection
+* License selector
 
 > And many more to come
+
+#### Quick assistant
+
+The number of options and tools configured is getting quite long so a new quick/fast mode has been introduced.
+
+This mode asks you the basics and does its best assuming the rest of the questions for you to get the project ready faster.
 
 ## Getting Started
 
