@@ -24,7 +24,9 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     end
 
     if (config.nil?) {
-        config.hostsupdater.aliases = settings["hostaliases"].kind_of?(Array) ? settings["hostaliases"] : []
+        if Vagrant.has_plugin?('vagrant-hostsupdater') then
+            config.hostsupdater.aliases = settings["hostaliases"].kind_of?(Array) ? settings["hostaliases"] : []
+        end
 
         Homestead.configure(config, settings)
     }
