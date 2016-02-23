@@ -681,48 +681,54 @@ BarePHP.prototype.writing = {
   },
 
   writeFiles: function() {
-    this.copy('editorconfig', '.editorconfig');
-    this.template('_gitattributes', '.gitattributes');
-    this.template('_gitignore', '.gitignore');
+    this.copy('../../templates/editorconfig', '.editorconfig');
+    this.template('../../templates/_gitattributes', '.gitattributes');
+    this.template('../../templates/_gitignore', '.gitignore');
 
-    this.template('_composer.json', 'composer.json');
-    this.template('_package.json', 'package.json');
-    this.template('_Gruntfile.js', 'Gruntfile.js');
+    this.template('../../templates/_composer.json', 'composer.json');
+    this.template('../../templates/_package.json', 'package.json');
+    this.template('../../templates/_Gruntfile.js', 'Gruntfile.js');
 
-    this.template('code/_Greeter.php', this.dirs.src + '/Greeter.php');
-    this.template('code/_GreeterTest.php', this.dirs.tests + '/' + _.capitalize(_.camelize(this.project.name)) + '/GreeterTest.php');
-    this.template('code/_bootstrap.php', this.dirs.tests + '/bootstrap.php');
+    this.template('../../templates/code/_Greeter.php', this.dirs.src + '/Greeter.php');
+    this.template(
+      '../../templates/code/_GreeterTest.php',
+      this.dirs.tests + '/' + _.capitalize(_.camelize(this.project.name)) + '/GreeterTest.php'
+    );
+    this.template('../../templates/code/_bootstrap.php', this.dirs.tests + '/bootstrap.php');
 
-    this.template('_phpunit.xml', 'phpunit.xml');
+    this.template('../../templates/_phpunit.xml', 'phpunit.xml');
   },
 
   writeXtraFiles: function() {
     if (this.control.travis) {
-      this.template('extra/_travis.yml', '.travis.yml');
+      this.template('../../templates/extra/_travis.yml', '.travis.yml');
     }
     if (this.control.coveralls) {
-      this.template('extra/_coveralls.yml', '.coveralls.yml');
+      this.template('../../templates/extra/_coveralls.yml', '.coveralls.yml');
     }
     if (this.control.scrutinizer) {
-      this.template('extra/_scrutinizer.yml', '.scrutinizer.yml');
+      this.template('../../templates/extra/_scrutinizer.yml', '.scrutinizer.yml');
     }
     if (this.control.styleci) {
-      this.template('extra/styleci.yml', '.styleci.yml');
+      this.template('../../templates/extra/styleci.yml', '.styleci.yml');
     }
     if (this.control.homestead) {
-      this.template('extra/_index.php', this.dirs.public + '/index.php');
-      this.template('extra/_homestead.' + this.homestead.format, '.vagrant/homestead.' + this.homestead.format);
-      this.template('extra/_after.sh', '.vagrant/after.sh');
-      this.copy('extra/aliases', '.vagrant/aliases');
-      this.copy('extra/vagrant_gitignore', '.vagrant/.gitignore');
-      this.copy('extra/Vagrantfile', 'Vagrantfile');
+      this.template('../../templates/extra/_index.php', this.dirs.public + '/index.php');
+      this.template(
+        '../../templates/extra/_homestead.' + this.homestead.format,
+        '.vagrant/homestead.' + this.homestead.format
+      );
+      this.template('../../templates/extra/_after.sh', '.vagrant/after.sh');
+      this.copy('../../templates/extra/aliases', '.vagrant/aliases');
+      this.copy('../../templates/extra/vagrant_gitignore', '.vagrant/.gitignore');
+      this.copy('../../templates/extra/Vagrantfile', 'Vagrantfile');
     }
     if (this.control.docs) {
-      this.template('docs/_CONTRIBUTING.md', 'CONTRIBUTING.md');
-      this.template('docs/_README.md', 'README.md');
+      this.template('../../templates/docs/_CONTRIBUTING.md', 'CONTRIBUTING.md');
+      this.template('../../templates/docs/_README.md', 'README.md');
     }
     if (this.control.license && this.project.license !== 'proprietary') {
-      this.template('license/' + this.project.licenseFile, 'LICENSE');
+      this.template('../../templates/license/' + this.project.licenseFile, 'LICENSE');
     }
   }
 };
