@@ -24,7 +24,7 @@
   "sites": [
     {
       "map": "<%= project.name %>.app",
-      "to": "/home/vagrant/<%= project.name %>/<%= dirs.public %>"
+      "to": "/home/vagrant/<%= project.name %>/<%= dir.public %>"
     }<% if (control.phpmyadmin) { -%>,
     {
       "map": "phpmyadmin-<%= project.name %>.app",

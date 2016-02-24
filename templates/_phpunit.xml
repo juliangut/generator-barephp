@@ -2,7 +2,7 @@
 
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="http://schema.phpunit.de/4.7/phpunit.xsd"
-         bootstrap="<%= dirs.tests %>/bootstrap.php"
+         bootstrap="<%= dir.tests %>/bootstrap.php"
          backupGlobals="false"
          backupStaticAttributes="false"
          beStrictAboutTestsThatDoNotTestAnything="true"
@@ -23,13 +23,13 @@
 >
     <testsuites>
         <testsuite>
-            <directory suffix="Test.php"><%= dirs.tests %>/</directory>
+            <directory suffix="Test.php"><%= dir.tests %>/</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php"><%= dirs.src %>/</directory>
+            <directory suffix=".php"><%= dir.src %>/</directory>
         </whitelist>
     </filter>
 

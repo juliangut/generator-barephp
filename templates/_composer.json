@@ -1,6 +1,6 @@
 {
-  "name": "<% if (control.repository) { -%><%= accounts.packagist %><% } else { -%><%= owner.canonical %><% } -%>/<%= project.name %>",
-  "description": "<%= project.desc %>",
+  "name": "<% if (control.repository) { -%><%= account.packagist %><% } else { -%><%= owner.canonical %><% } -%>/<%= project.name %>",
+  "description": "<%= project.description %>",
   "type": "<%= project.type %>",
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { %>
     "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { %>,<% } -%><% } -%>
@@ -30,19 +30,21 @@ if (project.license != '') { -%>
     "wiki": "<%= repository.homepage %>/wiki"
   },
 <% } -%>
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "require": {
-    "php": ">=<%= project.phpversion %>",
-    "paragonie/random_compat": "^1.1",
+    "php": ">=<%= project.php_version %>",
     "ircmaxell/password-compat": "^1.0",
-    "nesbot/carbon": "^1.20"
+    "nesbot/carbon": "^1.20",
+    "paragonie/random_compat": "^1.1"
   },
   "require-dev": {
-    "phpunit/phpunit": "^4.5",
-    "squizlabs/php_codesniffer": "^2",
     "phpmd/phpmd": "^2.2",
+    "phpunit/phpunit": "^4.5",
     "sebastian/phpcpd": "^2.0",
-    "vinkla/climb": "^0.8",
-    "sensiolabs/security-checker": "^3.0"<% if (control.homestead) { -%>,
+    "sensiolabs/security-checker": "^3.0",
+    "squizlabs/php_codesniffer": "^2",
+    "vinkla/climb": "^0.8"<% if (control.homestead) { -%>,
 
     "laravel/homestead": "^2.2"
   },
@@ -62,8 +64,6 @@ if (project.license != '') { -%>
       "<%= project.namespace.replace('\\', '\\\\') %>\\Tests\\": "tests/<%= underscoreString.capitalize(project.name) %>/"
     }
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "bin": [
   ],
   "config": {

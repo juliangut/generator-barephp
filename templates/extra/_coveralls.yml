@@ -1,2 +1,2 @@
 service_name: travis-ci
-src_dir: <%= dirs.src %>
+src_dir: <%= dir.src %>

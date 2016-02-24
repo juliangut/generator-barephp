@@ -8,84 +8,102 @@ var yeoman = require('yeoman-generator'),
     validator = require('validator'),
     _ = require('underscore.string'),
     mkdirp = require('mkdirp'),
-    util = require('util'),
-    shell = require('shelljs');
+    shell = require('shelljs'),
+    fs = require('fs');
+
+function getUserHome() {
+  return process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
+}
 
 var BarePHP = module.exports = function BarePHP() {
   yeoman.generators.Base.apply(this, arguments);
 
-  this.getUserHome = function() {
-    return process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-  };
-
-  this.owner = {
-    name: '',
-    canonical: '',
-    email: '',
-    homepage: ''
-  };
-
-  this.project = {
-    name: '',
-    description: '',
-    type: 'library',
-    keywords: '',
-    homepage: '',
-    phpversion: 5.5,
-    testphpversion: 5.6,
-    license: 'BSD-3-Clause',
-    licenseFile: 'bsd-new',
-    namespace: ''
-  };
-
-  this.control = {
-    quick: false,
-    dirs: false,
-    repository: true,
-    license: true,
-    packagist: true,
-    travis: true,
-    coveralls: true,
-    scrutinizer: true,
-    styleci: true,
-    homestead: true,
-    docs: true,
-    phpmyadmin: false
-  };
-
-  this.repository = {
-    type: '',
-    homepage: '',
-    url: ''
-  };
-
-  this.accounts = {
-    repository: '',
-    packagist: '',
-    travis: '',
-    coveralls: '',
-    scrutinizer: '',
-    styleci: ''
-  };
-
-  this.homestead = {
-    format: 'json'
-  };
-
-  this.dirs = {
-    src: 'src',
-    tests: 'tests',
-    dist: 'dist',
-    public: 'public'
-  };
-
   this.underscoreString = _;
 
+  this.defaults = {
+    control_repository: true,
+    control_dirs: false,
+    control_license: true,
+    control_packagist: true,
+    control_travis: true,
+    control_coveralls: true,
+    control_scrutinizer: true,
+    control_styleci: true,
+    control_homestead: true,
+    control_docs: true,
+    control_phpmyadmin: false,
+
+    owner_name: null,
+    owner_canonical: null,
+    owner_email: null,
+    owner_homepage: null,
+
+    repository_type: 'Github',
+    repository_homepage: null,
+    repository_url: null,
+
+    project_name: null,
+    project_description: null,
+    project_type: 'library',
+    project_keywords: [],
+    project_homepage: null,
+    project_php_version: 5.5,
+    project_license: 'BSD-3-Clause',
+    project_namespace: null,
+
+    dir_src: 'src',
+    dir_tests: 'tests',
+    dir_dist: 'dist',
+    dir_public: 'public',
+
+    account_repository: null,
+    account_packagist: null,
+    account_travis: null,
+    account_coveralls: null,
+    account_scrutinizer: null,
+    account_styleci: null,
+
+    homestead_format: 'json'
+  };
+
+  this.configs = {
+    quickMode: false,
+    owner: {
+      name: null,
+      email: null,
+      homepage: null
+    },
+    repository: {
+      homepage: null
+    },
+    project: {
+      description: null,
+      type: null,
+      keywords: [],
+      homepage: null,
+      license: null,
+      testPhpVersion: 5.6,
+      licenseFile: null
+    }
+  };
+
   if (!shell.which('git')) {
-    this.owner.name = _.clean(this.getUserHome().split(path.sep).pop());
+    this.defaults.owner_name = _.clean(getUserHome().split(path.sep).pop());
   } else {
-    this.owner.name = _.clean(shell.exec('git config --global user.name', { silent: true }).output, '\n');
-    this.owner.email = _.clean(shell.exec('git config --global user.email', { silent: true }).output, '\n');
+    this.defaults.owner_name = _.clean(shell.exec('git config --global user.name', { silent: true }).output, '\n');
+    this.defaults.owner_email = _.clean(shell.exec('git config --global user.email', { silent: true }).output, '\n');
+  }
+
+  this.config.defaults(this.defaults);
+
+  if (fs.existsSync('composer.json')) {
+    var configs = JSON.parse(fs.readFileSync('composer.json'));
+
+    this.configs.project.description = configs.description;
+    this.configs.project.type = configs.type;
+    this.configs.project.keywords = configs.keywords ? configs.keywords : [];
+    this.configs.project.homepage = configs.homepage;
+    this.configs.project.license = configs.license;
   }
 };
 
@@ -104,12 +122,12 @@ BarePHP.prototype.askForMode = function() {
           type: 'confirm',
           name: 'quick',
           message: 'Would you like the quick assistant?',
-          default: this.control.quick
+          default: this.configs.quickMode
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.control.quick = props.quick;
+    this.configs.quickMode = props.quick;
 
     done();
   }.bind(this));
@@ -121,28 +139,30 @@ BarePHP.prototype.askForOwner = function () {
         {
           name: 'name',
           message: 'What is your name?',
-          default: this.owner.name
+          default: this.config.get('owner_name')
         },
         {
           name: 'email',
           message: 'What is your email?',
-          default: this.owner.email
+          default: this.config.get('owner_email')
         },
         {
           name: 'homepage',
-          message: 'What is your homepage?'
+          message: 'What is your homepage?',
+          default: this.config.get('owner_homepage')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.owner.name      = _.clean(props.name);
-    this.owner.canonical = _.cleanDiacritics(_.clean(props.name)).replace(/\s+/g, '_').toLowerCase();
-    this.owner.email     = _.clean(props.email).split(' ').shift();
-    this.owner.homepage  = _.clean(props.homepage).split(' ').shift();
+    this.config.set('owner_name', _.clean(props.name));
+    this.config.set('owner_canonical', _.cleanDiacritics(_.clean(props.name)).replace(/\s+/g, '_').toLowerCase());
+    this.config.set('owner_homepage', _.clean(props.homepage).split(' ').shift());
 
-    if (!validator.isEmail(this.owner.email)) {
-      throw new Error(util.format('"%s" is not a valid email', this.owner.email));
+    var ownerEmail = _.clean(props.email).split(' ').shift();
+    if (!validator.isEmail(ownerEmail)) {
+      throw new Error(util.format('"%s" is not a valid email', ownerEmail));
     }
+    this.config.set('owner_email', ownerEmail);
 
     done();
   }.bind(this));
@@ -155,19 +175,19 @@ BarePHP.prototype.askForRepositoryUse = function() {
           type: 'confirm',
           name: 'useRepository',
           message: 'Would you like to assign a public repository (Github/Bitbucket)?',
-          default: this.control.repository
+          default: this.config.get('control_repository')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.control.repository = props.useRepository;
+    this.config.set('control_repository', props.useRepository);
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForRepository = function () {
-  if (!this.control.repository) {
+  if (!this.config.get('control_repository')) {
     return;
   }
 
@@ -178,35 +198,40 @@ BarePHP.prototype.askForRepository = function () {
           name: 'type',
           message: 'What repository is the project hosted on?',
           choices: ['Github', 'Bitbucket'],
-          default: 'Github'
+          default: this.config.get('repository_type')
         },
         {
           name: 'account',
           message: 'What is your repository account name?',
-          default: this.owner.canonical
+          default: this.config.get('account_repository')
+            ? this.config.get('account_repository') :
+            this.config.get('owner_canonical')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.repository.type     = props.type.toLowerCase();
+    this.config.set('repository_type', props.type);
 
-    this.accounts.repository  = _.cleanDiacritics(_.clean(props.account)).replace(/\s+/g, '_');
-    this.accounts.packagist   = this.accounts.repository;
-    this.accounts.travis      = this.accounts.repository;
-    this.accounts.coveralls   = this.accounts.repository;
-    this.accounts.scrutinizer = this.accounts.repository;
-    this.accounts.styleci     = 'XXXXXXXX';
+    var accountRepository = _.cleanDiacritics(_.clean(props.account)).replace(/\s+/g, '_');
 
-    switch (this.repository.type) {
-      case 'github':
-        this.repository.homepage = 'https://github.com/' + this.accounts.repository + '/';
-        this.repository.url      = 'git@github.com:' + this.accounts.repository + '/';
+    this.config.set('account_packagist', accountRepository);
+    this.config.set('account_travis', accountRepository);
+    this.config.set('account_coveralls', accountRepository);
+    this.config.set('account_scrutinizer', accountRepository);
+    this.config.set('account_styleci', 'XXXXXXXX');
+
+    switch (this.config.get('repository_type')) {
+      case 'Github':
+        this.config.set('repository_homepage', 'https://github.com/' + accountRepository + '/');
+        this.config.set('repository_url', 'git@github.com:' + accountRepository + '/');
         break;
-      case 'bitbucket':
-        this.repository.homepage = 'https://bitbucket.org/' + this.accounts.repository + '/';
-        this.repository.url      = 'git@bitbucket.org:' + this.accounts.repository + '/';
+      case 'Bitbucket':
+        this.config.set('repository_homepage', 'https://bitbucket.org/' + accountRepository + '/');
+        this.config.set('repository_url', 'git@bitbucket.org:' + accountRepository + '/');
         break;
     }
+
+    this.config.set('account_repository', accountRepository);
 
     done();
   }.bind(this));
@@ -218,17 +243,27 @@ BarePHP.prototype.askForProject = function () {
         {
           name: 'name',
           message: 'What is the project name?',
-          default: _.camelize(process.cwd().split(path.sep).pop())
+          default: this.config.get('project_name')
+            ? this.config.get('project_name')
+            : _.camelize(process.cwd().split(path.sep).pop())
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.project.name        = _.clean(props.name).replace(/\s+/g, '_');
-    this.project.namespace   = _.capitalize(_.camelize(_.trim(props.name)));
+    this.config.set('project_name', _.clean(props.name).replace(/\s+/g, '_'));
 
-    if (this.control.repository) {
-      this.repository.homepage += this.project.name;
-      this.repository.url      += this.project.name + '.git';
+    if (!this.config.get('project_namespace')) {
+      this.config.set('project_namespace', _.capitalize(_.camelize(_.trim(props.name))));
+    }
+
+    if (this.config.get('control_repository')) {
+      this.config.set(
+        'repository_homepage',
+        this.config.get('repository_homepage') + this.config.get('project_name')
+      );
+      this.config.set(
+        'repository_url',
+        this.config.get('repository_url') + this.config.get('project_name') + '.git');
     }
 
     done();
@@ -236,7 +271,7 @@ BarePHP.prototype.askForProject = function () {
 };
 
 BarePHP.prototype.askForProjectContinue = function () {
-  if (this.control.quick) {
+  if (this.configs.quickMode) {
     return;
   }
 
@@ -244,38 +279,46 @@ BarePHP.prototype.askForProjectContinue = function () {
       prompts = [
         {
           name: 'description',
-          message: 'What is the project description?'
+          message: 'What is the project description?',
+          default: this.config.get('project_description')
         },
         {
           type: 'list',
           name: 'type',
           message: 'What type is the project?',
           choices: ['library', 'project', 'metapackage', 'composer-plugin'],
-          default: this.project.type
+          default: this.config.get('project_type')
         },
         {
           name: 'keywords',
-          message: 'What are the project keywords?',
-          default: this.project.keywords
+          message: 'What are the project keywords?'
+            + (this.config.get('project_keywords').length ? '' : ' (comma separated)'),
+          default: this.config.get('project_keywords').join(', ')
         },
         {
           name: 'homepage',
           message: 'What is the project homepage?',
-          default: this.control.repository ? this.repository.homepage : ''
+          default: this.config.get('project_homepage')
+            ? this.config.get('project_homepage')
+            : (this.config.get('control_repository') ? this.config.get('repository_homepage') : '')
         }
       ];
 
   this.prompt(prompts, function(props) {
     props.keywords = _.clean(props.keywords);
 
-    this.project.description = _.trim(props.description);
-    this.project.type        = props.type.toLowerCase();
-    this.project.keywords    = props.keywords.length ? props.keywords.split(' ') : [];
-    this.project.homepage  = _.trim(props.homepage).split(' ').shift();
+    this.config.set('project_description', _.trim(props.description));
+    this.config.set('project_type', props.type.toLowerCase());
+    this.config.set(
+      'project_keywords',
+      props.keywords.length ? props.keywords.replace(/(\s+)?,\s+?/g, ',').replace(/,$/, '').split(',') : []
+    );
 
-    if (this.project.homepage !== '' && !validator.isURL(this.project.homepage)) {
-      throw new Error(util.format('"%s" is not a valid URL', this.project.homepage));
+    var projectHomepage  = _.trim(props.homepage).split(' ').shift();
+    if (projectHomepage !== '' && !validator.isURL(projectHomepage)) {
+      throw new Error(util.format('"%s" is not a valid URL', projectHomepage));
     }
+    this.config.set('project_homepage', projectHomepage);
 
     done();
   }.bind(this));
@@ -286,34 +329,33 @@ BarePHP.prototype.askForProjectContinue2 = function () {
       prompts = [
         {
           type: 'list',
-          name: 'phpversion',
+          name: 'phpVersion',
           message: 'What is the minimum supported PHP version for the project?',
           choices: ['5.5', '5.6', '7.0'],
-          default: this.project.phpversion.toString()
+          default: this.config.get('project_php_version').toString()
         },
         {
           name: 'namespace',
           message: 'What is the base namespace of the project?',
-          default: this.control.repository
-            ? _.capitalize(_.camelize(this.accounts.repository))
-            : _.camelize(_.cleanDiacritics(_.clean(this.owner.name)))
+          default: this.config.get('project_namespace')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.project.namespace   = _.capitalize(_.camelize(_.trim(props.namespace))) + '\\' + this.project.namespace;
-    this.project.phpversion  = parseFloat(props.phpversion);
+    this.config.set('project_namespace', this.config.get('project_namespace'));
 
-    if (this.project.phpversion > this.project.testphpversion) {
-      this.project.testphpversion = this.project.phpversion;
+    var phpVersion = parseFloat(props.phpVersion);
+    if (phpVersion > this.configs.project.testPhpVersion) {
+      this.configs.project.testPhpVersion = phpVersion;
     }
+    this.config.set('project_php_version', phpVersion);
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForLicenseUse = function() {
-  if (this.control.quick) {
+  if (this.configs.quickMode) {
     return;
   }
 
@@ -323,19 +365,19 @@ BarePHP.prototype.askForLicenseUse = function() {
           type: 'confirm',
           name: 'useLicense',
           message: 'Would you like to assign a license?',
-          default: this.control.license
+          default: this.config.get('control_license')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.control.license = props.useLicense;
+    this.config.set('control_license', props.useLicense);
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForLicense = function() {
-  if (!this.control.license || this.control.quick) {
+  if (this.configs.quickMode || !this.config.get('control_license')) {
     return;
   }
 
@@ -345,16 +387,24 @@ BarePHP.prototype.askForLicense = function() {
           type: 'list',
           name: 'license',
           message: 'What is the license you want to use?',
-          choices: ['BSD-3-Clause', 'BSD-2-Clause', 'BSD-4-Clause', 'MIT', 'GPL-3.0', 'LGPL-3.0', 'Apache-2.0', 'Proprietary'],
-          default: this.project.license
+          choices: [
+            'BSD-3-Clause',
+            'BSD-2-Clause',
+            'BSD-4-Clause',
+            'MIT',
+            'GPL-3.0',
+            'LGPL-3.0',
+            'Apache-2.0',
+            'Proprietary'
+          ],
+          default: this.config.get('project_license')
         }
       ];
 
   this.prompt(prompts, function(props) {
+    this.config.set('project_license', props.license);
+
     var licenseFile = '';
-
-    this.project.license = props.license;
-
     switch (props.license) {
       case 'BSD-3-Clause':
         licenseFile = 'bsd-new';
@@ -378,18 +428,18 @@ BarePHP.prototype.askForLicense = function() {
         licenseFile = 'apache';
         break;
       case 'Proprietary':
-        this.project.license = 'proprietary';
+        this.config.set('project_license', 'proprietary');
         break;
     }
 
-    this.project.licenseFile = licenseFile;
+    this.configs.project.licenseFile = licenseFile;
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForInstall = function() {
-  if (this.control.quick) {
+  if (this.configs.quickMode) {
     return;
   }
 
@@ -403,37 +453,37 @@ BarePHP.prototype.askForInstall = function() {
             {
               value: 'packagist',
               name: 'Packagist',
-              checked: this.control.packagist
+              checked: this.config.get('control_packagist')
             },
             {
               value: 'travis',
               name: 'Travis',
-              checked: this.control.travis
+              checked: this.config.get('control_travis')
             },
             {
               value: 'coveralls',
               name: 'Coveralls',
-              checked: this.control.coveralls
+              checked: this.config.get('control_coveralls')
             },
             {
               value: 'scrutinizer',
               name: 'Scrutinizer',
-              checked: this.control.scrutinizer
+              checked: this.config.get('control_scrutinizer')
             },
             {
               value: 'styleci',
               name: 'StyleCI',
-              checked: this.control.styleci
+              checked: this.config.get('control_styleci')
             },
             {
               value: 'homestead',
               name: 'Laravel Homestead',
-              checked: this.control.homestead
+              checked: this.config.get('control_homestead')
             },
             {
               value: 'docs',
               name: 'Basic documentation',
-              checked: this.control.docs
+              checked: this.config.get('control_docs')
             }
           ]
         }
@@ -442,20 +492,23 @@ BarePHP.prototype.askForInstall = function() {
   this.prompt(prompts, function(props) {
     var hasMod = function (mod) { return props.xtras.indexOf(mod) !== -1; };
 
-    this.control.packagist   = hasMod('packagist');
-    this.control.travis      = hasMod('travis');
-    this.control.coveralls   = hasMod('coveralls');
-    this.control.scrutinizer = hasMod('scrutinizer');
-    this.control.styleci     = hasMod('styleci');
-    this.control.homestead   = hasMod('homestead');
-    this.control.docs        = hasMod('docs');
+    this.config.set('control_packagist', hasMod('packagist'));
+    this.config.set('control_travis', hasMod('travis'));
+    this.config.set('control_coveralls', hasMod('coveralls'));
+    this.config.set('control_scrutinizer', hasMod('scrutinizer'));
+    this.config.set('control_styleci', hasMod('styleci'));
+    this.config.set('control_homestead', hasMod('homestead'));
+    if (!hasMod('homestead')) {
+      this.config.set('control_mysql', false);
+    }
+    this.config.set('control_docs', hasMod('docs'));
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForPackagistAccount = function() {
-  if (!this.control.packagist || this.control.quick) {
+  if (this.configs.quickMode || !this.config.get('control_packagist')) {
     return;
   }
 
@@ -464,19 +517,21 @@ BarePHP.prototype.askForPackagistAccount = function() {
         {
           name: 'account',
           message: 'What is your Packagist account name?',
-          default: this.control.repository ? this.accounts.packagist : this.owner.canonical
+          default: this.config.get('control_repository')
+            ? this.config.get('account_packagist')
+            : this.config.get('owner_canonical')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.accounts.packagist = _.clean(props.account).replace(/\s+/g, '_');
+    this.config.set('account_packagist', _.clean(props.account).replace(/\s+/g, '_'));
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForTravisAccount = function() {
-  if (!this.control.travis || this.control.quick) {
+  if (this.configs.quickMode || !this.config.get('control_travis')) {
     return;
   }
 
@@ -485,19 +540,21 @@ BarePHP.prototype.askForTravisAccount = function() {
         {
           name: 'account',
           message: 'What is your Travis account name?',
-          default: this.control.repository ? this.accounts.travis : this.owner.canonical
+          default: this.config.get('control_repository')
+            ? this.config.get('account_travis')
+            : this.config.get('owner_canonical')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.accounts.travis = _.clean(props.account).replace(/\s+/g, '_');
+    this.config.set('account_travis', _.clean(props.account).replace(/\s+/g, '_'));
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForCoverallsAccount = function() {
-  if (!this.control.coveralls || this.control.quick) {
+  if (this.configs.quickMode || !this.config.get('control_coveralls')) {
     return;
   }
 
@@ -506,19 +563,21 @@ BarePHP.prototype.askForCoverallsAccount = function() {
         {
           name: 'account',
           message: 'What is your Coveralls account name?',
-          default: this.control.repository ? this.accounts.coveralls : this.owner.canonical
+          default: this.config.get('control_repository')
+            ? this.config.get('account_coveralls')
+            : this.config.get('owner_canonical')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.accounts.coveralls = _.clean(props.account).replace(/\s+/g, '_');
+    this.config.set('account_coveralls', _.clean(props.account).replace(/\s+/g, '_'));
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForScrutinizerAccount = function() {
-  if (!this.control.scrutinizer || this.control.quick) {
+  if (this.configs.quickMode || !this.config.get('control_scrutinizer')) {
     return;
   }
 
@@ -527,19 +586,21 @@ BarePHP.prototype.askForScrutinizerAccount = function() {
         {
           name: 'account',
           message: 'What is your Scrutinizer account name?',
-          default: this.control.repository ? this.accounts.scrutinizer : this.owner.canonical
+          default: this.config.get('control_repository')
+            ? this.config.get('account_scrutinizer')
+            : this.config.get('owner_canonical')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.accounts.scrutinizer = _.clean(props.account).replace(/\s+/g, '_');
+    this.config.set('account.scrutinizer', _.clean(props.account).replace(/\s+/g, '_'));
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForStyleciAccount = function() {
-  if (!this.control.styleci || this.control.quick) {
+  if (this.configs.quickMode || !this.config.get('control_styleci')) {
     return;
   }
 
@@ -547,22 +608,24 @@ BarePHP.prototype.askForStyleciAccount = function() {
       prompts = [
         {
           name: 'account',
-          message: 'What is your StyleCI account number?'
+          message: 'What is your StyleCI account number?',
+          default: this.config.get('account_styleci')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.accounts.styleci = _.clean(props.account).replace(/\s+/g, '_');
-    if (this.accounts.styleci === '') {
-      this.accounts.styleci = 'XXXXXXXX';
+    var accountStyleci = _.clean(props.account).replace(/\s+/g, '_');
+    if (accountStyleci === '') {
+      accountStyleci = 'XXXXXXXX';
     }
+    this.config.set('account_styleci', accountStyleci);
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForHomestead = function() {
-  if (!this.control.homestead || this.control.quick) {
+  if (this.configs.quickMode || !this.config.get('control_homestead')) {
     return;
   }
 
@@ -573,36 +636,36 @@ BarePHP.prototype.askForHomestead = function() {
           name: 'format',
           message: 'What Laravel Homestead configuration format you want to use?',
           choices: ['JSON', 'YAML'],
-          default: this.homestead.format.toUpperCase()
+          default: this.config.get('homestead_format').toUpperCase()
         },
         {
           type: 'confirm',
           name: 'usePhpmyadmin',
           message: 'Would you like to install PhpMyAdmin in Laravel Homestead?',
-          default: this.control.phpmyadmin
+          default: this.config.get('control_phpmyadmin')
         }
       ];
 
   this.prompt(prompts, function(props) {
     switch (props.format.toLowerCase()) {
       case 'json':
-        this.homestead.format = 'json';
-        break;
       case 'yaml':
-        this.homestead.format = 'yml';
+        this.config.set('homestead_format', props.format.toLowerCase());
         break;
     }
 
-    this.control.phpmyadmin = props.usePhpmyadmin;
+    this.config.set('control_phpmyadmin', props.usePhpmyadmin);
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForChangeDirs = function() {
-  var defaultDirs = this.dirs.src + ', ' + this.dirs.tests + ', ' + this.dirs.dist;
-  if (this.control.homestead) {
-    defaultDirs += ', ' + this.dirs.public;
+  var defaultDirs = this.config.get('dir_src')
+    + ', ' + this.config.get('dir_tests')
+    + ', ' + this.config.get('dir_dist');
+  if (this.config.get('control_homestead')) {
+    defaultDirs += ', ' + this.config.get('dir_public');
   }
 
   var done = this.async(),
@@ -611,19 +674,19 @@ BarePHP.prototype.askForChangeDirs = function() {
           type: 'confirm',
           name: 'changeDirs',
           message: util.format('Would you like to change default directories (%s)?', defaultDirs),
-          default: this.control.dirs
+          default: this.config.get('control_dirs')
         }
       ];
 
   this.prompt(prompts, function(props) {
-    this.control.dirs = props.changeDirs;
+    this.config.set('control_dirs', props.changeDirs);
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForCustomDirs = function() {
-  if (!this.control.dirs) {
+  if (!this.config.get('control_dirs')) {
     return;
   }
 
@@ -632,35 +695,35 @@ BarePHP.prototype.askForCustomDirs = function() {
         {
           name: 'src',
           message: 'What is the source directory?',
-          default: this.dirs.src
+          default: this.config.get('dir_src')
         },
         {
           name: 'tests',
           message: 'What is the tests directory?',
-          default: this.dirs.tests
+          default: this.config.get('dir_tests')
         },
         {
           name: 'dist',
           message: 'What is the distribution directory?',
-          default: this.dirs.dist
+          default: this.config.get('dir_dist')
         }
       ];
 
-  if (this.control.homestead) {
+  if (this.config.get('control_homestead')) {
     prompts.push({
       name: 'public',
       message: 'What is the public directory?',
-      default: this.dirs.public
+      default: this.config.get('dir_public')
     });
   }
 
   this.prompt(prompts, function(props) {
-    this.dirs.src  = props.src;
-    this.dirs.tests = props.tests;
-    this.dirs.dist = props.dist;
+    this.config.set('dir_src', props.src);
+    this.config.set('dir_tests', props.tests);
+    this.config.set('dir_dist', props.dist);
 
-    if (this.control.homestead) {
-      this.dirs.public = props.public;
+    if (this.config.get('control_homestead')) {
+      this.config.set('dir_public', props.public);
     }
 
     done();
@@ -668,15 +731,76 @@ BarePHP.prototype.askForCustomDirs = function() {
 };
 
 BarePHP.prototype.writing = {
+  create: function() {
+    this.control = {
+      repository: this.config.get('control_repository'),
+      dirs: this.config.get('control_dirs'),
+      license: this.config.get('control_license'),
+      packagist: this.config.get('control_packagist'),
+      travis: this.config.get('control_travis'),
+      coveralls: this.config.get('control_coveralls'),
+      scrutinizer: this.config.get('control_scrutinizer'),
+      styleci: this.config.get('control_styleci'),
+      homestead: this.config.get('control_homestead'),
+      docs: this.config.get('control_docs'),
+      phpmyadmin: this.config.get('control_phpmyadmin')
+    };
+
+    this.owner = {
+      name: this.config.get('owner_name'),
+      canonical: this.config.get('owner_canonical'),
+      email: this.config.get('owner_email'),
+      homepage: this.config.get('owner_homepage')
+    };
+
+    this.repository = {
+      type: this.config.get('repository_type'),
+      homepage: this.config.get('repository_homepage'),
+      url: this.config.get('repository_url')
+    };
+
+    this.project = {
+      name: this.config.get('project_name'),
+      description: this.config.get('project_description'),
+      type: this.config.get('project_type'),
+      keywords: this.config.get('project_keywords'),
+      homepage: this.config.get('project_homepage'),
+      php_version: this.config.get('project_php_version'),
+      test_php_version: this.configs.project.testPhpVersion,
+      license: this.config.get('project_license'),
+      namespace: this.config.get('project_namespace')
+    };
+
+    this.dir = {
+      src: this.config.get('dir_src'),
+      tests: this.config.get('dir_tests'),
+      dist: this.config.get('dir_dist'),
+      public: this.config.get('dir_public')
+    };
+
+    this.account = {
+      repository: this.config.get('account_repository'),
+      packagist: this.config.get('account_packagist'),
+      travis: this.config.get('account_travis'),
+      coveralls: this.config.get('account_coveralls'),
+      scrutinizer: this.config.get('account_scrutinizer'),
+      styleci: this.config.get('account_styleci')
+    };
+
+    this.homestead = {
+      format: this.config.get('homestead_format')
+    };
+  },
+
   createDirs: function() {
     console.log('\nWriting project files ...\n');
 
-    mkdirp(this.dirs.src);
-    mkdirp(this.dirs.tests + '/' + _.capitalize(_.camelize(this.project.name)));
+    mkdirp(this.config.get('dir_src'));
+    mkdirp(this.config.get('dir_tests') + '/' + _.capitalize(_.camelize(this.config.get('project_name'))));
 
-    if (this.control.homestead) {
+    if (this.config.get('control_homestead')) {
       mkdirp('.vagrant');
-      mkdirp(this.dirs.public);
+      mkdirp(this.config.get('dir_public'));
     }
   },
 
@@ -689,52 +813,53 @@ BarePHP.prototype.writing = {
     this.template('../../templates/_package.json', 'package.json');
     this.template('../../templates/_Gruntfile.js', 'Gruntfile.js');
 
-    this.template('../../templates/code/_Greeter.php', this.dirs.src + '/Greeter.php');
+    this.template('../../templates/code/_Greeter.php', this.config.get('dir_src') + '/Greeter.php');
     this.template(
       '../../templates/code/_GreeterTest.php',
-      this.dirs.tests + '/' + _.capitalize(_.camelize(this.project.name)) + '/GreeterTest.php'
+      this.config.get('dir_tests')
+        + '/' + _.capitalize(_.camelize(this.config.get('project_name'))) + '/GreeterTest.php'
     );
-    this.template('../../templates/code/_bootstrap.php', this.dirs.tests + '/bootstrap.php');
+    this.template('../../templates/code/_bootstrap.php', this.config.get('dir_tests') + '/bootstrap.php');
 
     this.template('../../templates/_phpunit.xml', 'phpunit.xml');
   },
 
   writeXtraFiles: function() {
-    if (this.control.travis) {
+    if (this.config.get('control_travis')) {
       this.template('../../templates/extra/_travis.yml', '.travis.yml');
     }
-    if (this.control.coveralls) {
+    if (this.config.get('control_coveralls')) {
       this.template('../../templates/extra/_coveralls.yml', '.coveralls.yml');
     }
-    if (this.control.scrutinizer) {
+    if (this.config.get('control_scrutinizer')) {
       this.template('../../templates/extra/_scrutinizer.yml', '.scrutinizer.yml');
     }
-    if (this.control.styleci) {
+    if (this.config.get('control_styleci')) {
       this.template('../../templates/extra/styleci.yml', '.styleci.yml');
     }
-    if (this.control.homestead) {
-      this.template('../../templates/extra/_index.php', this.dirs.public + '/index.php');
+    if (this.config.get('control_homestead')) {
+      this.template('../../templates/extra/_index.php', this.config.get('dir_public') + '/index.php');
       this.template(
-        '../../templates/extra/_homestead.' + this.homestead.format,
-        '.vagrant/homestead.' + this.homestead.format
+        '../../templates/extra/_homestead.' + this.config.get('homestead_format'),
+        '.vagrant/homestead.' + this.config.get('homestead_format')
       );
       this.template('../../templates/extra/_after.sh', '.vagrant/after.sh');
       this.copy('../../templates/extra/aliases', '.vagrant/aliases');
       this.copy('../../templates/extra/vagrant_gitignore', '.vagrant/.gitignore');
       this.copy('../../templates/extra/Vagrantfile', 'Vagrantfile');
     }
-    if (this.control.docs) {
+    if (this.config.get('control_docs')) {
       this.template('../../templates/docs/_CONTRIBUTING.md', 'CONTRIBUTING.md');
       this.template('../../templates/docs/_README.md', 'README.md');
     }
-    if (this.control.license && this.project.license !== 'proprietary') {
-      this.template('../../templates/license/' + this.project.licenseFile, 'LICENSE');
+    if (this.config.get('control_license') && this.config.get('project_license') !== 'proprietary') {
+      this.template('../../templates/license/' + this.configs.project.licenseFile, 'LICENSE');
     }
   }
 };
 
 BarePHP.prototype.install = function () {
-  var projectName = this.project.name;
+  var projectName = this.config.get('project_name');
 
   this.installDependencies({
     bower: false,

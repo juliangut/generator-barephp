@@ -1,6 +1,6 @@
 {
-  "name": "<% if (control.repository) { -%><%= accounts.packagist %><% } else { -%><%= owner.canonical %><% } -%>-<%= project.name %>",
-  "description": "<%= project.desc %>",
+  "name": "<% if (control.repository) { -%><%= account.packagist %><% } else { -%><%= owner.canonical %><% } -%>-<%= project.name %>",
+  "description": "<%= project.description %>",
   "version": "0.0.1",
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { %>
     "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { %>,<% } -%><% } -%>
@@ -30,22 +30,14 @@ if (control.repository) { -%>
   },
   "devDependencies": {
     "grunt": "~0.4.5",
-    "time-grunt": "~1.2.2",
-    "load-grunt-tasks": "~0.6.0",
-    "grunt-phplint": "~0.0.5",
-    "grunt-phpunit": "~0.3.5",
-    "grunt-phpcs": "~0.2.3",
-    "grunt-phpmd": "~0.1.1",
-    "grunt-phpcpd": "~0.1.3",
     "grunt-climb": "^0.4.0",
-    "grunt-security-checker": "^0.2.0"
-  }<% if (control.repository) { -%>,
-
-  "repository": {
-    "type": "git",
-    "url": "<%= repository.url %>"
+    "grunt-phpcpd": "~0.1.3",
+    "grunt-phpcs": "~0.2.3",
+    "grunt-phplint": "~0.0.5",
+    "grunt-phpmd": "~0.1.1",
+    "grunt-phpunit": "~0.3.5",
+    "grunt-security-checker": "^0.2.0",
+    "load-grunt-tasks": "~0.6.0",
+    "time-grunt": "~1.2.2"
   }
-<% } else { -%>
-
-<% } -%>
 }

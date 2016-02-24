@@ -21,7 +21,7 @@ folders:
 
 sites:
   - map: <%= project.name %>.app
-    to: "/home/vagrant/<%= project.name %>/<%= dirs.public %>"
+    to: "/home/vagrant/<%= project.name %>/<%= dir.public %>"
 <% if (control.phpmyadmin) { -%>
   - map: mysql-<%= project.name %>.app
     to: "/var/www/html/phpmyadmin"

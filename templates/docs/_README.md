@@ -1,24 +1,24 @@
 <% if (control.packagist) { -%>
-[![Latest Version](https://img.shields.io/packagist/vpre/<%= accounts.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= accounts.packagist %>/<%= project.name %>)
+[![Latest Version](https://img.shields.io/packagist/vpre/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>)
 <% }
 if (control.license && repository.type === 'github') { -%>
 [![License](https://img.shields.io/github/license/<%= owner.account %>/<%= project.name %>.svg?style=flat-square)](https://github.com/<%= owner.account %>/<%= project.name %>/blob/master/LICENSE)
 <% } -%>
 
 <% if (control.travis) { -%>
-[![Build status](https://img.shields.io/travis/<%= accounts.travis %>/<%= project.name %>.svg?style=flat-square)](https://travis-ci.org/<%= accounts.travis %>/<%= project.name %>)
+[![Build status](https://img.shields.io/travis/<%= account.travis %>/<%= project.name %>.svg?style=flat-square)](https://travis-ci.org/<%= account.travis %>/<%= project.name %>)
 <% }
 if (control.styleci) { -%>
-[![Style](https://styleci.io/repos/<%= accounts.styleci %>/shield)](https://styleci.io/repos/<%= accounts.styleci %>)
+[![Style](https://styleci.io/repos/<%= account.styleci %>/shield)](https://styleci.io/repos/<%= account.styleci %>)
 <% }
 if (control.scrutinizer) { -%>
-[![Code Quality](https://img.shields.io/scrutinizer/g/<%= accounts.scrutinizer %>/<%= project.name %>.svg?style=flat-square)](https://scrutinizer-ci.com/g/<%= accounts.scrutinizer %>/<%= project.name %>)
+[![Code Quality](https://img.shields.io/scrutinizer/g/<%= account.scrutinizer %>/<%= project.name %>.svg?style=flat-square)](https://scrutinizer-ci.com/g/<%= account.scrutinizer %>/<%= project.name %>)
 <% }
 if (control.coveralls) { -%>
-[![Code Coverage](https://img.shields.io/coveralls/<%= accounts.coveralls %>/<%= project.name %>.svg?style=flat-square)](https://coveralls.io/github/<%= accounts.coveralls %>/<%= project.name %>)
+[![Code Coverage](https://img.shields.io/coveralls/<%= account.coveralls %>/<%= project.name %>.svg?style=flat-square)](https://coveralls.io/github/<%= account.coveralls %>/<%= project.name %>)
 <% }
 if (control.packagist) { -%>
-[![Total Downloads](https://img.shields.io/packagist/dt/<%= accounts.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= accounts.packagist %>/<%= project.name %>)
+[![Total Downloads](https://img.shields.io/packagist/dt/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>)
 <% } -%>
 
 # <%= project.name %>
@@ -33,7 +33,7 @@ if (control.packagist) { -%>
 ### Composer
 
 ```
-composer require <%= accounts.packagist %>/<%= project.name %>
+composer require <%= account.packagist %>/<%= project.name %>
 ```
 
 <% } -%>

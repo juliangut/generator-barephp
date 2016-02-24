@@ -12,8 +12,8 @@ module.exports = function(grunt) {
         swapPath: '/tmp'
       },
       application: [
-        '<%= dirs.src %>/**/*.php',
-        '<%= dirs.tests %>/**/*.php'
+        '<%= dir.src %>/**/*.php',
+        '<%= dir.tests %>/**/*.php'
       ]
     },
     phpcs: {
@@ -23,8 +23,8 @@ module.exports = function(grunt) {
       },
       application: {
         dir: [
-          '<%= dirs.src %>',
-          '<%= dirs.tests %>'
+          '<%= dir.src %>',
+          '<%= dir.tests %>'
         ]
       }
     },
@@ -35,7 +35,7 @@ module.exports = function(grunt) {
         reportFormat: 'text'
       },
       application: {
-        dir: '<%= dirs.src %>'
+        dir: '<%= dir.src %>'
       }
     },
     phpcpd: {
@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         ignoreExitCode: true
       },
       application: {
-        dir: '<%= dirs.src %>'
+        dir: '<%= dir.src %>'
       }
     },
     climb: {
@@ -70,7 +70,7 @@ module.exports = function(grunt) {
         coverage: true
       },
       application: {
-        coverageHtml: '<%= dirs.dist %>/coverage'
+        coverageHtml: '<%= dir.dist %>/coverage'
       }
     }
   });

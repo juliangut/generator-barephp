@@ -2,10 +2,10 @@
 
 filter:
   paths:
-    - <%= dirs.src %>/*
-    - <%= dirs.tests %>/*
+    - <%= dir.src %>/*
+    - <%= dir.tests %>/*
 <% if (control.homestead) { -%>
-    - <%= dirs.public %>/*
+    - <%= dir.public %>/*
 <% } -%>
 
 coding_style:
@@ -65,16 +65,16 @@ tools:
     config:
       standard: 'PSR2'
     filter:
-      paths: [<%= dirs.src %>, <%= dirs.tests %><% if (control.homestead) { -%>, <%= dirs.public %><% } -%>]
+      paths: [<%= dir.src %>, <%= dir.tests %><% if (control.homestead) { -%>, <%= dir.public %><% } -%>]
 
   php_cpd:
     enabled: true
-    excluded_dirs: [<%= dirs.dist %>, <%= dirs.tests %>, vendor]
+    excluded_dirs: [<%= dir.dist %>, <%= dir.tests %>, vendor]
   php_mess_detector:
     enabled: true
   php_loc:
     enabled: true
-    excluded_dirs: [<%= dirs.dist %>, <%= dirs.tests %>, vendor]
+    excluded_dirs: [<%= dir.dist %>, <%= dir.tests %>, vendor]
   php_pdepend: true
   php_analyzer: true
   sensiolabs_security_checker: true
