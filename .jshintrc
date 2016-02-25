@@ -15,5 +15,10 @@
   "noarg": true,
   "nonbsp": true,
   "undef": true,
-  "unused": true
+  "unused": true,
+  "globals": {
+    "describe": true,
+    "before": true,
+    "it": true
+  }
 }

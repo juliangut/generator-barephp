@@ -1,12 +1,12 @@
 
 'use strict';
 
-var path = require('path'),
-  helpers = require('yeoman-generator').test,
-  assert = require('yeoman-generator').assert;
+var path = require('path');
+var helpers = require('yeoman-generator').test;
+var assert = require('yeoman-generator').assert;
 
-describe('yo barephp usage', function () {
-  before(function (done) {
+describe('yo barephp usage', function() {
+  before(function(done) {
     helpers.run(path.join(__dirname, '../app'))
       .withOptions({
         'skip-install': true
@@ -18,12 +18,13 @@ describe('yo barephp usage', function () {
         useRepository: true,
         type: 'github',
         account: 'juliangut',
+        install: false,
         xtras: 'packagist, travis, coveralls, scrutinizer, styleci, homestead, docs'
       })
       .on('end', done);
   });
 
-  it('creates default files', function () {
+  it('creates default files', function() {
     assert.file([
       '.coveralls.yml',
       '.editorconfig',

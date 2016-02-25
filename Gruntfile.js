@@ -14,6 +14,7 @@ module.exports = function(grunt) {
       },
       application: [
         'app/index.js',
+        'test/barephp.js',
         'Gruntfile.js'
       ]
     },
@@ -24,6 +25,7 @@ module.exports = function(grunt) {
       },
       application: [
         'app/index.js',
+        'test/barephp.js',
         'Gruntfile.js'
       ]
     }
