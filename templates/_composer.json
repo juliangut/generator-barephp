@@ -33,7 +33,7 @@ if (project.license != '') { -%>
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": ">=<%= project.php_version %>",
+    "php": ">=<%= project.phpVersion %>",
     "ircmaxell/password-compat": "^1.0",
     "nesbot/carbon": "^1.20",
     "paragonie/random_compat": "^1.1"

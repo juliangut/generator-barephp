@@ -1,0 +1,7 @@
+{
+  "preset": "grunt",
+  "maxErrors": 20,
+  "disallowEmptyBlocks": true,
+  "requireOperatorBeforeLineBreak": false,
+  "validateQuoteMarks": "'"
+}

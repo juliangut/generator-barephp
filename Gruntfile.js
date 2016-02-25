@@ -16,8 +16,18 @@ module.exports = function(grunt) {
         'app/index.js',
         'Gruntfile.js'
       ]
+    },
+    jscs: {
+      options: {
+        config: '.jscsrc',
+        verbose: true
+      },
+      application: [
+        'app/index.js',
+        'Gruntfile.js'
+      ]
     }
   });
 
-  grunt.registerTask('default', ['jshint']);
+  grunt.registerTask('default', ['jscs', 'jshint']);
 };
