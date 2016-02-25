@@ -487,9 +487,9 @@ BarePHP.prototype.askForComposer = function() {
           shell.exec('php -r "readfile(\'https://getcomposer.org/installer\');" | php', {silent: true});
 
           this.defaults.localComposer = true;
-
-          done();
         }
+
+        done();
       }.bind(this));
     } else {
       this.defaults.globalComposer = true;
