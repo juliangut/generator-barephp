@@ -18,8 +18,6 @@ function getUserHome() {
 var BarePHP = module.exports = function BarePHP() {
   yeoman.generators.Base.apply(this, arguments);
 
-  this.underscoreString = _;
-
   this.defaults = {
     controlRepository: true,
     controlDirs: false,
@@ -731,7 +729,9 @@ BarePHP.prototype.askForCustomDirs = function() {
 };
 
 BarePHP.prototype.writing = {
-  create: function() {
+  createViewParameters: function() {
+    this.underscoreString = _;
+
     this.control = {
       repository: this.config.get('controlRepository'),
       dirs: this.config.get('controlDirs'),
