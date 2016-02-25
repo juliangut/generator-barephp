@@ -118,14 +118,14 @@ BarePHP.prototype.askForMode = function() {
   var prompts = [
     {
       type: 'confirm',
-      name: 'quick',
+      name: 'quickMode',
       message: 'Would you like the quick assistant?',
       default: this.configs.quickMode
     }
   ];
 
   this.prompt(prompts, function(props) {
-    this.configs.quickMode = props.quick;
+    this.configs.quickMode = props.quickMode;
 
     done();
   }.bind(this));
@@ -134,33 +134,44 @@ BarePHP.prototype.askForMode = function() {
 BarePHP.prototype.askForOwner = function() {
   var done = this.async();
   var prompts = [
-        {
-          name: 'name',
-          message: 'What is your name?',
-          default: this.config.get('ownerName')
-        },
-        {
-          name: 'email',
-          message: 'What is your email?',
-          default: this.config.get('ownerEmail')
-        },
-        {
-          name: 'homepage',
-          message: 'What is your homepage?',
-          default: this.config.get('ownerHomepage')
-        }
-      ];
+    {
+      name: 'name',
+      message: 'What is your name?',
+      default: this.config.get('ownerName')
+    },
+    {
+      name: 'email',
+      message: 'What is your email?',
+      default: this.config.get('ownerEmail')
+    },
+    {
+      name: 'homepage',
+      message: 'What is your homepage?',
+      default: this.config.get('ownerHomepage')
+    }
+  ];
 
   this.prompt(prompts, function(props) {
     this.config.set('ownerName', _.clean(props.name));
     this.config.set('ownerCanonical', _.cleanDiacritics(_.clean(props.name)).replace(/\s+/g, '_').toLowerCase());
-    this.config.set('ownerHomepage', _.clean(props.homepage).split(' ').shift());
 
     var ownerEmail = _.clean(props.email).split(' ').shift();
     if (!validator.isEmail(ownerEmail)) {
       throw new Error(util.format('"%s" is not a valid email', ownerEmail));
     }
     this.config.set('ownerEmail', ownerEmail);
+
+    var ownerHomepage = _.clean(props.homepage).split(' ').shift();
+    if (ownerHomepage !== '') {
+      if (!validator.isURL(ownerHomepage)) {
+        throw new Error(util.format('"%s" is not a valid URL', ownerHomepage));
+      }
+
+      if (!/^https?:\/\//.test(ownerHomepage)) {
+        ownerHomepage = 'http://' + ownerHomepage;
+      }
+    }
+    this.config.set('ownerHomepage', ownerHomepage);
 
     done();
   }.bind(this));
@@ -211,12 +222,20 @@ BarePHP.prototype.askForRepository = function() {
     this.config.set('repositoryType', props.type);
 
     var accountRepository = _.cleanDiacritics(_.clean(props.account)).replace(/\s+/g, '_');
-
     this.config.set('accountPackagist', accountRepository);
-    this.config.set('accountTravis', accountRepository);
-    this.config.set('accountCoveralls', accountRepository);
-    this.config.set('accountScrutinizer', accountRepository);
-    this.config.set('accountStyleci', 'XXXXXXXX');
+
+    if (!this.config.get('accountTravis')) {
+      this.config.set('accountTravis', accountRepository);
+    }
+    if (!this.config.get('accountCoveralls')) {
+      this.config.set('accountCoveralls', accountRepository);
+    }
+    if (!this.config.get('accountScrutinizer')) {
+      this.config.set('accountScrutinizer', accountRepository);
+    }
+    if (!this.config.get('accountStyleci')) {
+      this.config.set('accountStyleci', 'XXXXXXXX');
+    }
 
     switch (this.config.get('repositoryType')) {
       case 'Github':
@@ -313,8 +332,14 @@ BarePHP.prototype.askForProjectContinue = function() {
     );
 
     var projectHomepage  = _.trim(props.homepage).split(' ').shift();
-    if (projectHomepage !== '' && !validator.isURL(projectHomepage)) {
-      throw new Error(util.format('"%s" is not a valid URL', projectHomepage));
+    if (projectHomepage !== '') {
+      if (!validator.isURL(projectHomepage)) {
+        throw new Error(util.format('"%s" is not a valid URL', projectHomepage));
+      }
+
+      if (!/^https?:\/\//.test(projectHomepage)) {
+        projectHomepage = 'http://' + projectHomepage;
+      }
     }
     this.config.set('projectHomepage', projectHomepage);
 
