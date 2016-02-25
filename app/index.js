@@ -99,7 +99,7 @@ var BarePHP = module.exports = function BarePHP() {
     }
 
     if (configs.require.php) {
-      this.defaults.project.phpVersion = parseFloat(configs.require.php.replace(/^[<>=^~]+(\s+)?/, ''));
+      this.defaults.project.phpVersion = parseFloat(configs.require.php.replace(/^([<>=^~ ]+)?/, ''));
     }
   }
 
