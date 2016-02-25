@@ -6,7 +6,7 @@ memory: 2048
 cpus: 1
 ip: "192.168.100.100"
 hostname: <%= project.name %>.app
-hostaliases: <% if (control.phpmyadmin) { -%>
+hostaliases: <% if (control.phpMyAdmin) { -%>
 
   - phpmyadmin-<%= project.name %>.app<% } -%>
 
@@ -22,8 +22,8 @@ folders:
 sites:
   - map: <%= project.name %>.app
     to: "/home/vagrant/<%= project.name %>/<%= dir.public %>"
-<% if (control.phpmyadmin) { -%>
-  - map: mysql-<%= project.name %>.app
+<% if (control.phpMyAdmin) { -%>
+  - map: phpmyadmin-<%= project.name %>.app
     to: "/var/www/html/phpmyadmin"
 <% } -%>
 

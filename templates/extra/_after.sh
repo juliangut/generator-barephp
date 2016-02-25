@@ -11,7 +11,7 @@ if [ `cat apt-get-update` -le `date --date='7 day ago' +%Y%m%d` ]; then
 
     date +%Y%m%d > apt-get-update
 fi
-<% if (control.phpmyadmin) { %>
+<% if (control.phpMyAdmin) { %>
 # Install PhpMyAdmin
 if [ ! -d "/var/www/html/phpmyadmin" ]; then
     echo '>>> Installing PhpMyAdmin 4.5.1'

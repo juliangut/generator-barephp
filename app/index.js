@@ -11,105 +11,106 @@ var mkdirp = require('mkdirp');
 var shell = require('shelljs');
 var fs = require('fs');
 
-function getUserHome() {
-  return process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
-}
-
 var BarePHP = module.exports = function BarePHP() {
   yeoman.generators.Base.apply(this, arguments);
 
   this.defaults = {
-    controlRepository: true,
-    controlDirs: false,
-    controlLicense: true,
-    controlPackagist: true,
-    controlTravis: true,
-    controlCoveralls: true,
-    controlScrutinizer: true,
-    controlStyleci: true,
-    controlHomestead: true,
-    controlDocs: true,
-    controlPhpmyadmin: false,
-
-    ownerName: null,
-    ownerCanonical: null,
-    ownerEmail: null,
-    ownerHomepage: null,
-
-    repositoryType: 'Github',
-    repositoryHomepage: null,
-    repositoryUrl: null,
-
-    projectName: null,
-    projectDescription: null,
-    projectType: 'library',
-    projectKeywords: [],
-    projectHomepage: null,
-    projectPhpVersion: 5.5,
-    projectLicense: 'BSD-3-Clause',
-    projectNamespace: null,
-
-    dirSrc: 'src',
-    dirTests: 'tests',
-    dirDist: 'dist',
-    dirPublic: 'public',
-
-    accountRepository: null,
-    accountPackagist: null,
-    accountTravis: null,
-    accountCoveralls: null,
-    accountScrutinizer: null,
-    accountStyleci: null,
-
-    homesteadFormat: 'json'
-  };
-
-  this.configs = {
     quickMode: false,
+    globalComposer: false,
+    localComposer: false,
     owner: {
       name: null,
+      canonical: null,
       email: null,
-      homepage: null
-    },
-    repository: {
       homepage: null
     },
     project: {
       description: null,
-      type: null,
+      type: 'project',
       keywords: [],
       homepage: null,
-      license: null,
-      testPhpVersion: 5.6,
-      licenseFile: null
+      license: 'BSD-3-Clause',
+      licenseFile: 'bsd-new',
+      phpVersion: 5.5,
+      testPhpVersion: 5.6
+    },
+    config: {
+      controlRepository: true,
+      controlDirs: false,
+      controlLicense: true,
+      controlPackagist: true,
+      controlTravis: true,
+      controlCoveralls: true,
+      controlScrutinizer: true,
+      controlStyleci: true,
+      controlHomestead: true,
+      controlPhpMyAdmin: false,
+      controlDocs: true,
+      repositoryType: 'Github',
+      repositoryHomepage: null,
+      projectName: null,
+      projectNamespace: null,
+      dirSrc: 'src',
+      dirTests: 'tests',
+      dirDist: 'dist',
+      dirPublic: 'public',
+      accountRepository: null,
+      accountPackagist: null,
+      accountTravis: null,
+      accountCoveralls: null,
+      accountScrutinizer: null,
+      accountStyleci: null,
+      homesteadFormat: 'json'
     }
   };
 
   if (!shell.which('git')) {
-    this.defaults.ownerName = _.clean(getUserHome().split(path.sep).pop());
-  } else {
-    this.defaults.ownerName = _.clean(shell.exec('git config --global user.name', {silent: true}).output, '\n');
-    this.defaults.ownerEmail = _.clean(shell.exec('git config --global user.email', {silent: true}).output, '\n');
-  }
+    var userHomeDirectory = process.env.HOME || process.env.HOMEPATH || process.env.USERPROFILE;
 
-  this.config.defaults(this.defaults);
+    this.defaults.owner.name = _.clean(userHomeDirectory.split(path.sep).pop());
+  } else {
+    this.defaults.owner.name = _.clean(shell.exec('git config --global user.name', {silent: true}).output, '\n');
+    this.defaults.owner.email = _.clean(shell.exec('git config --global user.email', {silent: true}).output, '\n');
+  }
 
   if (fs.existsSync('composer.json')) {
     var configs = JSON.parse(fs.readFileSync('composer.json'));
 
-    this.configs.project.description = configs.description;
-    this.configs.project.type = configs.type;
-    this.configs.project.keywords = configs.keywords ? configs.keywords : [];
-    this.configs.project.homepage = configs.homepage;
-    this.configs.project.license = configs.license;
+    if (configs.authors && configs.authors instanceof Array) {
+      this.defaults.owner.name = configs.authors[0].name ? configs.authors[0].name : null ;
+      this.defaults.owner.email = configs.authors[0].email ? configs.authors[0].email : null;
+      this.defaults.owner.homepage = configs.authors[0].homepage ? configs.authors[0].homepage : null;
+    }
+
+    if (configs.description) {
+      this.defaults.project.description = configs.description;
+    }
+    if (configs.type) {
+      this.defaults.project.type = configs.type;
+    }
+    if (configs.keywords && configs.keywords instanceof Array) {
+      this.defaults.project.keywords = configs.keywords;
+    }
+    if (configs.homepage) {
+      this.defaults.project.homepage = configs.homepage;
+    }
+    if (configs.license) {
+      this.defaults.project.license = configs.license;
+    }
+
+    if (configs.require.php) {
+      this.defaults.project.phpVersion = parseFloat(configs.require.php.replace(/^[<>=^~]+(\s+)?/, ''));
+    }
   }
+
+  this.config.defaults(this.defaults.config);
 };
 
 util.inherits(BarePHP, yeoman.generators.Base);
 
 BarePHP.prototype.welcome = function() {
   this.log(
-    yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Travis, Grunt, and many, many more integrations!')
+    yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Grunt, Travis, and many, many more integrations!')
   );
 };
 
@@ -120,12 +121,12 @@ BarePHP.prototype.askForMode = function() {
       type: 'confirm',
       name: 'quickMode',
       message: 'Would you like the quick assistant?',
-      default: this.configs.quickMode
+      default: this.defaults.quickMode
     }
   ];
 
   this.prompt(prompts, function(props) {
-    this.configs.quickMode = props.quickMode;
+    this.defaults.quickMode = props.quickMode;
 
     done();
   }.bind(this));
@@ -137,29 +138,29 @@ BarePHP.prototype.askForOwner = function() {
     {
       name: 'name',
       message: 'What is your name?',
-      default: this.config.get('ownerName')
+      default: this.defaults.owner.name
     },
     {
       name: 'email',
       message: 'What is your email?',
-      default: this.config.get('ownerEmail')
+      default: this.defaults.owner.email
     },
     {
       name: 'homepage',
       message: 'What is your homepage?',
-      default: this.config.get('ownerHomepage')
+      default: this.defaults.owner.homepage
     }
   ];
 
   this.prompt(prompts, function(props) {
-    this.config.set('ownerName', _.clean(props.name));
-    this.config.set('ownerCanonical', _.cleanDiacritics(_.clean(props.name)).replace(/\s+/g, '_').toLowerCase());
+    this.defaults.owner.name = _.clean(props.name);
+    this.defaults.owner.canonical = _.cleanDiacritics(_.clean(props.name)).replace(/\s+/g, '_').toLowerCase();
 
     var ownerEmail = _.clean(props.email).split(' ').shift();
-    if (!validator.isEmail(ownerEmail)) {
+    if (ownerEmail !== '' && !validator.isEmail(ownerEmail)) {
       throw new Error(util.format('"%s" is not a valid email', ownerEmail));
     }
-    this.config.set('ownerEmail', ownerEmail);
+    this.defaults.owner.email = ownerEmail;
 
     var ownerHomepage = _.clean(props.homepage).split(' ').shift();
     if (ownerHomepage !== '') {
@@ -171,7 +172,7 @@ BarePHP.prototype.askForOwner = function() {
         ownerHomepage = 'http://' + ownerHomepage;
       }
     }
-    this.config.set('ownerHomepage', ownerHomepage);
+    this.defaults.owner.homepage = ownerHomepage;
 
     done();
   }.bind(this));
@@ -207,22 +208,25 @@ BarePHP.prototype.askForRepository = function() {
       name: 'type',
       message: 'What repository is the project hosted on?',
       choices: ['Github', 'Bitbucket'],
-      default: this.config.get('repositoryType')
+      default: _.capitalize(this.config.get('repositoryType'))
     },
     {
       name: 'account',
       message: 'What is your repository account name?',
       default: this.config.get('accountRepository') ?
         this.config.get('accountRepository') :
-        this.config.get('ownerCanonical')
+        this.defaults.owner.canonical
     }
   ];
 
   this.prompt(prompts, function(props) {
-    this.config.set('repositoryType', props.type);
+    this.config.set('repositoryType', props.type.toLowerCase());
 
     var accountRepository = _.cleanDiacritics(_.clean(props.account)).replace(/\s+/g, '_');
-    this.config.set('accountPackagist', accountRepository);
+
+    if (!this.config.get('accountPackagist')) {
+      this.config.set('accountPackagist', accountRepository);
+    }
 
     if (!this.config.get('accountTravis')) {
       this.config.set('accountTravis', accountRepository);
@@ -237,17 +241,17 @@ BarePHP.prototype.askForRepository = function() {
       this.config.set('accountStyleci', 'XXXXXXXX');
     }
 
-    switch (this.config.get('repositoryType')) {
-      case 'Github':
-        this.config.set('repositoryHomepage', 'https://github.com/' + accountRepository + '/');
-        this.config.set('repositoryUrl', 'git@github.com:' + accountRepository + '/');
+    var repositoryUrl = 'https://';
+    switch (props.type.toLowerCase()) {
+      case 'github':
+        repositoryUrl += 'github.com';
         break;
-      case 'Bitbucket':
-        this.config.set('repositoryHomepage', 'https://bitbucket.org/' + accountRepository + '/');
-        this.config.set('repositoryUrl', 'git@bitbucket.org:' + accountRepository + '/');
+      case 'bitbucket':
+        repositoryUrl += 'bitbucket.org';
         break;
     }
 
+    this.config.set('repositoryHomepage', repositoryUrl + '/' + accountRepository + '/');
     this.config.set('accountRepository', accountRepository);
 
     done();
@@ -278,9 +282,6 @@ BarePHP.prototype.askForProject = function() {
         'repositoryHomepage',
         this.config.get('repositoryHomepage') + this.config.get('projectName')
       );
-      this.config.set(
-        'repositoryUrl',
-        this.config.get('repositoryUrl') + this.config.get('projectName') + '.git');
     }
 
     done();
@@ -288,7 +289,7 @@ BarePHP.prototype.askForProject = function() {
 };
 
 BarePHP.prototype.askForProjectContinue = function() {
-  if (this.configs.quickMode) {
+  if (this.defaults.quickMode) {
     return;
   }
 
@@ -297,26 +298,25 @@ BarePHP.prototype.askForProjectContinue = function() {
     {
       name: 'description',
       message: 'What is the project description?',
-      default: this.config.get('projectDescription')
+      default: this.defaults.project.description
     },
     {
       type: 'list',
       name: 'type',
       message: 'What type is the project?',
       choices: ['library', 'project', 'metapackage', 'composer-plugin'],
-      default: this.config.get('projectType')
+      default: this.defaults.project.type
     },
     {
       name: 'keywords',
-      message: 'What are the project keywords?'  +
-        (this.config.get('projectKeywords').length ? '' : ' (comma separated)'),
-      default: this.config.get('projectKeywords').join(', ')
+      message: 'What are the project keywords? (comma separated)',
+      default: this.defaults.project.keywords.join(', ')
     },
     {
       name: 'homepage',
       message: 'What is the project homepage?',
-      default: this.config.get('projectHomepage') ?
-        this.config.get('projectHomepage') :
+      default: this.defaults.project.homepage ?
+        this.defaults.project.homepage :
         (this.config.get('controlRepository') ? this.config.get('repositoryHomepage') : '')
     }
   ];
@@ -324,12 +324,11 @@ BarePHP.prototype.askForProjectContinue = function() {
   this.prompt(prompts, function(props) {
     props.keywords = _.clean(props.keywords);
 
-    this.config.set('projectDescription', _.trim(props.description));
-    this.config.set('projectType', props.type.toLowerCase());
-    this.config.set(
-      'projectKeywords',
-      props.keywords.length ? props.keywords.replace(/(\s+)?,\s+?/g, ',').replace(/,$/, '').split(',') : []
-    );
+    this.defaults.project.description = _.trim(props.description);
+    this.defaults.project.type = props.type.toLowerCase();
+    this.defaults.project.keywords = props.keywords.length ?
+      props.keywords.replace(/(\s+)?,\s+?/g, ',').replace(/,$/, '').split(',') :
+      [];
 
     var projectHomepage  = _.trim(props.homepage).split(' ').shift();
     if (projectHomepage !== '') {
@@ -341,7 +340,7 @@ BarePHP.prototype.askForProjectContinue = function() {
         projectHomepage = 'http://' + projectHomepage;
       }
     }
-    this.config.set('projectHomepage', projectHomepage);
+    this.defaults.project.homepage = projectHomepage;
 
     done();
   }.bind(this));
@@ -354,8 +353,8 @@ BarePHP.prototype.askForProjectContinue2 = function() {
       type: 'list',
       name: 'phpVersion',
       message: 'What is the minimum supported PHP version for the project?',
-      choices: ['5.5', '5.6', '7.0'],
-      default: this.config.get('projectPhpVersion').toString()
+      choices: ['5.3', '5.4', '5.5', '5.6', '7.0'],
+      default: this.defaults.project.phpVersion.toFixed(1)
     },
     {
       name: 'namespace',
@@ -368,17 +367,17 @@ BarePHP.prototype.askForProjectContinue2 = function() {
     this.config.set('projectNamespace', this.config.get('projectNamespace'));
 
     var phpVersion = parseFloat(props.phpVersion);
-    if (phpVersion > this.configs.project.testPhpVersion) {
-      this.configs.project.testPhpVersion = phpVersion;
+    if (phpVersion > this.defaults.project.testPhpVersion) {
+      this.defaults.project.testPhpVersion = phpVersion;
     }
-    this.config.set('projectPhpVersion', phpVersion);
+    this.defaults.project.phpVersion = phpVersion;
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForLicenseUse = function() {
-  if (this.configs.quickMode) {
+  if (this.defaults.quickMode) {
     return;
   }
 
@@ -400,7 +399,7 @@ BarePHP.prototype.askForLicenseUse = function() {
 };
 
 BarePHP.prototype.askForLicense = function() {
-  if (this.configs.quickMode || !this.config.get('controlLicense')) {
+  if (this.defaults.quickMode || !this.config.get('controlLicense')) {
     return;
   }
 
@@ -420,12 +419,12 @@ BarePHP.prototype.askForLicense = function() {
         'Apache-2.0',
         'Proprietary'
       ],
-      default: this.config.get('projectLicense')
+      default: this.defaults.project.license
     }
   ];
 
   this.prompt(prompts, function(props) {
-    this.config.set('projectLicense', props.license);
+    this.defaults.project.license = props.license;
 
     var licenseFile = '';
     switch (props.license) {
@@ -451,18 +450,57 @@ BarePHP.prototype.askForLicense = function() {
         licenseFile = 'apache';
         break;
       case 'Proprietary':
-        this.config.set('projectLicense', 'proprietary');
+        this.defaults.project.license = this.defaults.project.license.toLowerCase();
         break;
     }
 
-    this.configs.project.licenseFile = licenseFile;
+    this.defaults.project.licenseFile = licenseFile;
 
     done();
   }.bind(this));
 };
 
+BarePHP.prototype.askForComposer = function() {
+  var done = this.async();
+
+  shell.exec('composer -v', {silent: true}, function(error) {
+    if (error != null) {
+      if (fs.existsSync('composer.phar')) {
+        this.defaults.localComposer = true;
+
+        done();
+        return;
+      }
+
+      var prompts = [
+        {
+          type: 'confirm',
+          name: 'install',
+          message: 'No global Composer installation found. Install Composer locally?',
+          default: false
+        }
+      ];
+
+      this.prompt(prompts, function(props) {
+        if (props.install) {
+          console.log('Installing Composer locally ...');
+          shell.exec('php -r "readfile(\'https://getcomposer.org/installer\');" | php', {silent: true});
+
+          this.defaults.localComposer = true;
+
+          done();
+        }
+      }.bind(this));
+    } else {
+      this.defaults.globalComposer = true;
+
+      done();
+    }
+  }.bind(this));
+};
+
 BarePHP.prototype.askForInstall = function() {
-  if (this.configs.quickMode) {
+  if (this.defaults.quickMode) {
     return;
   }
 
@@ -522,7 +560,7 @@ BarePHP.prototype.askForInstall = function() {
     this.config.set('controlStyleci', hasMod('styleci'));
     this.config.set('controlHomestead', hasMod('homestead'));
     if (!hasMod('homestead')) {
-      this.config.set('control_mysql', false);
+      this.config.set('controlPhpMyAdmin', false);
     }
     this.config.set('controlDocs', hasMod('docs'));
 
@@ -531,7 +569,7 @@ BarePHP.prototype.askForInstall = function() {
 };
 
 BarePHP.prototype.askForPackagistAccount = function() {
-  if (this.configs.quickMode || !this.config.get('controlPackagist')) {
+  if (this.defaults.quickMode || !this.config.get('controlPackagist')) {
     return;
   }
 
@@ -542,7 +580,7 @@ BarePHP.prototype.askForPackagistAccount = function() {
       message: 'What is your Packagist account name?',
       default: this.config.get('controlRepository') ?
         this.config.get('accountPackagist') :
-        this.config.get('ownerCanonical')
+        this.defaults.owner.canonical
     }
   ];
 
@@ -554,7 +592,7 @@ BarePHP.prototype.askForPackagistAccount = function() {
 };
 
 BarePHP.prototype.askForTravisAccount = function() {
-  if (this.configs.quickMode || !this.config.get('controlTravis')) {
+  if (this.defaults.quickMode || !this.config.get('controlTravis')) {
     return;
   }
 
@@ -565,7 +603,7 @@ BarePHP.prototype.askForTravisAccount = function() {
       message: 'What is your Travis account name?',
       default: this.config.get('controlRepository') ?
         this.config.get('accountTravis') :
-        this.config.get('ownerCanonical')
+        this.defaults.owner.canonical
     }
   ];
 
@@ -577,7 +615,7 @@ BarePHP.prototype.askForTravisAccount = function() {
 };
 
 BarePHP.prototype.askForCoverallsAccount = function() {
-  if (this.configs.quickMode || !this.config.get('controlCoveralls')) {
+  if (this.defaults.quickMode || !this.config.get('controlCoveralls')) {
     return;
   }
 
@@ -588,7 +626,7 @@ BarePHP.prototype.askForCoverallsAccount = function() {
       message: 'What is your Coveralls account name?',
       default: this.config.get('controlRepository') ?
         this.config.get('accountCoveralls') :
-        this.config.get('ownerCanonical')
+        this.defaults.owner.canonical
     }
   ];
 
@@ -600,7 +638,7 @@ BarePHP.prototype.askForCoverallsAccount = function() {
 };
 
 BarePHP.prototype.askForScrutinizerAccount = function() {
-  if (this.configs.quickMode || !this.config.get('controlScrutinizer')) {
+  if (this.defaults.quickMode || !this.config.get('controlScrutinizer')) {
     return;
   }
 
@@ -611,19 +649,19 @@ BarePHP.prototype.askForScrutinizerAccount = function() {
       message: 'What is your Scrutinizer account name?',
       default: this.config.get('controlRepository') ?
         this.config.get('accountScrutinizer') :
-        this.config.get('ownerCanonical')
+        this.defaults.owner.canonical
     }
   ];
 
   this.prompt(prompts, function(props) {
-    this.config.set('account.scrutinizer', _.clean(props.account).replace(/\s+/g, '_'));
+    this.config.set('accountScrutinizer', _.clean(props.account).replace(/\s+/g, '_'));
 
     done();
   }.bind(this));
 };
 
 BarePHP.prototype.askForStyleciAccount = function() {
-  if (this.configs.quickMode || !this.config.get('controlStyleci')) {
+  if (this.defaults.quickMode || !this.config.get('controlStyleci')) {
     return;
   }
 
@@ -648,7 +686,7 @@ BarePHP.prototype.askForStyleciAccount = function() {
 };
 
 BarePHP.prototype.askForHomestead = function() {
-  if (this.configs.quickMode || !this.config.get('controlHomestead')) {
+  if (this.defaults.quickMode || !this.config.get('controlHomestead')) {
     return;
   }
 
@@ -665,7 +703,7 @@ BarePHP.prototype.askForHomestead = function() {
       type: 'confirm',
       name: 'usePhpmyadmin',
       message: 'Would you like to install PhpMyAdmin in Laravel Homestead?',
-      default: this.config.get('controlPhpmyadmin')
+      default: this.config.get('controlPhpMyAdmin')
     }
   ];
 
@@ -677,7 +715,7 @@ BarePHP.prototype.askForHomestead = function() {
         break;
     }
 
-    this.config.set('controlPhpmyadmin', props.usePhpmyadmin);
+    this.config.set('controlPhpMyAdmin', props.usePhpmyadmin);
 
     done();
   }.bind(this));
@@ -768,31 +806,30 @@ BarePHP.prototype.writing = {
       styleci: this.config.get('controlStyleci'),
       homestead: this.config.get('controlHomestead'),
       docs: this.config.get('controlDocs'),
-      phpmyadmin: this.config.get('controlPhpmyadmin')
+      phpMyAdmin: this.config.get('controlPhpMyAdmin')
     };
 
     this.owner = {
-      name: this.config.get('ownerName'),
-      canonical: this.config.get('ownerCanonical'),
-      email: this.config.get('ownerEmail'),
-      homepage: this.config.get('ownerHomepage')
+      name: this.defaults.owner.name,
+      canonical: this.defaults.owner.canonical,
+      email: this.defaults.owner.email,
+      homepage: this.defaults.owner.homepage
     };
 
     this.repository = {
       type: this.config.get('repositoryType'),
-      homepage: this.config.get('repositoryHomepage'),
-      url: this.config.get('repositoryUrl')
+      homepage: this.config.get('repositoryHomepage')
     };
 
     this.project = {
       name: this.config.get('projectName'),
-      description: this.config.get('projectDescription'),
-      type: this.config.get('projectType'),
-      keywords: this.config.get('projectKeywords'),
-      homepage: this.config.get('projectHomepage'),
-      phpVersion: this.config.get('projectPhpVersion'),
-      testPhpVersion: this.configs.project.testPhpVersion,
-      license: this.config.get('projectLicense'),
+      description: this.defaults.project.description,
+      type: this.defaults.project.type,
+      keywords: this.defaults.project.keywords,
+      homepage: this.defaults.project.homepage,
+      phpVersion: this.defaults.project.phpVersion,
+      testPhpVersion: this.defaults.project.testPhpVersion,
+      license: this.defaults.project.license,
       namespace: this.config.get('projectNamespace')
     };
 
@@ -877,27 +914,37 @@ BarePHP.prototype.writing = {
       this.template('../../templates/docs/_CONTRIBUTING.md', 'CONTRIBUTING.md');
       this.template('../../templates/docs/_README.md', 'README.md');
     }
-    if (this.config.get('controlLicense') && this.config.get('projectLicense') !== 'proprietary') {
-      this.template('../../templates/license/' + this.configs.project.licenseFile, 'LICENSE');
+    if (this.config.get('controlLicense') && this.defaults.project.license !== 'proprietary') {
+      this.template('../../templates/license/' + this.defaults.project.licenseFile, 'LICENSE');
     }
   }
 };
 
 BarePHP.prototype.install = function() {
   var projectName = this.config.get('projectName');
+  var defaults = this.defaults;
 
   this.installDependencies({
     bower: false,
     callback: function() {
       var message = '\nProject ' + chalk.green.bold(projectName) + ' is set up and ready';
 
-      if (!shell.which('composer')) {
-        message += '\nRun ' + chalk.yellow.bold('composer install') + ' before starting development';
+      if (defaults.globalComposer || defaults.localComposer) {
+        console.log('Running ' + chalk.yellow.bold('composer install') +
+          ' for you to install the required PHP dependencies. If this fails try running the command yourself');
+
+        if (defaults.globalComposer) {
+          shell.exec('composer install');
+        } else {
+          shell.exec('php composer.phar install');
+        }
       } else {
-        shell.exec('composer install');
+        message += '\nInstall Composer dependencies by running ' + chalk.yellow.bold('composer install') +
+          ' before starting development';
       }
 
       console.log(message);
+      console.log();
     }
   });
 };

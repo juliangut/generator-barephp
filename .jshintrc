@@ -10,7 +10,6 @@
   "immed": true,
   "indent": 2,
   "latedef": true,
-  "maxcomplexity": 10,
   "maxdepth": 3,
   "newcap": true,
   "noarg": true,
