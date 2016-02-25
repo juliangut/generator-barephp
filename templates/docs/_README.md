@@ -1,3 +1,4 @@
+[![PHP version](https://img.shields.io/badge/PHP-%3E%3D<%= project.phpVersion %>-8892BF.svg?style=flat-square)](http://php.net)
 <% if (control.packagist) { -%>
 [![Latest Version](https://img.shields.io/packagist/vpre/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>)
 <% }

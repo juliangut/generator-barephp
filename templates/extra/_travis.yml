@@ -3,13 +3,13 @@ language: php
 sudo: false
 
 php:
-<% if (project.phpversion <= 5.5) { -%>
+<% if (project.phpVersion <= 5.5) { -%>
   - 5.5
 <% } -%>
-<% if (project.phpversion <= 5.6) { -%>
+<% if (project.phpVersion <= 5.6) { -%>
   - 5.6
 <% } -%>
-<% if (project.phpversion <= 7.0) { -%>
+<% if (project.phpVersion <= 7.0) { -%>
   - 7.0
 <% } -%>
   - hhvm
