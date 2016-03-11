@@ -1,35 +1,42 @@
+<% if (homestead.format == 'json') { -%>
 require 'json'
+<% } else { -%>
 require 'yaml'
+<% } -%>
 
 VAGRANTFILE_API_VERSION ||= "2"
-confDir = $confDir ||= File.expand_path("vendor/laravel/homestead", File.dirname(__FILE__))
 
-homesteadJsonPath = ".vagrant/homestead.json"
-homesteadYamlPath = ".vagrant/homestead.yml"
+confDir = $confDir ||= File.expand_path("vendor/laravel/homestead", File.dirname(__FILE__))
+<% if (homestead.format == 'json') { -%>
+configFilePath = ".vagrant/homestead.json"
+<% } else { -%>
+configFilePath = ".vagrant/homestead.yml"
+<% } -%>
 afterScriptPath = ".vagrant/after.sh"
 aliasesPath = ".vagrant/aliases"
 
-require File.expand_path(confDir + '/scripts/homestead.rb')
+require File.expand_path(confDir + "/scripts/homestead.rb")
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
     if File.exists? aliasesPath then
         config.vm.provision "file", source: aliasesPath, destination: "~/.bash_aliases"
     end
 
-    settings = nil
-    if File.exists? homesteadJsonPath then
-        settings = JSON.parse(File.read(homesteadJsonPath))
-    elsif File.exists? homesteadYamlPath then
-        settings = YAML::load(File.read(homesteadYamlPath))
+    if File.exists? configFilePath then
+<% if (homestead.format == 'json') { -%>
+        settings = JSON.parse(File.read(configFilePath))
+<% } else { -%>
+        settings = YAML::load(File.read(configFilePath))
+<% } -%>
+    else
+        abort("Configuration file \"" + configFilePath + "\" not found")
     end
 
-    if (config.nil?) {
-        if Vagrant.has_plugin?('vagrant-hostsupdater') then
-            config.hostsupdater.aliases = settings["hostaliases"].kind_of?(Array) ? settings["hostaliases"] : []
-        end
+    if Vagrant.has_plugin?("vagrant-hostsupdater") then
+        config.hostsupdater.aliases = settings["hostaliases"].kind_of?(Array) ? settings["hostaliases"] : []
+    end
 
-        Homestead.configure(config, settings)
-    }
+    Homestead.configure(config, settings)
 
     if File.exists? afterScriptPath then
         config.vm.provision "shell", path: afterScriptPath
