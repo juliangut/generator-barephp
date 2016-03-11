@@ -46,7 +46,8 @@ if (project.license != '') { -%>
     "squizlabs/php_codesniffer": "^2",
     "vinkla/climb": "^0.8"<% if (control.homestead) { -%>,
 
-    "laravel/homestead": "^2.2"
+    "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
+
   },
 <% } else { -%>
 
