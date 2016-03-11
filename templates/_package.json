@@ -17,7 +17,9 @@ if (control.repository) { -%>
 <% } -%>
   "author": {
     "name": "<%= owner.name %>"<% if (owner.email) { -%>,
+
     "email": "<%= owner.email %>"<% } -%><% if (owner.homepage) { -%>,
+
     "url": "<%= owner.homepage %>"
   },
 <% } else { -%>

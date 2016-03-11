@@ -3,6 +3,7 @@
   "description": "<%= project.description %>",
   "type": "<%= project.type %>",
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { -%>
+
     "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { -%>,<% } -%><% } -%>
 
   ],

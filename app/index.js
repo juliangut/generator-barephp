@@ -872,18 +872,40 @@ BarePHP.prototype.writing = {
 
     switch (this.defaults.project.phpVersion) {
       case 5.3:
-        this.project.dependencies.push(["symfony/polyfill-php54", "^1.0"]);
+        this.project.dependencies = [
+          ['symfony/polyfill-php54', '^1.0'],
+          ['ircmaxell/password-compat', '^1.0'],
+          ['symfony/polyfill-php55', '^1.0'],
+          ['symfony/polyfill-php56', '^1.0'],
+          ['paragonie/random_compat', '^1.0'],
+          ['symfony/polyfill-php70', '^1.0']
+        ];
+        break;
 
       case 5.4:
-        this.project.dependencies.push(["ircmaxell/password-compat", "^1.0"]);
-        this.project.dependencies.push(["symfony/polyfill-php55", "^1.0"]);
+        this.project.dependencies = [
+          ['ircmaxell/password-compat', '^1.0'],
+          ['symfony/polyfill-php55', '^1.0'],
+          ['symfony/polyfill-php56', '^1.0'],
+          ['paragonie/random_compat', '^1.0'],
+          ['symfony/polyfill-php70', '^1.0']
+        ];
+        break;
 
       case 5.5:
-        this.project.dependencies.push(["symfony/polyfill-php56", "^1.0"]);
+        this.project.dependencies = [
+          ['symfony/polyfill-php56', '^1.0'],
+          ['paragonie/random_compat', '^1.0'],
+          ['symfony/polyfill-php70', '^1.0']
+        ];
+        break;
 
       case 5.6:
-        this.project.dependencies.push(["paragonie/random_compat", "^1.0"]);
-        this.project.dependencies.push(["symfony/polyfill-php70", "^1.0"]);
+        this.project.dependencies = [
+          ['paragonie/random_compat', '^1.0'],
+          ['symfony/polyfill-php70', '^1.0']
+        ];
+        break;
     }
 
     this.dir = {
