@@ -866,8 +866,25 @@ BarePHP.prototype.writing = {
       phpVersion: this.defaults.project.phpVersion,
       testPhpVersion: this.defaults.project.testPhpVersion,
       license: this.defaults.project.license,
-      namespace: this.config.get('projectNamespace')
+      namespace: this.config.get('projectNamespace'),
+      dependencies: []
     };
+
+    switch (this.defaults.project.phpVersion) {
+      case 5.3:
+        this.project.dependencies.push(["symfony/polyfill-php54", "^1.0"]);
+
+      case 5.4:
+        this.project.dependencies.push(["ircmaxell/password-compat", "^1.0"]);
+        this.project.dependencies.push(["symfony/polyfill-php55", "^1.0"]);
+
+      case 5.5:
+        this.project.dependencies.push(["symfony/polyfill-php56", "^1.0"]);
+
+      case 5.6:
+        this.project.dependencies.push(["paragonie/random_compat", "^1.0"]);
+        this.project.dependencies.push(["symfony/polyfill-php70", "^1.0"]);
+    }
 
     this.dir = {
       src: this.config.get('dirSrc'),

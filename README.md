@@ -17,8 +17,8 @@ If you're fed up scaffolding your project environment with the same files once a
 * Load existing configuration from composer.json
 * Integration with Github and Bitbucket accounts
 * Composer ready (detection and/or installation)
-* Select supported PHP version (>= 5.3)
-* Compatibility and general purpose packages included
+* Select minimum supported PHP version (>= 5.3)
+* Compatibility packages included based on minimum supported PHP version
 * Project ready to be included into Packagist
 * Laravel Homestead integration (optionally with PhpMyAdmin)
 * Integration with Vagrant hostupdater plugin if installed
