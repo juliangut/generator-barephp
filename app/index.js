@@ -68,7 +68,8 @@ var BarePHP = module.exports = function BarePHP() {
       accountCoveralls: null,
       accountScrutinizer: null,
       accountStyleci: null,
-      homesteadFormat: 'yml'
+      homesteadFormat: 'yml',
+      homesteadIP: '192.168.100.100'
     }
   };
 
@@ -729,6 +730,33 @@ BarePHP.prototype.askForHomestead = function() {
   }.bind(this));
 };
 
+BarePHP.prototype.askForHomesteadIP = function() {
+  if (this.defaults.quickMode || !this.config.get('controlHomestead')) {
+    return;
+  }
+
+  var done = this.async();
+  var prompts = [
+    {
+      name: 'ip',
+      message: 'What will be homestead local IP?',
+      default: this.config.get('homesteadIP')
+    }
+  ];
+
+  this.prompt(prompts, function(props) {
+    var homesteadIp = _.trim(props.ip);
+
+    if (!validator.isIP(homesteadIp)) {
+      throw new Error(util.format('"%s" is not a valid IP', homesteadIp));
+    }
+
+    this.config.set('homesteadIP', homesteadIp);
+
+    done();
+  }.bind(this));
+};
+
 BarePHP.prototype.askForChangeDirs = function() {
   var defaultDirs = this.config.get('dirSrc') +
     ', ' + this.config.get('dirTests') +
@@ -858,7 +886,8 @@ BarePHP.prototype.writing = {
     };
 
     this.homestead = {
-      format: this.config.get('homesteadFormat')
+      format: this.config.get('homesteadFormat'),
+      ip: this.config.get('homesteadIP')
     };
   },
 

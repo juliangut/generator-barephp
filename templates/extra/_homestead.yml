@@ -8,7 +8,7 @@ name: <%= project.name %>
 provider: virtualbox
 memory: 2048
 cpus: 1
-ip: "192.168.100.100"
+ip: "<%= homestead.ip %>"
 hostname: <%= project.name %>.app
 hostaliases: <% if (control.phpMyAdmin) { -%>
 
