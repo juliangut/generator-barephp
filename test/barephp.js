@@ -44,7 +44,7 @@ describe('yo barephp usage', function() {
       'Gruntfile.js',
       'LICENSE',
       'README.md',
-      '_Vagrantfile',
+      'Vagrantfile',
       'composer.json',
       'package.json',
       'phpunit.xml'
