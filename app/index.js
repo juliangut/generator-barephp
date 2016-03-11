@@ -68,7 +68,7 @@ var BarePHP = module.exports = function BarePHP() {
       accountCoveralls: null,
       accountScrutinizer: null,
       accountStyleci: null,
-      homesteadFormat: 'json'
+      homesteadFormat: 'yml'
     }
   };
 
@@ -909,14 +909,15 @@ BarePHP.prototype.writing = {
     }
     if (this.config.get('controlHomestead')) {
       this.template('../../templates/extra/_index.php', this.config.get('dirPublic') + '/index.php');
-      this.template(
-        '../../templates/extra/_homestead.' + this.config.get('homesteadFormat'),
-        '.vagrant/homestead.' + this.config.get('homesteadFormat')
-      );
+      this.template('../../templates/extra/_Vagrantfile', 'Vagrantfile');
+      if (this.config.get('homesteadFormat') === 'json') {
+        this.template('../../templates/extra/_homestead.json', '.vagrant/homestead.json');
+      } else {
+        this.template('../../templates/extra/_homestead.yml', '.vagrant/homestead.yml');
+      }
       this.template('../../templates/extra/_after.sh', '.vagrant/after.sh');
       this.copy('../../templates/extra/aliases', '.vagrant/aliases');
       this.copy('../../templates/extra/vagrant_gitignore', '.vagrant/.gitignore');
-      this.copy('../../templates/extra/Vagrantfile', 'Vagrantfile');
     }
     if (this.config.get('controlDocs')) {
       this.template('../../templates/docs/_CONTRIBUTING.md', 'CONTRIBUTING.md');

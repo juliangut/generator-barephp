@@ -8,9 +8,9 @@ VAGRANTFILE_API_VERSION ||= "2"
 
 confDir = $confDir ||= File.expand_path("vendor/laravel/homestead", File.dirname(__FILE__))
 <% if (homestead.format == 'json') { -%>
-configFilePath = ".vagrant/homestead.json"
+settingsFilePath = ".vagrant/homestead.json"
 <% } else { -%>
-configFilePath = ".vagrant/homestead.yml"
+settingsFilePath = ".vagrant/homestead.yml"
 <% } -%>
 afterScriptPath = ".vagrant/after.sh"
 aliasesPath = ".vagrant/aliases"
@@ -22,14 +22,14 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
         config.vm.provision "file", source: aliasesPath, destination: "~/.bash_aliases"
     end
 
-    if File.exists? configFilePath then
+    if File.exists? settingsFilePath then
 <% if (homestead.format == 'json') { -%>
-        settings = JSON.parse(File.read(configFilePath))
+        settings = JSON.parse(File.read(settingsFilePath))
 <% } else { -%>
-        settings = YAML::load(File.read(configFilePath))
+        settings = YAML::load(File.read(settingsFilePath))
 <% } -%>
     else
-        abort("Configuration file \"" + configFilePath + "\" not found")
+        abort("Configuration file \"" + settingsFilePath + "\" not found")
     end
 
     if Vagrant.has_plugin?("vagrant-hostsupdater") then
