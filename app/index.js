@@ -39,7 +39,7 @@ var BarePHP = module.exports = function BarePHP() {
       homepage: null,
       license: 'BSD-3-Clause',
       licenseFile: 'bsd-new',
-      phpVersion: 5.5,
+      phpVersion: 5.6,
       testPhpVersion: 5.6
     },
     config: {
