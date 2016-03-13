@@ -980,7 +980,7 @@ BarePHP.prototype.writing = {
       this.template('../../templates/extra/styleci.yml', '.styleci.yml');
     }
     if (this.config.get('controlHomestead')) {
-      this.template('../../templates/extra/_index.php', this.config.get('dirPublic') + '/index.php');
+      this.template('../../templates/code/_index.php', this.config.get('dirPublic') + '/index.php');
       this.template('../../templates/extra/_Vagrantfile', 'Vagrantfile');
       if (this.config.get('homesteadFormat') === 'json') {
         this.template('../../templates/extra/_homestead.json', '.vagrant/homestead.json');

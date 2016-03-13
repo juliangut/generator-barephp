@@ -18,4 +18,4 @@ if (control.repository && repository.homepage !== project.homepage) { -%>
 
 session_start();
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';

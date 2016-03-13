@@ -16,6 +16,6 @@ if (control.repository && repository.homepage !== project.homepage) { -%>
 
  */
 
-require dirname(__DIR__) . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 phpinfo();
