@@ -4,15 +4,15 @@
 <% } else { -%>
   "version": ">= 0.4.0",
 <% } -%>
-  "name": "<%= project.name.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '') %>",
+  "name": "<%= project.name %>",
   "provider": "virtualbox",
   "memory": 2048,
   "cpus": 1,
   "ip": "<%= homestead.ip %>",
-  "hostname": "<%= project.name %>.app",
+  "hostname": "<%= project.name.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '') %>.app",
   "hostaliases": [<% if (control.phpMyAdmin) { -%>
 
-    "phpmyadmin-<%= project.name %>.app"<% } -%>
+    "phpmyadmin-<%= project.name %>.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '').app"<% } -%>
 
   ],
   "authorize": "~/.ssh/id_rsa.pub",

@@ -74,9 +74,11 @@ yo barephp
 * [Scrutinizer](https://scrutinizer-ci.com). The repository has to be added to Scrutinizer
 * [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account).
 
-If you install Laravel Homestead then Vagrant will be automatically configured to serve your project from "`project_name`.app" url.
+If you install Laravel Homestead then nginx will be automatically configured to serve your project from **`project-name*`.app** url.
 
-If you installed PhpMyAdmin within Laravel Homested it will be available at "phpmyadmin-`project_name`.app" url.
+If you installed PhpMyAdmin within Laravel Homestead it will be available at **phpmyadmin-`project-name`.app** url.
+
+*VirtualBox constraints hostname to only contain letters, numbers, hyphens and dots and so nginx has been configure to serve with those names for consistency*
 
 If you have [vagrant_hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin installed then `./etc/hosts` will be automatically updated every time you start Vagrant (sudo privileges needed), otherwise you should configure hosts manually.
 

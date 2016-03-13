@@ -163,7 +163,7 @@ BarePHP.prototype.askForOwner = function() {
 
   this.prompt(prompts, function(props) {
     this.defaults.owner.name = _.clean(props.name);
-    this.defaults.owner.canonical = _.cleanDiacritics(_.clean(props.name)).replace(/\s+/g, '_').toLowerCase();
+    this.defaults.owner.canonical = _.cleanDiacritics(_.clean(props.name)).replace(/\s+/g, '-').toLowerCase();
 
     var ownerEmail = _.clean(props.email).split(' ').shift();
     if (ownerEmail !== '' && !validator.isEmail(ownerEmail)) {
@@ -275,15 +275,15 @@ BarePHP.prototype.askForProject = function() {
       message: 'What is the project name?',
       default: this.config.get('projectName') ?
         this.config.get('projectName') :
-        _.camelize(process.cwd().split(path.sep).pop())
+        _.cleanDiacritics(process.cwd().split(path.sep).pop()).replace(/\s+/g, '_')
     }
   ];
 
   this.prompt(prompts, function(props) {
-    this.config.set('projectName', _.clean(props.name).replace(/\s+/g, '-'));
+    this.config.set('projectName', _.clean(_.cleanDiacritics(props.name)).replace(/\s+/g, '_'));
 
     if (!this.config.get('projectNamespace')) {
-      this.config.set('projectNamespace', _.capitalize(this.config.get('projectName')));
+      this.config.set('projectNamespace', _.capitalize(_.camelize(this.config.get('projectName'))));
     }
 
     if (this.config.get('controlRepository')) {
@@ -379,7 +379,7 @@ BarePHP.prototype.askForProjectContinue2 = function() {
     }
     this.defaults.project.phpVersion = phpVersion;
 
-    var projectNamespace = _.cleanDiacritics(_.clean(props.namespace));
+    var projectNamespace = _.clean(_.cleanDiacritics(props.namespace));
     if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(projectNamespace) === false) {
       throw new Error(util.format('"%s" is not a valid PHP namespace', projectNamespace));
     }
@@ -835,6 +835,7 @@ BarePHP.prototype.askForCustomDirs = function() {
 BarePHP.prototype.writing = {
   createViewParameters: function() {
     this.underscoreString = _;
+    this.path = path;
 
     this.control = {
       repository: this.config.get('controlRepository'),
@@ -939,7 +940,7 @@ BarePHP.prototype.writing = {
     console.log('\nWriting project files ...\n');
 
     mkdirp(this.config.get('dirSrc'));
-    mkdirp(this.config.get('dirTests') + '/' + _.capitalize(this.config.get('projectName')));
+    mkdirp(this.config.get('dirTests') + '/' + this.config.get('projectNamespace').split(path.sep).pop());
 
     if (this.config.get('controlHomestead')) {
       mkdirp('.vagrant');
@@ -959,7 +960,7 @@ BarePHP.prototype.writing = {
     this.template('../../templates/code/_Greeter.php', this.config.get('dirSrc') + '/Greeter.php');
     this.template(
       '../../templates/code/_GreeterTest.php',
-      this.config.get('dirTests') + '/' + _.capitalize(this.config.get('projectName')) + '/GreeterTest.php'
+      this.config.get('dirTests') + '/' + this.config.get('projectNamespace').split(path.sep).pop() + '/GreeterTest.php'
     );
     this.template('../../templates/code/_bootstrap.php', this.config.get('dirTests') + '/bootstrap.php');
 

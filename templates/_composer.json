@@ -63,7 +63,7 @@ if (project.license != '') { -%>
   },
   "autoload-dev": {
     "psr-4": {
-      "<%= project.namespace.replace('\\', '\\\\') %>\\Tests\\": "tests/<%= underscoreString.capitalize(project.name) %>/"
+      "<%= project.namespace.replace('\\', '\\\\') %>\\Tests\\": "tests/<%= project.namespace.split(path.sep).pop() %>/"
     }
   },
   "bin": [
