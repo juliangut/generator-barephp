@@ -68,7 +68,7 @@ var BarePHP = module.exports = function BarePHP() {
       accountCoveralls: null,
       accountScrutinizer: null,
       accountStyleci: null,
-      homesteadFormat: 'yml',
+      homesteadFormat: 'yaml',
       homesteadIP: '192.168.100.100'
     }
   };
@@ -280,10 +280,10 @@ BarePHP.prototype.askForProject = function() {
   ];
 
   this.prompt(prompts, function(props) {
-    this.config.set('projectName', _.clean(props.name).replace(/\s+/g, '_'));
+    this.config.set('projectName', _.clean(props.name).replace(/\s+/g, '-'));
 
     if (!this.config.get('projectNamespace')) {
-      this.config.set('projectNamespace', _.capitalize(_.camelize(_.trim(props.name))));
+      this.config.set('projectNamespace', _.capitalize(this.config.get('projectName')));
     }
 
     if (this.config.get('controlRepository')) {
@@ -373,13 +373,18 @@ BarePHP.prototype.askForProjectContinue2 = function() {
   ];
 
   this.prompt(prompts, function(props) {
-    this.config.set('projectNamespace', this.config.get('projectNamespace'));
-
     var phpVersion = parseFloat(props.phpVersion);
     if (phpVersion > this.defaults.project.testPhpVersion) {
       this.defaults.project.testPhpVersion = phpVersion;
     }
     this.defaults.project.phpVersion = phpVersion;
+
+    var projectNamespace = _.clean(props.namespace);
+    if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(projectNamespace) === false) {
+      throw new Error(util.format('"%s" is not a valid PHP namespace', projectNamespace));
+    }
+
+    this.config.set('projectNamespace', projectNamespace);
 
     done();
   }.bind(this));
@@ -934,7 +939,7 @@ BarePHP.prototype.writing = {
     console.log('\nWriting project files ...\n');
 
     mkdirp(this.config.get('dirSrc'));
-    mkdirp(this.config.get('dirTests') + '/' + _.capitalize(_.camelize(this.config.get('projectName'))));
+    mkdirp(this.config.get('dirTests') + '/' + _.capitalize(this.config.get('projectName')));
 
     if (this.config.get('controlHomestead')) {
       mkdirp('.vagrant');
@@ -954,8 +959,7 @@ BarePHP.prototype.writing = {
     this.template('../../templates/code/_Greeter.php', this.config.get('dirSrc') + '/Greeter.php');
     this.template(
       '../../templates/code/_GreeterTest.php',
-      this.config.get('dirTests') + '/' +
-        _.capitalize(_.camelize(this.config.get('projectName'))) + '/GreeterTest.php'
+      this.config.get('dirTests') + '/' + _.capitalize(this.config.get('projectName')) + '/GreeterTest.php'
     );
     this.template('../../templates/code/_bootstrap.php', this.config.get('dirTests') + '/bootstrap.php');
 

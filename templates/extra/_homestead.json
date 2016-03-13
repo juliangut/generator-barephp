@@ -4,7 +4,7 @@
 <% } else { -%>
   "version": ">= 0.4.0",
 <% } -%>
-  "name": "<%= project.name %>",
+  "name": "<%= project.name.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '') %>",
   "provider": "virtualbox",
   "memory": 2048,
   "cpus": 1,
