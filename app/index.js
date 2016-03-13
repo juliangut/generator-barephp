@@ -18,6 +18,7 @@ var _ = require('underscore.string');
 var mkdirp = require('mkdirp');
 var shell = require('shelljs');
 var fs = require('fs');
+var sprintf = require("sprintf-js").sprintf;
 
 var BarePHP = module.exports = function BarePHP() {
   yeoman.generators.Base.apply(this, arguments);
@@ -69,7 +70,7 @@ var BarePHP = module.exports = function BarePHP() {
       accountScrutinizer: null,
       accountStyleci: null,
       homesteadFormat: 'yaml',
-      homesteadIP: '192.168.100.100'
+      homesteadIP: sprintf('192.168.%1$d.%1$d', Math.floor(Math.random() * 254) + 100)
     }
   };
 
