@@ -12,7 +12,7 @@
   "hostname": "<%= project.name.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '') %>.app",
   "hostaliases": [<% if (control.phpMyAdmin) { -%>
 
-    "phpmyadmin-<%= project.name %>.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '').app"<% } -%>
+    "phpmyadmin-<%= project.name.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '') %>.app"<% } -%>
 
   ],
   "authorize": "~/.ssh/id_rsa.pub",
