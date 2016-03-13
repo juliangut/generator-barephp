@@ -379,7 +379,7 @@ BarePHP.prototype.askForProjectContinue2 = function() {
     }
     this.defaults.project.phpVersion = phpVersion;
 
-    var projectNamespace = _.clean(props.namespace);
+    var projectNamespace = _.cleanDiacritics(_.clean(props.namespace));
     if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(projectNamespace) === false) {
       throw new Error(util.format('"%s" is not a valid PHP namespace', projectNamespace));
     }
