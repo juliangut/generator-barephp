@@ -15,15 +15,15 @@ If you're fed up scaffolding your project environment with the same files once a
 
 * Git by default
 * Load existing configuration from composer.json
-* Integration with Github and Bitbucket accounts
-* Composer ready (detection and/or installation)
-* Select minimum supported PHP version (>= 5.3)
+* Integration with Github or Bitbucket accounts
+* Composer ready (detecting or installing)
+* Select minimum supported PHP version (from 5.3 up)
 * Compatibility packages included based on minimum supported PHP version
 * Project ready to be included into Packagist
 * Laravel Homestead integration (optionally with PhpMyAdmin)
 * Integration with Vagrant hostupdater plugin if installed
 * Awesome Grunt integration
-* Already configured Travis integration (PHP >=5.4 and HHVM)
+* Already configured Travis integration (PHP >=5.3 and HHVM)
 * Coveralls integration (triggered by Travis)
 * Scrutinizer integration
 * StyleCI integration
@@ -32,15 +32,19 @@ If you're fed up scaffolding your project environment with the same files once a
 * QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Climb, Security-checker) configured and integrated into Grunt
 * Basic annotated kickoff code (with tests)
 * Basic documentation structure in Markdown
-* License selector
+* License selection
 
 > And many, many more to come
 
 #### Quick assistant
 
-The number of options and tools configured is getting quite long so a new quick/fast mode has been introduced.
+The number of options and tools configured is getting quite long, for that reason there is a quick/fast mode. This fast mode will ask you the basics and try to do its best guessing the rest of the answers for you to get the project environment ready faster.
 
-This mode asks you the basics and does its best assuming the rest of the answers for you to get the project environment ready faster.
+### Subsequent executions
+
+After first generator use following executions will use `composer.json` contents as defaults, so any outside change to that file will be reflected in the generator automatically.
+
+You can always go back running generator being sure your changes won't be lost.
 
 ## Getting Started
 
@@ -66,11 +70,11 @@ yo barephp
 
 ### Post run configuration
 
-`barephp` generator comes with many preconfigured services ready to be used but some of them need extra setup
+`barephp` generator comes with many pre-configured services ready to be used, anyway some of them need extra setup:
 
-* [Packagist](https://packagist.org). Your package must be [submit](https://packagist.org/packages/submit)
-* [Travis](https://travis-ci.org). You need to activate the repository in your profile page
-* [Coveralls](https://coveralls.io). Activate [here](https://coveralls.io/repos/new) the repository
+* [Packagist](https://packagist.org). Your package must be [submitted](https://packagist.org/packages/submit) to be available
+* [Travis](https://travis-ci.org). You need to activate the project repository in your profile page
+* [Coveralls](https://coveralls.io). Activate [here](https://coveralls.io/repos/new) the project repository
 * [Scrutinizer](https://scrutinizer-ci.com). The repository has to be added to Scrutinizer
 * [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account).
 
@@ -80,7 +84,7 @@ If you installed PhpMyAdmin within Laravel Homestead it will be available at **p
 
 *VirtualBox constraints hostname to only contain letters, numbers, hyphens and dots and so nginx has been configure to serve with those names for consistency*
 
-If you have [vagrant_hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin installed then `./etc/hosts` will be automatically updated every time you start Vagrant (sudo privileges needed), otherwise you should configure hosts manually.
+If you have [vagrant_hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin installed then `./etc/hosts` will be automatically updated every time you start Vagrant (sudo privileges needed), otherwise you should configure hosts file manually.
 
 ## Contributing
 

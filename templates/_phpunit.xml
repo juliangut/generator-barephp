@@ -23,7 +23,7 @@
 >
     <testsuites>
         <testsuite>
-            <directory suffix="Test.php"><%= dir.tests %>/</directory>
+            <directory suffix="Test.php"><%= dir.tests %>/<%= dir.testsSrc %>/</directory>
         </testsuite>
     </testsuites>
 

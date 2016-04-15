@@ -12,7 +12,7 @@ settingsFilePath = ".vagrant/homestead.json"
 <% } else { -%>
 settingsFilePath = ".vagrant/homestead.yml"
 <% } -%>
-afterScriptPath = ".vagrant/after.sh"
+provisionScriptPath = ".vagrant/provision.sh"
 aliasesPath = ".vagrant/aliases"
 
 require File.expand_path(confDir + "/scripts/homestead.rb")
@@ -38,7 +38,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
     Homestead.configure(config, settings)
 
-    if File.exists? afterScriptPath then
-        config.vm.provision "shell", path: afterScriptPath
+    if File.exists? provisionScriptPath then
+        config.vm.provision "shell", path: provisionScriptPath
     end
 end

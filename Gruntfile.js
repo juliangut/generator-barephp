@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       },
       application: [
         'app/index.js',
-        'test/barephp.js',
+        'test/generator-barephp.js',
         'Gruntfile.js'
       ]
     },
@@ -33,7 +33,7 @@ module.exports = function(grunt) {
       },
       application: [
         'app/index.js',
-        'test/barephp.js',
+        'test/generator-barephp.js',
         'Gruntfile.js'
       ]
     }

@@ -25,6 +25,7 @@ var BarePHP = module.exports = function BarePHP() {
 
   this.defaults = {
     quickMode: false,
+    freshRun: true,
     globalComposer: false,
     localComposer: false,
     owner: {
@@ -52,7 +53,7 @@ var BarePHP = module.exports = function BarePHP() {
       controlCoveralls: true,
       controlScrutinizer: true,
       controlStyleci: true,
-      controlHomestead: true,
+      controlHomestead: false,
       controlPhpMyAdmin: false,
       controlDocs: true,
       repositoryType: 'Github',
@@ -70,7 +71,7 @@ var BarePHP = module.exports = function BarePHP() {
       accountScrutinizer: null,
       accountStyleci: null,
       homesteadFormat: 'yaml',
-      homesteadIP: sprintf('192.168.%1$d.%1$d', Math.floor(Math.random() * 254) + 100)
+      homesteadIP: sprintf('192.168.%1$d.%1$d', Math.max(100, Math.floor(Math.random() * 255)))
     }
   };
 
@@ -111,6 +112,10 @@ var BarePHP = module.exports = function BarePHP() {
     if (configs.require.php) {
       this.defaults.project.phpVersion = parseFloat(configs.require.php.replace(/^([<>=^~ ]+)?/, ''));
     }
+  }
+
+  if (fs.existsSync('composer.lock')) {
+    this.defaults.freshRun = false;
   }
 
   this.config.defaults(this.defaults.config);
@@ -336,6 +341,11 @@ BarePHP.prototype.askForProjectContinue = function() {
 
     this.defaults.project.description = _.trim(props.description);
     this.defaults.project.type = props.type.toLowerCase();
+
+    if (this.defaults.project.type === 'project') {
+      this.config.set('controlHomestead', true);
+    }
+
     this.defaults.project.keywords = props.keywords.length ?
       props.keywords.replace(/(\s+)?,\s+?/g, ',').replace(/,$/, '').split(',') :
       [];
@@ -498,9 +508,6 @@ BarePHP.prototype.askForComposer = function() {
 
       this.prompt(prompts, function(props) {
         if (props.install) {
-          console.log('Installing Composer locally ...');
-          shell.exec('php -r "readfile(\'https://getcomposer.org/installer\');" | php', {silent: true});
-
           this.defaults.localComposer = true;
         }
 
@@ -918,6 +925,7 @@ BarePHP.prototype.writing = {
     this.dir = {
       src: this.config.get('dirSrc'),
       tests: this.config.get('dirTests'),
+      testsSrc: this.config.get('projectNamespace').replace(/\\+/g, path.sep).split(path.sep).pop(),
       dist: this.config.get('dirDist'),
       public: this.config.get('dirPublic')
     };
@@ -941,7 +949,7 @@ BarePHP.prototype.writing = {
     console.log('\nWriting project files ...\n');
 
     mkdirp(this.config.get('dirSrc'));
-    mkdirp(this.config.get('dirTests') + '/' + this.config.get('projectNamespace').split(path.sep).pop());
+    mkdirp(this.config.get('dirTests') + '/' + this.dir.testsSrc);
 
     if (this.config.get('controlHomestead')) {
       mkdirp('.vagrant');
@@ -961,7 +969,7 @@ BarePHP.prototype.writing = {
     this.template('../../templates/code/_Greeter.php', this.config.get('dirSrc') + '/Greeter.php');
     this.template(
       '../../templates/code/_GreeterTest.php',
-      this.config.get('dirTests') + '/' + this.config.get('projectNamespace').split(path.sep).pop() + '/GreeterTest.php'
+      this.config.get('dirTests') + '/' + this.dir.testsSrc + '/GreeterTest.php'
     );
     this.template('../../templates/code/_bootstrap.php', this.config.get('dirTests') + '/bootstrap.php');
 
@@ -989,7 +997,7 @@ BarePHP.prototype.writing = {
       } else {
         this.template('../../templates/extra/_homestead.yml', '.vagrant/homestead.yml');
       }
-      this.template('../../templates/extra/_after.sh', '.vagrant/after.sh');
+      this.template('../../templates/extra/_provision.sh', '.vagrant/provision.sh');
       this.copy('../../templates/extra/aliases', '.vagrant/aliases');
       this.copy('../../templates/extra/vagrant_gitignore', '.vagrant/.gitignore');
     }
@@ -1012,18 +1020,29 @@ BarePHP.prototype.install = function() {
     callback: function() {
       var message = '\nProject ' + chalk.green.bold(projectName) + ' is set up and ready';
 
-      if (defaults.globalComposer || defaults.localComposer) {
-        console.log('Running ' + chalk.yellow.bold('composer install') +
-          ' for you to install the required PHP dependencies. If this fails try running the command yourself');
+      if (defaults.localComposer && !fs.existsSync('composer.phar')) {
+        console.log('Installing Composer locally ...');
+        console.log('See http://getcomposer.org for more details on composer');
+        shell.exec('php -r "readfile(\'https://getcomposer.org/installer\');" | php', {silent: true});
+      }
 
-        if (defaults.globalComposer) {
-          shell.exec('composer install');
+      if (defaults.freshRun) {
+        if (defaults.globalComposer || defaults.localComposer) {
+          if (defaults.globalComposer) {
+            console.log('Running ' + chalk.yellow.bold('composer install') +
+              ' for you to install the required PHP dependencies. If this fails, try running the command yourself');
+
+            shell.exec('composer install');
+          } else {
+            console.log('Running ' + chalk.yellow.bold('php composer.phar install') +
+              ' for you to install the required PHP dependencies. If this fails, try running the command yourself');
+
+            shell.exec('php composer.phar install');
+          }
         } else {
-          shell.exec('php composer.phar install');
+          message += '\nInstall Composer dependencies by running ' + chalk.yellow.bold('composer install') +
+            ' before starting development';
         }
-      } else {
-        message += '\nInstall Composer dependencies by running ' + chalk.yellow.bold('composer install') +
-          ' before starting development';
       }
 
       console.log(message);

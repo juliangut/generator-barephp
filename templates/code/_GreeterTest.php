@@ -67,7 +67,7 @@ class GreeterTest extends \PHPUnit_Framework_TestCase
      * @covers \<%= project.namespace %>\Greeter::greet
      *
      * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage '"" is not a valid name'
+     * @expectedExceptionMessage " " is not a valid name
      */
     public function testGreetInvalidArgument()
     {

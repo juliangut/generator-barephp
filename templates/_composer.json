@@ -41,7 +41,7 @@ if (project.license != '') { -%>
   },
   "require-dev": {
     "phpmd/phpmd": "^2.2",
-    "phpunit/phpunit": "^4.5",
+    "phpunit/phpunit": "^4.5|^5.0",
     "sebastian/phpcpd": "^2.0",
     "sensiolabs/security-checker": "^3.0",
     "squizlabs/php_codesniffer": "^2",
@@ -63,7 +63,7 @@ if (project.license != '') { -%>
   },
   "autoload-dev": {
     "psr-4": {
-      "<%= project.namespace.replace('\\', '\\\\') %>\\Tests\\": "tests/<%= project.namespace.split(path.sep).pop() %>/"
+      "<%= project.namespace.replace(/\\/g, '\\\\') %>\\Tests\\": "tests/<%= dir.testsSrc %>/"
     }
   },
   "bin": [
