@@ -527,48 +527,55 @@ BarePHP.prototype.askForInstall = function() {
   }
 
   var done = this.async();
+  var choiceList = [
+    {
+      value: 'packagist',
+      name: 'Packagist',
+      checked: this.config.get('controlPackagist')
+    },
+    {
+      value: 'travis',
+      name: 'Travis',
+      checked: this.config.get('controlTravis')
+    },
+    {
+      value: 'coveralls',
+      name: 'Coveralls',
+      checked: this.config.get('controlCoveralls')
+    },
+    {
+      value: 'scrutinizer',
+      name: 'Scrutinizer',
+      checked: this.config.get('controlScrutinizer')
+    },
+    {
+      value: 'styleci',
+      name: 'StyleCI',
+      checked: this.config.get('controlStyleci')
+    },
+    {
+      value: 'docs',
+      name: 'Initial documentation',
+      checked: this.config.get('controlDocs')
+    }
+  ];
+
+  if (this.defaults.project.type === 'project') {
+    choiceList.push(
+      {
+        value: 'homestead',
+        name: 'Laravel Homestead',
+        checked: this.config.get('controlHomestead')
+      }
+    );
+  }
+
   var prompts = [
     {
       type: 'checkbox',
       name: 'xtras',
       message: 'Which of this extra tools would you like to include?',
-      choices: [
-        {
-          value: 'packagist',
-          name: 'Packagist',
-          checked: this.config.get('controlPackagist')
-        },
-        {
-          value: 'travis',
-          name: 'Travis',
-          checked: this.config.get('controlTravis')
-        },
-        {
-          value: 'coveralls',
-          name: 'Coveralls',
-          checked: this.config.get('controlCoveralls')
-        },
-        {
-          value: 'scrutinizer',
-          name: 'Scrutinizer',
-          checked: this.config.get('controlScrutinizer')
-        },
-        {
-          value: 'styleci',
-          name: 'StyleCI',
-          checked: this.config.get('controlStyleci')
-        },
-        {
-          value: 'homestead',
-          name: 'Laravel Homestead',
-          checked: this.config.get('controlHomestead')
-        },
-        {
-          value: 'docs',
-          name: 'Basic documentation',
-          checked: this.config.get('controlDocs')
-        }
-      ]
+      choices: choiceList
     }
   ];
 
@@ -774,7 +781,7 @@ BarePHP.prototype.askForChangeDirs = function() {
   var defaultDirs = this.config.get('dirSrc') +
     ', ' + this.config.get('dirTests') +
     ', ' + this.config.get('dirDist');
-  if (this.config.get('controlHomestead')) {
+  if (this.defaults.project.type === 'project') {
     defaultDirs += ', ' + this.config.get('dirPublic');
   }
 
@@ -819,7 +826,7 @@ BarePHP.prototype.askForCustomDirs = function() {
     }
   ];
 
-  if (this.config.get('controlHomestead')) {
+  if (this.defaults.project.type === 'project') {
     prompts.push({
       name: 'public',
       message: 'What is the public directory?',
@@ -832,7 +839,7 @@ BarePHP.prototype.askForCustomDirs = function() {
     this.config.set('dirTests', props.tests);
     this.config.set('dirDist', props.dist);
 
-    if (this.config.get('controlHomestead')) {
+    if (this.defaults.project.type === 'project') {
       this.config.set('dirPublic', props.public);
     }
 
@@ -951,9 +958,12 @@ BarePHP.prototype.writing = {
     mkdirp(this.config.get('dirSrc'));
     mkdirp(this.config.get('dirTests') + '/' + this.dir.testsSrc);
 
+    if (this.defaults.project.type === 'project') {
+      mkdirp(this.config.get('dirPublic'));
+    }
+
     if (this.config.get('controlHomestead')) {
       mkdirp('.vagrant');
-      mkdirp(this.config.get('dirPublic'));
     }
   },
 
@@ -974,6 +984,10 @@ BarePHP.prototype.writing = {
     this.template('../../templates/code/_bootstrap.php', this.config.get('dirTests') + '/bootstrap.php');
 
     this.template('../../templates/_phpunit.xml', 'phpunit.xml');
+
+    if (this.defaults.project.type === 'project') {
+      this.template('../../templates/code/_index.php', this.config.get('dirPublic') + '/index.php');
+    }
   },
 
   writeXtraFiles: function() {
@@ -989,8 +1003,14 @@ BarePHP.prototype.writing = {
     if (this.config.get('controlStyleci')) {
       this.template('../../templates/extra/styleci.yml', '.styleci.yml');
     }
+    if (this.config.get('controlDocs')) {
+      this.template('../../templates/docs/_CONTRIBUTING.md', 'CONTRIBUTING.md');
+      this.template('../../templates/docs/_README.md', 'README.md');
+    }
+    if (this.config.get('controlLicense') && this.defaults.project.license !== 'proprietary') {
+      this.template('../../templates/license/' + this.defaults.project.licenseFile, 'LICENSE');
+    }
     if (this.config.get('controlHomestead')) {
-      this.template('../../templates/code/_index.php', this.config.get('dirPublic') + '/index.php');
       this.template('../../templates/extra/_Vagrantfile', 'Vagrantfile');
       if (this.config.get('homesteadFormat') === 'json') {
         this.template('../../templates/extra/_homestead.json', '.vagrant/homestead.json');
@@ -1000,13 +1020,6 @@ BarePHP.prototype.writing = {
       this.template('../../templates/extra/_provision.sh', '.vagrant/provision.sh');
       this.copy('../../templates/extra/aliases', '.vagrant/aliases');
       this.copy('../../templates/extra/vagrant_gitignore', '.vagrant/.gitignore');
-    }
-    if (this.config.get('controlDocs')) {
-      this.template('../../templates/docs/_CONTRIBUTING.md', 'CONTRIBUTING.md');
-      this.template('../../templates/docs/_README.md', 'README.md');
-    }
-    if (this.config.get('controlLicense') && this.defaults.project.license !== 'proprietary') {
-      this.template('../../templates/license/' + this.defaults.project.licenseFile, 'LICENSE');
     }
   }
 };

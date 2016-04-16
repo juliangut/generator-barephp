@@ -1,12 +1,42 @@
 'use strict';
 
 module.exports = function(grunt) {
-  require('time-grunt')(grunt);
   require('load-grunt-tasks')(grunt);
+  require('time-grunt')(grunt);
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
+<% if (project.type === 'project') {
+    if (!control.homestead) { -%>
+    php: {
+      application: {
+        options: {
+          hostname: 'localhost',
+          port: 9000,
+          base: '<%= dir.public %>',
+          keepalive: false
+        }
+      }
+    },<% } %>
+    browserSync: {
+      options: {
+        proxy: <% if (control.homestead) { -%>'<%= project.name.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '') %>.app'<% } else { -%>'localhost:9000'<% } -%>,
+
+        logLevel: 'silent',
+        watchTask: true
+      },
+      application: {
+        src: [
+          '<%= dir.src %>/**/*.php',
+          '<%= dir.public %>/**/*.*'
+        ]
+      }
+    },
+    watch: {
+      // Your watch tasks
+    },
+<% } -%>
     phplint: {
       options: {
         swapPath: '/tmp'
@@ -48,6 +78,15 @@ module.exports = function(grunt) {
         dir: '<%= dir.src %>'
       }
     },
+    phpunit: {
+      options: {
+        bin: 'vendor/bin/phpunit',
+          coverage: true
+      },
+      application: {
+        coverageHtml: '<%= dir.dist %>/coverage'
+      }
+    },
     climb: {
       options: {
         bin: 'vendor/bin/climb'
@@ -63,21 +102,19 @@ module.exports = function(grunt) {
       application: {
         file: 'composer.lock'
       }
-    },
-    phpunit: {
-      options: {
-        bin: 'vendor/bin/phpunit',
-        coverage: true
-      },
-      application: {
-        coverageHtml: '<%= dir.dist %>/coverage'
-      }
     }
   });
 
   grunt.registerTask('qa', ['phplint', 'phpcs', 'phpmd', 'phpcpd']);
-  grunt.registerTask('security', ['climb', 'security_checker']);
   grunt.registerTask('test', ['phpunit']);
+  grunt.registerTask('security', ['climb', 'security_checker']);
+
+<% if (project.type === 'project') { -%>
+  grunt.registerTask('serve', function() {
+    grunt.task.run([<% if (!control.homestead) { -%>'php', <% } -%>'browserSync', 'watch']);
+
+  });
+<% } -%>
 
   grunt.task.registerTask('build', 'Project build', function() {
     grunt.log.writeln('Task ready to be implemented');

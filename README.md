@@ -20,9 +20,10 @@ If you're fed up scaffolding your project environment with the same files once a
 * Select minimum supported PHP version (from 5.3 up)
 * Compatibility packages included based on minimum supported PHP version
 * Project ready to be included into Packagist
-* Laravel Homestead integration (optionally with PhpMyAdmin)
-* Integration with Vagrant hostupdater plugin if installed
 * Awesome Grunt integration
+* Laravel Homestead integration (optionally with PhpMyAdmin)
+* Auto synchronization in-browser with Browsersync
+* Integration with Vagrant hostupdater plugin if installed
 * Already configured Travis integration (PHP >=5.3 and HHVM)
 * Coveralls integration (triggered by Travis)
 * Scrutinizer integration
@@ -31,7 +32,7 @@ If you're fed up scaffolding your project environment with the same files once a
 * PHPUnit testing environment already set up and integrated into Grunt
 * QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Climb, Security-checker) configured and integrated into Grunt
 * Basic annotated kickoff code (with tests)
-* Basic documentation structure in Markdown
+* Initial documentation structure in Markdown
 * License selection
 
 > And many, many more to come
@@ -39,12 +40,6 @@ If you're fed up scaffolding your project environment with the same files once a
 #### Quick assistant
 
 The number of options and tools configured is getting quite long, for that reason there is a quick/fast mode. This fast mode will ask you the basics and try to do its best guessing the rest of the answers for you to get the project environment ready faster.
-
-### Subsequent executions
-
-After first generator use following executions will use `composer.json` contents as defaults, so any outside change to that file will be reflected in the generator automatically.
-
-You can always go back running generator being sure your changes won't be lost.
 
 ## Getting Started
 

@@ -65,7 +65,7 @@ tools:
     config:
       standard: 'PSR2'
     filter:
-      paths: [<%= dir.src %>, <%= dir.tests %><% if (control.homestead) { -%>, <%= dir.public %><% } -%>]
+      paths: [<%= dir.src %>, <%= dir.tests %><% if (project.type === 'project') { -%>, <%= dir.public %><% } -%>]
 
   php_cpd:
     enabled: true

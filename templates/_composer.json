@@ -1,7 +1,9 @@
 {
   "name": "<% if (control.repository) { -%><%= account.packagist %><% } else { -%><%= owner.canonical %><% } -%>/<%= project.name %>",
   "description": "<%= project.description %>",
+<% if (project.type !== 'library') { -%>
   "type": "<%= project.type %>",
+<% } -%>
   "keywords": [<% for (var i = 0; i < project.keywords.length; i++) { -%>
 
     "<%= project.keywords[i] %>"<% if (i < project.keywords.length - 1) { -%>,<% } -%><% } -%>

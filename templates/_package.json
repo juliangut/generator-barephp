@@ -30,7 +30,16 @@ if (control.repository) { -%>
   },
   "devDependencies": {
     "grunt": "~0.4.5",
+<% if (project.type === 'project') { -%>
+    "grunt-browser-sync": "^2.0.0",
+<% } -%>
     "grunt-climb": "^0.4.0",
+<% if (project.type === 'project') { -%>
+    "grunt-contrib-watch": "^0.6.1",
+<% }
+if (project.type === 'project' && !control.homestead) { -%>
+    "grunt-php": "~1.5.1",
+<% } -%>
     "grunt-phpcpd": "~0.1.3",
     "grunt-phpcs": "~0.2.3",
     "grunt-phplint": "~0.0.5",
