@@ -28,20 +28,13 @@ if (control.packagist) { -%>
 <%= project.description %>
 <% } -%>
 
+<% if (control.packagist) { -%>
 ## Installation
 
-<% if (control.packagist) { -%>
 ### Composer
 
 ```
 composer require <%= account.packagist %>/<%= project.name %>
-```
-
-<% } -%>
-### Clone
-
-```
-git clone <%= repository.url %> <%= project.name %>
 ```
 
 ## Usage
@@ -51,6 +44,9 @@ Require composer autoload file
 ```php
 require './vendor/autoload.php';
 ```
+<% } else { -%>
+## Usage
+<% } -%>
 
 > Usage instructions go here
 
