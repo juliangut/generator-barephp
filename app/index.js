@@ -995,7 +995,7 @@ BarePHP.prototype.writing = {
       this.template('../../templates/extra/_travis.yml', '.travis.yml');
     }
     if (this.config.get('controlCoveralls')) {
-      this.template('../../templates/extra/_coveralls.yml', '.coveralls.yml');
+      this.template('../../templates/extra/coveralls.yml', '.coveralls.yml');
     }
     if (this.config.get('controlScrutinizer')) {
       this.template('../../templates/extra/_scrutinizer.yml', '.scrutinizer.yml');

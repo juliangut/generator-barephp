@@ -3,6 +3,12 @@ language: php
 sudo: false
 
 php:
+<% if (project.phpVersion <= 5.3) { -%>
+  - 5.3
+<% } -%>
+<% if (project.phpVersion <= 5.4) { -%>
+  - 5.4
+<% } -%>
 <% if (project.phpVersion <= 5.5) { -%>
   - 5.5
 <% } -%>
@@ -40,5 +46,5 @@ script:
 <% if (control.coveralls) { -%>
 
 after_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == '<%= project.testPhpVersion.toFixed(1) %>' ]]; then php vendor/bin/coveralls -v ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == '<%= project.testPhpVersion.toFixed(1) %>' ]]; then travis_retry php vendor/bin/coveralls -v ; fi
 <% } -%>
