@@ -1,5 +1,5 @@
 !.gitignore
-!composer.lock
+composer.lock
 composer.phar
 vendor/
 node_modules/

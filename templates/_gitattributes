@@ -16,5 +16,9 @@
 Vagrantfile      export-ignore
 .vagrant/        export-ignore
 <% } -%>
+<% if (control.docs) { -%>
+README.md        export-ignore
+CONTRIBUTING.md  export-ignore
+<% } -%>
 Gruntfile.js     export-ignore
 phpunit.xml      export-ignore
