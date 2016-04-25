@@ -25,6 +25,9 @@ use <%= project.namespace %>\Greeter;
  */
 class GreeterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var <%= project.namespace %>\Greeter $greeter
+     */
     protected $greeter;
 
     public function setUp()
@@ -32,26 +35,21 @@ class GreeterTest extends \PHPUnit_Framework_TestCase
         $this->greeter = new Greeter;
     }
 
-    /**
-     * @covers \<%= project.namespace %>\Greeter::greet
-     */
     public function testGreetDefaults()
     {
-        $this->assertEquals('Hello Julian', $this->greeter->greet());
+        self::assertEquals('Hello Julian', $this->greeter->greet());
     }
 
     /**
      * @dataProvider greetingsProvider
-     *
-     * @covers \<%= project.namespace %>\Greeter::greet
      */
     public function testGreet($name)
     {
-        $this->assertEquals('Hello ' . $name, $this->greeter->greet($name));
+        self::assertEquals('Hello ' . $name, $this->greeter->greet($name));
     }
 
     /**
-     * Greeter names provider
+     * Greeter names provider.
      *
      * @return array
      */
@@ -64,8 +62,6 @@ class GreeterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers \<%= project.namespace %>\Greeter::greet
-     *
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage " " is not a valid name
      */
