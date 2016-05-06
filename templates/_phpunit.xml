@@ -18,11 +18,10 @@
          stopOnSkipped="false"
          stopOnIncomplete="false"
          stopOnRisky="false"
-         syntaxCheck="false"
          verbose="true"
 >
     <testsuites>
-        <testsuite>
+        <testsuite name="default">
             <directory suffix="Test.php"><%= dir.tests %>/<%= dir.testsSrc %>/</directory>
         </testsuite>
     </testsuites>
