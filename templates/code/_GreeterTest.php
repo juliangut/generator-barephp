@@ -26,7 +26,7 @@ use <%= project.namespace %>\Greeter;
 class GreeterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var <%= project.namespace %>\Greeter
+     * @var Greeter
      */
     protected $greeter;
 

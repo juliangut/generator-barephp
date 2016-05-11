@@ -1,7 +1,7 @@
 {
   "name": "generator-barephp",
-  "version": "0.12.2",
-  "description": "Barebones PHP project scaffold Yeoman generator",
+  "version": "0.12.3",
+  "description": "Barebones PHP project scaffold",
   "homepage": "https://github.com/juliangut/generator-barephp",
   "bugs": "https://github.com/juliangut/generator-barephp/issues",
   "license": "BSD-3-Clause",
