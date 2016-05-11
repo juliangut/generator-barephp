@@ -24,13 +24,13 @@ namespace <%= project.namespace %>;
 class Greeter
 {
     /**
-     * Greeter.
+     * Greet method.
      *
      * @param string $name
      *
-     * @return string
-     *
      * @throws \InvalidArgumentException
+     *
+     * @return string
      */
     public function greet($name = 'Julian')
     {

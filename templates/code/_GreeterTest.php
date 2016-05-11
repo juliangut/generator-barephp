@@ -26,10 +26,13 @@ use <%= project.namespace %>\Greeter;
 class GreeterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var <%= project.namespace %>\Greeter $greeter
+     * @var <%= project.namespace %>\Greeter
      */
     protected $greeter;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->greeter = new Greeter;
@@ -42,6 +45,8 @@ class GreeterTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider greetingsProvider
+     *
+     * @param string $name
      */
     public function testGreet($name)
     {
