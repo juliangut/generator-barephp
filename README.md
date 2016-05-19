@@ -13,33 +13,33 @@ If you're fed up scaffolding your project environment with the same files once a
 
 ### Features
 
-* Git by default
+* Git use is assumed by default
 * Load existing configuration from composer.json
 * Integration with Github or Bitbucket accounts
-* Composer ready (detecting or installing)
 * Select minimum supported PHP version (from 5.3 up)
-* Compatibility packages included based on minimum supported PHP version
+* Composer ready (detecting or installing)
+* Compatibility packages included based on minimum supported PHP version ([password-compat](https://github.com/ircmaxell/password_compat), [random_compat](https://github.com/paragonie/random_compat), etc)
+* Laravel Homestead integration (optionally with PhpMyAdmin)
+* Integration with Vagrant hostupdater plugin if installed
 * Project ready to be included into Packagist
 * Awesome Grunt integration
-* Laravel Homestead integration (optionally with PhpMyAdmin)
 * Auto synchronization in-browser with Browsersync
-* Integration with Vagrant hostupdater plugin if installed
 * Already configured Travis integration (PHP >=5.3 and HHVM)
-* Coveralls integration (triggered by Travis)
+* Coveralls integration (triggered by Travis build)
 * Scrutinizer integration
 * StyleCI integration
 * Editorconfig definitions file
 * PHPUnit testing environment already set up and integrated into Grunt
-* QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Climb, Security-checker) configured and integrated into Grunt
-* Basic annotated kickoff code (with tests)
+* QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Composer outdated, Security-checker) configured and integrated into Grunt
 * Initial documentation structure in Markdown
+* Basic annotated kickoff code (with tests!)
 * License selection
 
 > And many, many more to come
 
-#### Quick assistant
+#### Quick assistant / fast mode
 
-The number of options and tools configured is getting quite long, for that reason there is a quick/fast mode. This fast mode will ask you the basics and try to do its best guessing the rest of the answers for you to get the project environment ready faster.
+As the options and tools configured is getting quite long a quick/fast mode has been introduced. In fast mode only the basics questions will be asked and then the generator will do its best guessing the rest for you to get the environment ready faster.
 
 ## Getting Started
 
@@ -57,7 +57,7 @@ npm install -g generator-barephp
 
 ## Usage
 
-Once the generator is installed (see previous points) you can start using it by initiating the generator and answering his questions:
+Once the generator is installed you can start using it by initiating the generator and answering his questions:
 
 ```
 yo barephp
@@ -65,21 +65,21 @@ yo barephp
 
 ### Post run configuration
 
-`barephp` generator comes with many pre-configured services ready to be used, anyway some of them need extra setup:
+`barephp` generator comes with many pre-configured services ready to be used, anyway some of them need extra setup once generator has finished:
 
 * [Packagist](https://packagist.org). Your package must be [submitted](https://packagist.org/packages/submit) to be available
 * [Travis](https://travis-ci.org). You need to activate the project repository in your profile page
-* [Coveralls](https://coveralls.io). Activate [here](https://coveralls.io/repos/new) the project repository
+* [Coveralls](https://coveralls.io). The project repository needs to be [activated](https://coveralls.io/repos/new)
 * [Scrutinizer](https://scrutinizer-ci.com). The repository has to be added to Scrutinizer
-* [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account).
+* [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account), then update repository code on README.md file.
 
-If you install Laravel Homestead then nginx will be automatically configured to serve your project from **`project-name*`.app** url.
+If you install Laravel Homestead then Nginx will be automatically configured to serve your project from **`project-name`.app** url.
 
 If you installed PhpMyAdmin within Laravel Homestead it will be available at **phpmyadmin-`project-name`.app** url.
 
 *VirtualBox constraints hostname to only contain letters, numbers, hyphens and dots and so nginx has been configure to serve with those names for consistency*
 
-If you have [vagrant_hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin installed then `./etc/hosts` will be automatically updated every time you start Vagrant (sudo privileges needed), otherwise you should configure hosts file manually.
+If you have [vagrant_hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin installed then `./etc/hosts` will be automatically updated every time you start/stop Vagrant (sudo privileges needed), otherwise you should configure hosts file manually.
 
 ## Contributing
 

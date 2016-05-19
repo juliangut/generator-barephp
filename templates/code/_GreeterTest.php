@@ -21,7 +21,7 @@ namespace <%= project.namespace %>\Tests;
 use <%= project.namespace %>\Greeter;
 
 /**
- * Example test class
+ * Greeter tests example
  */
 class GreeterTest extends \PHPUnit_Framework_TestCase
 {

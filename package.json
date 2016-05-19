@@ -1,6 +1,6 @@
 {
   "name": "generator-barephp",
-  "version": "0.12.3",
+  "version": "0.13.0",
   "description": "Barebones PHP project scaffold",
   "homepage": "https://github.com/juliangut/generator-barephp",
   "bugs": "https://github.com/juliangut/generator-barephp/issues",
@@ -9,17 +9,20 @@
     "yeoman-generator",
     "php",
     "composer",
-    "grunt",
-    "phplint",
+    "packagist",
     "phpunit",
+    "phplint",
     "phpcs",
     "phpmd",
     "phpcpd",
-    "packagist",
     "travis",
     "coveralls",
     "scrutinizer",
-    "styleci"
+    "styleci",
+    "grunt",
+    "vagrant",
+    "homestead",
+    "Browsersync"
   ],
   "author": {
     "name": "Julián Gutiérrez",
