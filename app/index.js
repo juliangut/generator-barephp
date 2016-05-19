@@ -489,7 +489,7 @@ BarePHP.prototype.askForComposer = function() {
   var done = this.async();
 
   shell.exec('composer -v', {silent: true}, function(error) {
-    if (error != null) {
+    if (error != 0) {
       if (fs.existsSync('composer.phar')) {
         this.defaults.localComposer = true;
 
@@ -502,7 +502,7 @@ BarePHP.prototype.askForComposer = function() {
           type: 'confirm',
           name: 'install',
           message: 'No global Composer installation found. Install Composer locally?',
-          default: false
+          default: true
         }
       ];
 
@@ -863,7 +863,8 @@ BarePHP.prototype.writing = {
       styleci: this.config.get('controlStyleci'),
       homestead: this.config.get('controlHomestead'),
       docs: this.config.get('controlDocs'),
-      phpMyAdmin: this.config.get('controlPhpMyAdmin')
+      phpMyAdmin: this.config.get('controlPhpMyAdmin'),
+      localComposer: this.defaults.localComposer
     };
 
     this.owner = {

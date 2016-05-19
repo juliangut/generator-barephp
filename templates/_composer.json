@@ -46,8 +46,7 @@ if (project.license != '') { -%>
     "phpunit/phpunit": "^4.5|^5.0",
     "sebastian/phpcpd": "^2.0",
     "sensiolabs/security-checker": "^3.0",
-    "squizlabs/php_codesniffer": "^2",
-    "vinkla/climb": "^0.8"<% if (control.homestead) { -%>,
+    "squizlabs/php_codesniffer": "^2"<% if (control.homestead) { -%>,
 
     "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
 

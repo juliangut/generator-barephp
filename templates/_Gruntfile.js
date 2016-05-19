@@ -87,11 +87,12 @@ module.exports = function(grunt) {
         coverageHtml: '<%= dir.dist %>/coverage'
       }
     },
-    climb: {
-      options: {
-        bin: 'vendor/bin/climb'
-      },
-      application: {
+    composer : {
+      options : {
+        cwd: '.'<% if (control.localComposer) { -%>,
+        usePhp: true,
+        composerLocation: './composer.phar' <% } -%>
+
       }
     },
     security_checker: {
@@ -107,7 +108,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('qa', ['phplint', 'phpcs', 'phpmd', 'phpcpd']);
   grunt.registerTask('test', ['phpunit']);
-  grunt.registerTask('security', ['climb', 'security_checker']);
+  grunt.registerTask('security', ['composer:outdated:outdated', 'security_checker']);
 
 <% if (project.type === 'project') { -%>
   grunt.registerTask('serve', function() {
