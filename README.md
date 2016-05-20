@@ -15,14 +15,14 @@ If you're fed up scaffolding your project environment with the same files once a
 
 * Git use is assumed by default
 * Load existing configuration from composer.json
-* Integration with Github or Bitbucket accounts
+* Integration with Github and Bitbucket accounts
 * Select minimum supported PHP version (from 5.3 up)
 * Composer ready (detecting or installing)
 * Compatibility packages included based on minimum supported PHP version ([password-compat](https://github.com/ircmaxell/password_compat), [random_compat](https://github.com/paragonie/random_compat), etc)
+* Project ready to be included into Packagist
 * Laravel Homestead integration (optionally with PhpMyAdmin)
 * Integration with Vagrant hostupdater plugin if installed
-* Project ready to be included into Packagist
-* Awesome Grunt integration
+* Optimized (JIT) Grunt integration, easily extendable
 * Auto synchronization in-browser with Browsersync
 * Already configured Travis integration (PHP >=5.3 and HHVM)
 * Coveralls integration (triggered by Travis build)
@@ -57,7 +57,7 @@ npm install -g generator-barephp
 
 ## Usage
 
-Once the generator is installed you can start using it by initiating the generator and answering his questions:
+Once the generator is installed you can start using it by initiating the generator and answering his questions
 
 ```
 yo barephp
