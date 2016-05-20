@@ -53,8 +53,9 @@
     "grunt": ">=0.4.0",
     "grunt-contrib-jshint": "^0.11",
     "grunt-jscs": "^2.7.0",
+    "jit-grunt": "^0.10.0",
     "jshint-stylish": "^2.0",
-    "load-grunt-tasks": "^3.2",
+    "load-grunt-configs": "^1.0.0",
     "mocha": "~2.2",
     "time-grunt": "^1.3"
   },

@@ -18,7 +18,7 @@ var _ = require('underscore.string');
 var mkdirp = require('mkdirp');
 var shell = require('shelljs');
 var fs = require('fs');
-var sprintf = require("sprintf-js").sprintf;
+var sprintf = require('sprintf-js').sprintf;
 
 var BarePHP = module.exports = function BarePHP() {
   yeoman.generators.Base.apply(this, arguments);
@@ -489,7 +489,7 @@ BarePHP.prototype.askForComposer = function() {
   var done = this.async();
 
   shell.exec('composer -v', {silent: true}, function(error) {
-    if (error != 0) {
+    if (error !== 0) {
       if (fs.existsSync('composer.phar')) {
         this.defaults.localComposer = true;
 
