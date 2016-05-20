@@ -956,6 +956,8 @@ BarePHP.prototype.writing = {
   createDirs: function() {
     console.log('\nWriting project files ...\n');
 
+    mkdirp('grunt');
+
     mkdirp(this.config.get('dirSrc'));
     mkdirp(this.config.get('dirTests') + '/' + this.dir.testsSrc);
 
@@ -976,6 +978,23 @@ BarePHP.prototype.writing = {
     this.template('../../templates/_composer.json', 'composer.json');
     this.template('../../templates/_package.json', 'package.json');
     this.template('../../templates/_Gruntfile.js', 'Gruntfile.js');
+
+    this.template('../../templates/grunt/_phplint.js', 'grunt/phplint.js');
+    this.template('../../templates/grunt/_phpcs.js', 'grunt/phpcs.js');
+    this.template('../../templates/grunt/_phpmd.js', 'grunt/phpmd.js');
+    this.template('../../templates/grunt/_phpcpd.js', 'grunt/phpcpd.js');
+    this.template('../../templates/grunt/_phpunit.js', 'grunt/phpunit.js');
+    this.template('../../templates/grunt/_composer.js', 'grunt/composer.js');
+    this.template('../../templates/grunt/_security_checker.js', 'grunt/security_checker.js');
+
+    if (this.defaults.project.type === 'project') {
+      if (!this.config.get('controlHomestead')) {
+        this.template('../../templates/grunt/_php.js', 'grunt/php.js');
+      }
+
+      this.template('../../templates/grunt/_browserSync.js', 'grunt/browserSync.js');
+      this.template('../../templates/grunt/_watch.js', 'grunt/watch.js');
+    }
 
     this.template('../../templates/code/_Greeter.php', this.config.get('dirSrc') + '/Greeter.php');
     this.template(

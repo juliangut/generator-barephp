@@ -14,7 +14,7 @@ module.exports = function(grunt) {
 
   var settings = {
     config: {
-      src: ['grunt/*.js*']
+      src: ['grunt/*.js']
     }
   };
   grunt.initConfig(require('load-grunt-configs')(grunt, settings));
