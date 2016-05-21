@@ -15,7 +15,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('qa', ['phplint', 'phpcs', 'phpmd', 'phpcpd']);
   grunt.registerTask('test', ['phpunit']);
-  grunt.registerTask('security', ['composer:outdated:outdated', 'security_checker']);
+  grunt.registerTask('security', ['composer:outdated:direct', 'security_checker']);
 
 <% if (project.type === 'project') { -%>
   grunt.registerTask('serve', function() {
