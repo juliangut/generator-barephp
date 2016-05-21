@@ -896,20 +896,16 @@ BarePHP.prototype.writing = {
       case 5.3:
         this.project.dependencies = [
           ['symfony/polyfill-php54', '^1.0'],
-          ['ircmaxell/password-compat', '^1.0'],
           ['symfony/polyfill-php55', '^1.0'],
           ['symfony/polyfill-php56', '^1.0'],
-          ['paragonie/random_compat', '^1.0'],
           ['symfony/polyfill-php70', '^1.0']
         ];
         break;
 
       case 5.4:
         this.project.dependencies = [
-          ['ircmaxell/password-compat', '^1.0'],
           ['symfony/polyfill-php55', '^1.0'],
           ['symfony/polyfill-php56', '^1.0'],
-          ['paragonie/random_compat', '^1.0'],
           ['symfony/polyfill-php70', '^1.0']
         ];
         break;
@@ -917,14 +913,12 @@ BarePHP.prototype.writing = {
       case 5.5:
         this.project.dependencies = [
           ['symfony/polyfill-php56', '^1.0'],
-          ['paragonie/random_compat', '^1.0'],
           ['symfony/polyfill-php70', '^1.0']
         ];
         break;
 
       case 5.6:
         this.project.dependencies = [
-          ['paragonie/random_compat', '^1.0'],
           ['symfony/polyfill-php70', '^1.0']
         ];
         break;

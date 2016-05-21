@@ -18,7 +18,7 @@ If you're fed up scaffolding your project environment with the same files once a
 * Integration with Github and Bitbucket accounts
 * Select minimum supported PHP version (from 5.3 up)
 * Composer ready (detecting or installing)
-* Compatibility packages included based on minimum supported PHP version ([password-compat](https://github.com/ircmaxell/password_compat), [random_compat](https://github.com/paragonie/random_compat), etc)
+* Symfony polyfills compatibility packages included based on minimum supported PHP version
 * Project ready to be included into Packagist
 * Laravel Homestead integration (optionally with PhpMyAdmin)
 * Integration with Vagrant hostupdater plugin if installed
