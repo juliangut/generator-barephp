@@ -7,7 +7,7 @@ module.exports.tasks = {
         hostname: 'localhost',
         port: 9000,
         base: '<%= dir.public %>',
-        keepalive: false
+        keepalive: true
       }
     }
   }
