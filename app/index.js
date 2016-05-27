@@ -45,6 +45,7 @@ var BarePHP = module.exports = function BarePHP() {
       testPhpVersion: 5.6
     },
     config: {
+      controlTaskRunner: 'Gulp',
       controlRepository: true,
       controlDirs: false,
       controlLicense: true,
@@ -53,7 +54,7 @@ var BarePHP = module.exports = function BarePHP() {
       controlCoveralls: true,
       controlScrutinizer: true,
       controlStyleci: true,
-      controlHomestead: false,
+      controlHomestead: undefined,
       controlPhpMyAdmin: false,
       controlDocs: true,
       repositoryType: 'Github',
@@ -317,7 +318,7 @@ BarePHP.prototype.askForProjectContinue = function() {
     },
     {
       type: 'list',
-      name: 'type',
+      name: 'projectType',
       message: 'What type is the project?',
       choices: ['library', 'project', 'metapackage', 'composer-plugin'],
       default: this.defaults.project.type
@@ -340,9 +341,9 @@ BarePHP.prototype.askForProjectContinue = function() {
     props.keywords = _.clean(props.keywords);
 
     this.defaults.project.description = _.trim(props.description);
-    this.defaults.project.type = props.type.toLowerCase();
+    this.defaults.project.type = props.projectType.toLowerCase();
 
-    if (this.defaults.project.type === 'project') {
+    if (this.defaults.project.type === 'project' && this.config.get('controlHomestead') === undefined) {
       this.config.set('controlHomestead', true);
     }
 
@@ -361,41 +362,6 @@ BarePHP.prototype.askForProjectContinue = function() {
       }
     }
     this.defaults.project.homepage = projectHomepage;
-
-    done();
-  }.bind(this));
-};
-
-BarePHP.prototype.askForProjectContinue2 = function() {
-  var done = this.async();
-  var prompts = [
-    {
-      type: 'list',
-      name: 'phpVersion',
-      message: 'What is the minimum supported PHP version for the project?',
-      choices: ['5.3', '5.4', '5.5', '5.6', '7.0'],
-      default: this.defaults.project.phpVersion.toFixed(1)
-    },
-    {
-      name: 'namespace',
-      message: 'What is the base namespace of the project?',
-      default: this.config.get('projectNamespace')
-    }
-  ];
-
-  this.prompt(prompts, function(props) {
-    var phpVersion = parseFloat(props.phpVersion);
-    if (phpVersion > this.defaults.project.testPhpVersion) {
-      this.defaults.project.testPhpVersion = phpVersion;
-    }
-    this.defaults.project.phpVersion = phpVersion;
-
-    var projectNamespace = _.clean(_.cleanDiacritics(props.namespace));
-    if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(projectNamespace) === false) {
-      throw new Error(util.format('"%s" is not a valid PHP namespace', projectNamespace));
-    }
-
-    this.config.set('projectNamespace', projectNamespace);
 
     done();
   }.bind(this));
@@ -466,13 +432,13 @@ BarePHP.prototype.askForLicense = function() {
         licenseFile = 'mit';
         break;
       case 'GPL-3.0':
-        licenseFile = 'gpl';
+        licenseFile = 'gpl-3';
         break;
       case 'LGPL-3.0':
-        licenseFile = 'lgpl';
+        licenseFile = 'lgpl-3';
         break;
       case 'Apache-2.0':
-        licenseFile = 'apache';
+        licenseFile = 'apache-2';
         break;
       case 'Proprietary':
         this.defaults.project.license = this.defaults.project.license.toLowerCase();
@@ -480,6 +446,41 @@ BarePHP.prototype.askForLicense = function() {
     }
 
     this.defaults.project.licenseFile = licenseFile;
+
+    done();
+  }.bind(this));
+};
+
+BarePHP.prototype.askCodeConfig = function() {
+  var done = this.async();
+  var prompts = [
+    {
+      type: 'list',
+      name: 'phpVersion',
+      message: 'What is the minimum supported PHP version for the project?',
+      choices: ['5.3', '5.4', '5.5', '5.6', '7.0'],
+      default: this.defaults.project.phpVersion.toFixed(1)
+    },
+    {
+      name: 'namespace',
+      message: 'What is the base namespace of the project?',
+      default: this.config.get('projectNamespace')
+    }
+  ];
+
+  this.prompt(prompts, function(props) {
+    var phpVersion = parseFloat(props.phpVersion);
+    if (phpVersion > this.defaults.project.testPhpVersion) {
+      this.defaults.project.testPhpVersion = phpVersion;
+    }
+    this.defaults.project.phpVersion = phpVersion;
+
+    var projectNamespace = _.clean(_.cleanDiacritics(props.namespace));
+    if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(projectNamespace) === false) {
+      throw new Error(util.format('"%s" is not a valid PHP namespace', projectNamespace));
+    }
+
+    this.config.set('projectNamespace', projectNamespace);
 
     done();
   }.bind(this));
@@ -521,7 +522,7 @@ BarePHP.prototype.askForComposer = function() {
   }.bind(this));
 };
 
-BarePHP.prototype.askForInstall = function() {
+BarePHP.prototype.askForToolsInstall = function() {
   if (this.defaults.quickMode) {
     return;
   }
@@ -573,14 +574,14 @@ BarePHP.prototype.askForInstall = function() {
   var prompts = [
     {
       type: 'checkbox',
-      name: 'xtras',
+      name: 'tools',
       message: 'Which of this extra tools would you like to include?',
       choices: choiceList
     }
   ];
 
   this.prompt(prompts, function(props) {
-    var hasMod = function(mod) { return props.xtras.indexOf(mod) !== -1; };
+    var hasMod = function(mod) { return props.tools.indexOf(mod) !== -1; };
 
     this.config.set('controlPackagist', hasMod('packagist'));
     this.config.set('controlTravis', hasMod('travis'));
@@ -847,12 +848,32 @@ BarePHP.prototype.askForCustomDirs = function() {
   }.bind(this));
 };
 
+BarePHP.prototype.askForTaskRunner = function() {
+  var done = this.async();
+  var prompts = [
+    {
+      type: 'list',
+      name: 'taskRunner',
+      message: 'What task runner do you want to use?',
+      choices: ['Gulp', 'Grunt'],
+      default: this.config.get('controlTaskRunner')
+    }
+  ];
+
+  this.prompt(prompts, function(props) {
+    this.config.set('controlTaskRunner', props.taskRunner);
+
+    done();
+  }.bind(this));
+};
+
 BarePHP.prototype.writing = {
   createViewParameters: function() {
     this.underscoreString = _;
     this.path = path;
 
     this.control = {
+      taskRunner: this.config.get('controlTaskRunner'),
       repository: this.config.get('controlRepository'),
       dirs: this.config.get('controlDirs'),
       license: this.config.get('controlLicense'),
@@ -950,8 +971,6 @@ BarePHP.prototype.writing = {
   createDirs: function() {
     console.log('\nWriting project files ...\n');
 
-    mkdirp('grunt');
-
     mkdirp(this.config.get('dirSrc'));
     mkdirp(this.config.get('dirTests') + '/' + this.dir.testsSrc);
 
@@ -962,6 +981,12 @@ BarePHP.prototype.writing = {
     if (this.config.get('controlHomestead')) {
       mkdirp('.vagrant');
     }
+
+    if (this.config.get('controlTaskRunner') === 'Grunt') {
+      mkdirp('grunt');
+    } else if (this.config.get('controlTaskRunner') === 'Gulp') {
+      mkdirp('gulp');
+    }
   },
 
   writeFiles: function() {
@@ -971,25 +996,12 @@ BarePHP.prototype.writing = {
 
     this.template('../../templates/_composer.json', 'composer.json');
     this.template('../../templates/_package.json', 'package.json');
-    this.template('../../templates/_Gruntfile.js', 'Gruntfile.js');
 
-    this.template('../../templates/grunt/_phplint.js', 'grunt/phplint.js');
-    this.template('../../templates/grunt/_phpcs.js', 'grunt/phpcs.js');
-    this.template('../../templates/grunt/_phpmd.js', 'grunt/phpmd.js');
-    this.template('../../templates/grunt/_phpcpd.js', 'grunt/phpcpd.js');
-    this.template('../../templates/grunt/_phpunit.js', 'grunt/phpunit.js');
-    this.template('../../templates/grunt/_composer.js', 'grunt/composer.js');
-    this.template('../../templates/grunt/_security_checker.js', 'grunt/security_checker.js');
-
-    if (this.defaults.project.type === 'project') {
-      if (!this.config.get('controlHomestead')) {
-        this.template('../../templates/grunt/_php.js', 'grunt/php.js');
-      }
-
-      this.template('../../templates/grunt/_browserSync.js', 'grunt/browserSync.js');
-      this.template('../../templates/grunt/_watch.js', 'grunt/watch.js');
-    }
-
+    this.template('../../templates/code/_Person.php', this.config.get('dirSrc') + '/Person.php');
+    this.template(
+      '../../templates/code/_PersonTest.php',
+      this.config.get('dirTests') + '/' + this.dir.testsSrc + '/PersonTest.php'
+    );
     this.template('../../templates/code/_Greeter.php', this.config.get('dirSrc') + '/Greeter.php');
     this.template(
       '../../templates/code/_GreeterTest.php',
@@ -1004,18 +1016,57 @@ BarePHP.prototype.writing = {
     }
   },
 
-  writeXtraFiles: function() {
+  writeTaskRunnerFiles: function() {
+    console.log('here');
+    if (this.config.get('controlTaskRunner') === 'Grunt') {
+      this.template('../../templates/_Gruntfile.js', 'Gruntfile.js');
+      this.template('../../templates/grunt/_phplint.js', 'grunt/phplint.js');
+      this.template('../../templates/grunt/_phpcs.js', 'grunt/phpcs.js');
+      this.template('../../templates/grunt/_phpmd.js', 'grunt/phpmd.js');
+      this.template('../../templates/grunt/_phpcpd.js', 'grunt/phpcpd.js');
+      this.template('../../templates/grunt/_phpunit.js', 'grunt/phpunit.js');
+      this.template('../../templates/grunt/_composer.js', 'grunt/composer.js');
+      this.template('../../templates/grunt/_security_checker.js', 'grunt/security_checker.js');
+
+      if (this.defaults.project.type === 'project') {
+        if (!this.config.get('controlHomestead')) {
+          this.template('../../templates/grunt/_php.js', 'grunt/php.js');
+        }
+
+        this.template('../../templates/grunt/_browserSync.js', 'grunt/browserSync.js');
+      }
+    }
+    if (this.config.get('controlTaskRunner') === 'Gulp') {
+      this.template('../../templates/_gulpfile.js', 'gulpfile.js');
+      this.template('../../templates/gulp/_phplint.js', 'gulp/phplint.js');
+      this.template('../../templates/gulp/_phpcs.js', 'gulp/phpcs.js');
+      this.template('../../templates/gulp/_phpmd.js', 'gulp/phpmd.js');
+      this.template('../../templates/gulp/_phpcpd.js', 'gulp/phpcpd.js');
+      this.template('../../templates/gulp/_phpunit.js', 'gulp/phpunit.js');
+      this.template('../../templates/gulp/composer-outdated.js', 'gulp/composer-outdated.js');
+
+      if (this.defaults.project.type === 'project') {
+        if (this.config.get('controlHomestead')) {
+          this.template('../../templates/gulp/_browserSync.js', 'gulp/browserSync.js');
+        } else {
+          this.template('../../templates/gulp/_connect-php.js', 'gulp/connect-php.js');
+        }
+      }
+    }
+  },
+
+  writeToolsFiles: function() {
     if (this.config.get('controlTravis')) {
-      this.template('../../templates/extra/_travis.yml', '.travis.yml');
+      this.template('../../templates/tools/_travis.yml', '.travis.yml');
     }
     if (this.config.get('controlCoveralls')) {
-      this.template('../../templates/extra/coveralls.yml', '.coveralls.yml');
+      this.template('../../templates/tools/coveralls.yml', '.coveralls.yml');
     }
     if (this.config.get('controlScrutinizer')) {
-      this.template('../../templates/extra/_scrutinizer.yml', '.scrutinizer.yml');
+      this.template('../../templates/tools/_scrutinizer.yml', '.scrutinizer.yml');
     }
     if (this.config.get('controlStyleci')) {
-      this.template('../../templates/extra/styleci.yml', '.styleci.yml');
+      this.template('../../templates/tools/styleci.yml', '.styleci.yml');
     }
     if (this.config.get('controlDocs')) {
       this.template('../../templates/docs/_CONTRIBUTING.md', 'CONTRIBUTING.md');
@@ -1025,27 +1076,35 @@ BarePHP.prototype.writing = {
       this.template('../../templates/license/' + this.defaults.project.licenseFile, 'LICENSE');
     }
     if (this.config.get('controlHomestead')) {
-      this.template('../../templates/extra/_Vagrantfile', 'Vagrantfile');
+      this.template('../../templates/tools/_Vagrantfile', 'Vagrantfile');
       if (this.config.get('homesteadFormat') === 'json') {
-        this.template('../../templates/extra/_homestead.json', '.vagrant/homestead.json');
+        this.template('../../templates/tools/_homestead.json', '.vagrant/homestead.json');
       } else {
-        this.template('../../templates/extra/_homestead.yml', '.vagrant/homestead.yml');
+        this.template('../../templates/tools/_homestead.yml', '.vagrant/homestead.yml');
       }
-      this.template('../../templates/extra/_provision.sh', '.vagrant/provision.sh');
-      this.copy('../../templates/extra/aliases', '.vagrant/aliases');
-      this.copy('../../templates/extra/vagrant_gitignore', '.vagrant/.gitignore');
+      this.template('../../templates/tools/_provision.sh', '.vagrant/provision.sh');
+      this.copy('../../templates/tools/aliases', '.vagrant/aliases');
+      this.copy('../../templates/tools/vagrant_gitignore', '.vagrant/.gitignore');
     }
   }
 };
 
 BarePHP.prototype.install = function() {
-  var projectName = this.config.get('projectName');
   var defaults = this.defaults;
+  var options = this.options;
+  var projectName = this.config.get('projectName');
 
   this.installDependencies({
     bower: false,
     callback: function() {
       var message = '\nProject ' + chalk.green.bold(projectName) + ' is set up and ready';
+
+      if (options['skip-install']) {
+        console.log(message);
+        console.log();
+
+        return;
+      }
 
       if (defaults.localComposer && !fs.existsSync('composer.phar')) {
         console.log('Installing Composer locally ...');

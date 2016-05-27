@@ -13,7 +13,7 @@ If you're fed up scaffolding your project environment with the same files once a
 
 ### Features
 
-* Git use is assumed by default
+* Git use is assumed by default (.gitignore and .gitattributes included)
 * Load existing configuration from composer.json
 * Integration with Github and Bitbucket accounts
 * Select minimum supported PHP version (from 5.3 up)
@@ -22,18 +22,19 @@ If you're fed up scaffolding your project environment with the same files once a
 * Project ready to be included into Packagist
 * Laravel Homestead integration (optionally with PhpMyAdmin)
 * Integration with Vagrant hostupdater plugin if installed
-* Optimized (JIT) Grunt integration, easily extendable
+* Select task runner integration between Gulp and Grunt
+* Optimized (JIT) Grunt integration
 * Auto synchronization in-browser with Browsersync
 * Already configured Travis integration (PHP >=5.3 and HHVM)
 * Coveralls integration (triggered by Travis build)
 * Scrutinizer integration
 * StyleCI integration
 * Editorconfig definitions file
-* PHPUnit testing environment already set up and integrated into Grunt
-* QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Composer outdated, Security-checker) configured and integrated into Grunt
+* PHPUnit testing environment already set up and integrated into Grunt and Gulp
+* QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Composer outdated) configured and integrated into Gulp and Grunt
 * Initial documentation structure in Markdown
 * Basic annotated kickoff code (with tests!)
-* License selection
+* "Free Software" and "Open Source" License selector
 
 > And many, many more to come
 

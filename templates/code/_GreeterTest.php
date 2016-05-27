@@ -19,6 +19,7 @@ if (control.repository && repository.homepage !== project.homepage) { -%>
 namespace <%= project.namespace %>\Tests;
 
 use <%= project.namespace %>\Greeter;
+use <%= project.namespace %>\Person;
 
 /**
  * Greeter tests example
@@ -38,40 +39,11 @@ class GreeterTest extends \PHPUnit_Framework_TestCase
         $this->greeter = new Greeter;
     }
 
-    public function testGreetDefaults()
+    public function testGreet()
     {
-        self::assertEquals('Hello Julian', $this->greeter->greet());
-    }
+        $person = self::getMockBuilder(Person::class)->disableOriginalConstructor()->getMock();
+        $person->expects(self::once())->method('getName')->will(self::returnValue('John Doe'));
 
-    /**
-     * @dataProvider greetingsProvider
-     *
-     * @param string $name
-     */
-    public function testGreet($name)
-    {
-        self::assertEquals('Hello ' . $name, $this->greeter->greet($name));
-    }
-
-    /**
-     * Greeter names provider.
-     *
-     * @return array
-     */
-    public function greetingsProvider()
-    {
-        return [
-            ['John'],
-            ['Jane'],
-        ];
-    }
-
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage " " is not a valid name
-     */
-    public function testGreetInvalidArgument()
-    {
-        $this->greeter->greet(' ');
+        self::assertEquals('Hello John Doe', $this->greeter->greet($person));
     }
 }

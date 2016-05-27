@@ -24,20 +24,14 @@ namespace <%= project.namespace %>;
 class Greeter
 {
     /**
-     * Greet method.
+     * Greet a person.
      *
-     * @param string $name
-     *
-     * @throws \InvalidArgumentException
+     * @param Person $person
      *
      * @return string
      */
-    public function greet($name = 'Julian')
+    public function greet(Person $person)
     {
-        if (trim($name) === '') {
-            throw new \InvalidArgumentException(sprintf('"%s" is not a valid name', $name));
-        }
-
-        return 'Hello ' . $name;
+        return 'Hello ' . $person->getName();
     }
 }

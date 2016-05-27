@@ -5,20 +5,25 @@
 .editorconfig    export-ignore
 <% if (control.travis) { -%>
 .travis.yml      export-ignore
-<% } -%>
-<% if (control.coveralls) { -%>
+<% }
+if (control.coveralls) { -%>
 .coveralls.yml   export-ignore
-<% } -%>
-<% if (control.scrutinizer) { -%>
+<% }
+if (control.scrutinizer) { -%>
 .scrutinizer.yml export-ignore
-<% } -%>
-<% if (control.homestead) { -%>
+<% }
+if (control.homestead) { -%>
 Vagrantfile      export-ignore
 .vagrant/        export-ignore
-<% } -%>
-<% if (control.docs) { -%>
+<% }
+if (control.docs) { -%>
 README.md        export-ignore
 CONTRIBUTING.md  export-ignore
-<% } -%>
+<% }
+if (control.taskRunner === 'Grunt') { -%>
 Gruntfile.js     export-ignore
+<% }
+if (control.taskRunner === 'Gulp') { -%>
+gulpfile.js      export-ignore
+<% } -%>
 phpunit.xml      export-ignore
