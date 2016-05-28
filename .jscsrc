@@ -1,7 +1,9 @@
 {
-  "preset": "grunt",
+  "preset": "google",
   "maxErrors": 20,
+  "maximumLineLength": 120,
   "disallowEmptyBlocks": true,
   "requireOperatorBeforeLineBreak": false,
-  "validateQuoteMarks": "'"
+  "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
+  "validateQuoteMarks": { "mark": "'", "escape": true }
 }
