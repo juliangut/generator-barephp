@@ -8,6 +8,6 @@ gulp.task('phplint', function() {
     '<%= dir.src %>/**/*.php',
     '<%= dir.tests %>/**/*.php'
   ])
-  .pipe(phplint())
-  .on('error', console.error);
+    .pipe(phplint())
+    .on('error', console.error);
 });

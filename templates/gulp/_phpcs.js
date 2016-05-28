@@ -8,10 +8,10 @@ gulp.task('phpcs', function() {
     '<%= dir.src %>/**/*.php',
     '<%= dir.tests %>/**/*.php'
   ])
-  .pipe(phpcs({
-    bin: 'vendor/bin/phpcs',
-    standard: 'PSR2',
-    warningSeverity: 0
-  }))
-  .pipe(phpcs.reporter('fail'));
+    .pipe(phpcs({
+      bin: 'vendor/bin/phpcs',
+      standard: 'PSR2',
+      warningSeverity: 0
+    }))
+    .pipe(phpcs.reporter('fail'));
 });

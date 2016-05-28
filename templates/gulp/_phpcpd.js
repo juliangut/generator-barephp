@@ -7,9 +7,9 @@ gulp.task('phpcpd', function() {
   return gulp.src([
     '<%= dir.src %>/**/*.php'
   ])
-  .pipe(phpcpd({
-    bin: 'vendor/bin/phpcpd',
-    quiet: true
-  }))
-  .on('error', console.error);
+    .pipe(phpcpd({
+      bin: 'vendor/bin/phpcpd',
+      quiet: true
+    }))
+    .on('error', console.error);
 });
