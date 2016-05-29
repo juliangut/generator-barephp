@@ -19,7 +19,7 @@ module.exports = function(grunt) {
 
 <% if (project.type === 'project') { -%>
   grunt.registerTask('serve', function() {
-    grunt.task.run(['phplint', 'browserSync'<% if (!control.homestead) { -%>, 'php' <% } -%>]);
+    grunt.task.run(['phplint', 'browserSync'<% if (!control.homestead) { -%>, 'php'<% } -%>]); //Comment out 'browserSync' if project doesn't have a frontend
 
   });
 

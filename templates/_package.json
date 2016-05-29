@@ -35,10 +35,7 @@ if (control.repository) { -%>
     "grunt-browser-sync": "^2.0.0",
 <% } -%>
     "grunt-composer": "~0.4.0",
-<% if (project.type === 'project') { -%>
-    "grunt-contrib-watch": "^0.6.1",
-<% }
-if (project.type === 'project' && !control.homestead) { -%>
+<% if (project.type === 'project' && !control.homestead) { -%>
     "grunt-php": "~1.5.1",
 <% } -%>
     "grunt-phpcpd": "~0.1.0",
@@ -63,7 +60,8 @@ if (project.type === 'project') { -%>
     "gulp-phpcs": "^1.1.0",
     "gulp-phplint": "~0.1.0",
     "gulp-phpmd": "^2.0.0",
-    "gulp-phpunit": "~0.14.0"
+    "gulp-phpunit": "~0.14.0",
+    "run-sequence": "^1.2.1"
 <% } -%>
   }
 }

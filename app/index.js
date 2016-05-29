@@ -1046,11 +1046,11 @@ BarePHP.prototype.writing = {
       this.template('../../templates/gulp/composer-outdated.js', 'gulp/composer-outdated.js');
 
       if (this.defaults.project.type === 'project') {
-        if (this.config.get('controlHomestead')) {
-          this.template('../../templates/gulp/_browserSync.js', 'gulp/browserSync.js');
-        } else {
+        if (!this.config.get('controlHomestead')) {
           this.template('../../templates/gulp/_connect-php.js', 'gulp/connect-php.js');
         }
+
+        this.template('../../templates/gulp/_browserSync.js', 'gulp/browserSync.js');
       }
     }
   },
