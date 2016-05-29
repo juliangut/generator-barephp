@@ -1,17 +1,19 @@
 'use strict';
 
+var config = require('./config');
+
 module.exports.tasks = {
   browserSync: {
     options: {
-      proxy: <% if (control.homestead) { -%>'<%= project.name.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '') %>.app'<% } else { -%>'localhost:9000'<% } -%>,
+      proxy: <% if (control.homestead) { -%>'<%= project.name.replace(/[^a-zA-Z0-9-.]+/g, '-').replace(/^[-.]/g, '') %>.app'<% } else { -%>'localhost:' + config.port<% } -%>,
 
       logLevel: 'silent',
       watchTask: true
     },
     application: {
       src: [
-        '<%= dir.src %>/**/*.php',
-        '<%= dir.public %>/**/*.*'
+        config.src + '/**/*.php',
+        config.public + '/**/*.*'
       ]
     }
   }

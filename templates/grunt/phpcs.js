@@ -1,5 +1,7 @@
 'use strict';
 
+var config = require('./config');
+
 module.exports.tasks = {
   phpcs: {
     options: {
@@ -8,8 +10,8 @@ module.exports.tasks = {
     },
     application: {
       dir: [
-        '<%= dir.src %>',
-        '<%= dir.tests %>'
+        config.src,
+        config.tests
       ]
     }
   }

@@ -1,13 +1,12 @@
 'use strict';
 
+var config = require('./config');
+
 var gulp = require('gulp');
 var phpcs = require('gulp-phpcs');
 
 gulp.task('phpcs', function() {
-  return gulp.src([
-    '<%= dir.src %>/**/*.php',
-    '<%= dir.tests %>/**/*.php'
-  ])
+  return gulp.src([config.src + '/**/*.php', config.tests + '/**/*.php'])
     .pipe(phpcs({
       bin: 'vendor/bin/phpcs',
       standard: 'PSR2',

@@ -1017,20 +1017,20 @@ BarePHP.prototype.writing = {
   },
 
   writeTaskRunnerFiles: function() {
-    console.log('here');
     if (this.config.get('controlTaskRunner') === 'Grunt') {
       this.template('../../templates/_Gruntfile.js', 'Gruntfile.js');
-      this.template('../../templates/grunt/_phplint.js', 'grunt/phplint.js');
-      this.template('../../templates/grunt/_phpcs.js', 'grunt/phpcs.js');
-      this.template('../../templates/grunt/_phpmd.js', 'grunt/phpmd.js');
-      this.template('../../templates/grunt/_phpcpd.js', 'grunt/phpcpd.js');
-      this.template('../../templates/grunt/_phpunit.js', 'grunt/phpunit.js');
+      this.template('../../templates/grunt/_config.js', 'grunt/config.js');
+      this.copy('../../templates/grunt/phplint.js', 'grunt/phplint.js');
+      this.copy('../../templates/grunt/phpcs.js', 'grunt/phpcs.js');
+      this.copy('../../templates/grunt/phpmd.js', 'grunt/phpmd.js');
+      this.copy('../../templates/grunt/phpcpd.js', 'grunt/phpcpd.js');
+      this.copy('../../templates/grunt/phpunit.js', 'grunt/phpunit.js');
+      this.copy('../../templates/grunt/security_checker.js', 'grunt/security_checker.js');
       this.template('../../templates/grunt/_composer.js', 'grunt/composer.js');
-      this.template('../../templates/grunt/_security_checker.js', 'grunt/security_checker.js');
 
       if (this.defaults.project.type === 'project') {
         if (!this.config.get('controlHomestead')) {
-          this.template('../../templates/grunt/_php.js', 'grunt/php.js');
+          this.copy('../../templates/grunt/php.js', 'grunt/php.js');
         }
 
         this.template('../../templates/grunt/_browserSync.js', 'grunt/browserSync.js');
@@ -1038,16 +1038,17 @@ BarePHP.prototype.writing = {
     }
     if (this.config.get('controlTaskRunner') === 'Gulp') {
       this.template('../../templates/_gulpfile.js', 'gulpfile.js');
-      this.template('../../templates/gulp/_phplint.js', 'gulp/phplint.js');
-      this.template('../../templates/gulp/_phpcs.js', 'gulp/phpcs.js');
-      this.template('../../templates/gulp/_phpmd.js', 'gulp/phpmd.js');
-      this.template('../../templates/gulp/_phpcpd.js', 'gulp/phpcpd.js');
-      this.template('../../templates/gulp/_phpunit.js', 'gulp/phpunit.js');
-      this.template('../../templates/gulp/composer-outdated.js', 'gulp/composer-outdated.js');
+      this.template('../../templates/gulp/_config.js', 'gulp/config.js');
+      this.copy('../../templates/gulp/phplint.js', 'gulp/phplint.js');
+      this.copy('../../templates/gulp/phpcs.js', 'gulp/phpcs.js');
+      this.copy('../../templates/gulp/phpmd.js', 'gulp/phpmd.js');
+      this.copy('../../templates/gulp/phpcpd.js', 'gulp/phpcpd.js');
+      this.copy('../../templates/gulp/phpunit.js', 'gulp/phpunit.js');
+      this.copy('../../templates/gulp/composer-outdated.js', 'gulp/composer-outdated.js');
 
       if (this.defaults.project.type === 'project') {
         if (!this.config.get('controlHomestead')) {
-          this.template('../../templates/gulp/_connect-php.js', 'gulp/connect-php.js');
+          this.copy('../../templates/gulp/connect-php.js', 'gulp/connect-php.js');
         }
 
         this.template('../../templates/gulp/_browserSync.js', 'gulp/browserSync.js');

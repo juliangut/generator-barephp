@@ -1,5 +1,7 @@
 'use strict';
 
+var config = require('./config');
+
 module.exports.tasks = {
   phpmd: {
     options: {
@@ -8,7 +10,7 @@ module.exports.tasks = {
       reportFormat: 'text'
     },
     application: {
-      dir: '<%= dir.src %>'
+      dir: config.src
     }
   }
 };

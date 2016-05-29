@@ -1,5 +1,7 @@
 'use strict';
 
+var config = require('./config');
+
 module.exports.tasks = {
   phpunit: {
     options: {
@@ -7,7 +9,7 @@ module.exports.tasks = {
       coverage: true
     },
     application: {
-      coverageHtml: '<%= dir.dist %>/coverage'
+      coverageHtml: config.dist + '/coverage'
     }
   }
 };

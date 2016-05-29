@@ -1,5 +1,7 @@
 'use strict';
 
+var config = require('./config');
+
 module.exports.tasks = {
   phpcpd: {
     options: {
@@ -8,7 +10,7 @@ module.exports.tasks = {
       ignoreExitCode: true
     },
     application: {
-      dir: '<%= dir.src %>'
+      dir: config.src
     }
   }
 };

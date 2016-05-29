@@ -1,13 +1,15 @@
 'use strict';
 
+var config = require('./config');
+
 module.exports.tasks = {
   phplint: {
     options: {
       swapPath: '/tmp'
     },
     application: [
-      '<%= dir.src %>/**/*.php',
-      '<%= dir.tests %>/**/*.php'
+      config.src + '/**/*.php',
+      config.tests + '/**/*.php'
     ]
   }
 };
