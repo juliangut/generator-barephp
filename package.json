@@ -1,6 +1,6 @@
 {
   "name": "generator-barephp",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "Barebones PHP project scaffold",
   "keywords": [
     "yeoman-generator",
