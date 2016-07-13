@@ -12,5 +12,5 @@ gulp.task('phpcs', function() {
       standard: 'PSR2',
       warningSeverity: 0
     }))
-    .pipe(phpcs.reporter('fail'));
+    .pipe(phpcs.reporter('log'));
 });

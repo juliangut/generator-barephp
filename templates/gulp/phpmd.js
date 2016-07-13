@@ -3,7 +3,7 @@
 var config = require('./config');
 
 var gulp = require('gulp');
-var phpmd = require('gulp-phpmd');
+var phpmd = require('gulp-phpmd-plugin');
 
 gulp.task('phpmd', function() {
   return gulp.src([config.src + '/**/*.php'])
@@ -12,5 +12,5 @@ gulp.task('phpmd', function() {
       ruleset: 'unusedcode,naming,design,controversial,codesize',
       format: 'text'
     }))
-    .on('error', console.error);
+    .pipe(phpmd.reporter('log'));
 });
