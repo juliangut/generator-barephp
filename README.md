@@ -13,16 +13,16 @@ If you're fed up scaffolding your project environment with the same files once a
 
 ### Features
 
-* Git use is assumed by default (.gitignore and .gitattributes included)
 * Load existing configuration from composer.json
+* Git use is assumed by default (.gitignore and .gitattributes included)
 * Integration with Github and Bitbucket accounts
-* Select minimum supported PHP version (from 5.3 up)
 * Composer ready (detecting or installing)
+* Project ready to be added to Packagist
+* Select minimum supported PHP version (from 5.3 up)
 * Symfony polyfills compatibility packages included based on minimum supported PHP version
-* Project ready to be included into Packagist
 * Laravel Homestead integration (optionally with PhpMyAdmin)
 * Integration with Vagrant hostupdater plugin if installed
-* Select task runner integration between Gulp and Grunt
+* Select task runner integration, Gulp or Grunt
 * Optimized (JIT) Grunt integration
 * Auto synchronization in-browser with Browsersync
 * Already configured Travis integration (PHP >=5.3 and HHVM)
@@ -30,11 +30,11 @@ If you're fed up scaffolding your project environment with the same files once a
 * Scrutinizer integration
 * StyleCI integration
 * Editorconfig definitions file
-* PHPUnit testing environment already set up and integrated into Grunt and Gulp
+* PHPUnit testing environment already set up and integrated into Gulp and Grunt
 * QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Composer outdated) configured and integrated into Gulp and Grunt
 * Initial documentation structure in Markdown
 * Basic annotated kickoff code (with tests!)
-* "Free Software" and "Open Source" License selector
+* "Free Software" and "Open Source" License selection
 
 > And many, many more to come
 
@@ -47,7 +47,7 @@ As the options and tools configured is getting quite long a quick/fast mode has 
 ### Install dependencies
 
 ```
-npm install -g yo grunt
+npm install -g yo gulp grunt
 ```
 
 ### Install generator
@@ -74,9 +74,9 @@ yo barephp
 * [Scrutinizer](https://scrutinizer-ci.com). The repository has to be added to Scrutinizer
 * [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account), then update repository code on README.md file.
 
-If you install Laravel Homestead then Nginx will be automatically configured to serve your project from **`project-name`.app** url.
+If you install Laravel Homestead then Nginx will be automatically configured to serve your project from **http://`project-name`.app** url.
 
-If you installed PhpMyAdmin within Laravel Homestead it will be available at **phpmyadmin-`project-name`.app** url.
+If you installed PhpMyAdmin within Laravel Homestead it will be available at **http://phpmyadmin-`project-name`.app** url.
 
 *VirtualBox constraints hostname to only contain letters, numbers, hyphens and dots and so nginx has been configure to serve with those names for consistency*
 
