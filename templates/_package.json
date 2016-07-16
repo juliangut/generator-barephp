@@ -59,7 +59,7 @@ if (project.type === 'project') { -%>
     "gulp-phpcpd": "^1.0.0",
     "gulp-phpcs": "^1.1.0",
     "gulp-phplint": "~0.1.0",
-    "gulp-phpmd": "^2.0.0",
+    "gulp-phpmd-plugin": "^1.1.4",
     "gulp-phpunit": "~0.14.0",
     "run-sequence": "^1.2.1"
 <% } -%>

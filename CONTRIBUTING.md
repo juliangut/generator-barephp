@@ -4,6 +4,6 @@ First of all **Thank you** for contributing!
 
 Make your contributions through Pull Requests
 
-[Grunt](http://gruntjs.com/) task is provided to help you keep code quality
+[Gulp](http://gulpjs.com/) tasks are provided to help you keep code quality
 
-- `grunt` will run [jshint](http://jshint.com/) for coding style
+- `gulp` will run [jshint](http://jshint.com/) for JavaScript linting and [jscs](http://jscs.info/) for coding style guidelines
