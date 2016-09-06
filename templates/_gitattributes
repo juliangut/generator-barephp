@@ -12,6 +12,9 @@ if (control.coveralls) { -%>
 if (control.scrutinizer) { -%>
 .scrutinizer.yml export-ignore
 <% }
+if (control.styleci) { -%>
+.styleci.yml     export-ignore
+<% }
 if (control.homestead) { -%>
 Vagrantfile      export-ignore
 .vagrant/        export-ignore
