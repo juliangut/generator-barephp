@@ -21,7 +21,7 @@
          verbose="true"
 >
     <testsuites>
-        <testsuite name="default">
+        <testsuite name="<%= project.name %> test suite">
             <directory suffix="Test.php"><%= dir.tests %>/<%= dir.testsSrc %>/</directory>
         </testsuite>
     </testsuites>
