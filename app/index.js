@@ -699,7 +699,7 @@ BarePHP.prototype.askForStyleciAccount = function() {
   var prompts = [
     {
       name: 'account',
-      message: 'What is your StyleCI account number?',
+      message: 'What is this project StyleCI repository code?',
       default: this.config.get('accountStyleci')
     }
   ];
@@ -709,6 +709,11 @@ BarePHP.prototype.askForStyleciAccount = function() {
     if (accountStyleci === '') {
       accountStyleci = 'XXXXXXXX';
     }
+
+    if (accountStyleci === 'XXXXXXXX') {
+      console.log(chalk.yellow.bold('  Remember to assign StyleCI repository code on readme file'));
+    }
+
     this.config.set('accountStyleci', accountStyleci);
 
     done();
