@@ -1,9 +1,11 @@
 {
   "name": "generator-barephp",
-  "version": "0.14.1",
+  "version": "0.15.0",
   "description": "Barebones PHP project scaffold",
   "keywords": [
     "yeoman-generator",
+    "gulp",
+    "grunt",
     "php",
     "composer",
     "packagist",
@@ -16,10 +18,9 @@
     "coveralls",
     "scrutinizer",
     "styleci",
-    "grunt",
     "vagrant",
     "homestead",
-    "Browsersync"
+    "browsersync"
   ],
   "homepage": "https://github.com/juliangut/generator-barephp",
   "license": "BSD-3-Clause",

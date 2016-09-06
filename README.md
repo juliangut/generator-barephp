@@ -7,16 +7,18 @@
 
 # Generator-BarePHP
 
-When you start a new PHP project there are many configuration files to be created in order to set the project environment ready to start development. Normally you'd just copy/paste them from another project but this is error prone, you'll forget to copy some files and many times you'll forget to change names or routes on those files.
+Normally when starting a new PHP project you'd just copy/paste configuration files from another project in order to set the project environment ready as quickly as possible, but you'll forget to copy some files and more often than not you'll forget to change names or routes on those files.
 
-If you're fed up scaffolding your project environment with the same files once and again and feel you're wasting your time allow Yeoman do the heavy lifting and get your project scaffold and ready to start developing in a breeze with this generator, it will prepare a shiny bare bones PHP project structure ready to develop for you, seat and focus on the actual code.
+> Scaffolding project environments with the same files once and again is painfully boring, error prone, and leaves a feeling of time waste.
+
+Let Yeoman do the heavy lifting and get your projects scaffolded and ready to start developing in a breeze with this generator, it will prepare a shiny bare bones PHP project structure ready to develop for you, sit and focus on the actual code.
 
 ### Features
 
 * Load existing configuration from composer.json
 * Git use is assumed by default (.gitignore and .gitattributes included)
 * Integration with Github and Bitbucket accounts
-* Composer ready (detecting or installing)
+* Composer ready (global or local detection, or local installation)
 * Project ready to be added to Packagist
 * Select minimum supported PHP version (from 5.3 up)
 * Symfony polyfills compatibility packages included based on minimum supported PHP version
@@ -33,10 +35,10 @@ If you're fed up scaffolding your project environment with the same files once a
 * PHPUnit testing environment already set up and integrated into Gulp and Grunt
 * QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Composer outdated) configured and integrated into Gulp and Grunt
 * Initial documentation structure in Markdown
-* Basic annotated kickoff code (with tests!)
+* Basic annotated kickoff code (with tests and coverage report!)
 * "Free Software" and "Open Source" License selection
 
-> And many, many more to come
+> And many, many more to come. Would like to see a tool, library, configuration, ... added to the generator? file an issue with your feature request
 
 #### Quick assistant / fast mode
 
