@@ -18,8 +18,10 @@ if (control.scrutinizer) { -%>
 if (control.coveralls) { -%>
 [![Code Coverage](https://img.shields.io/coveralls/<%= account.coveralls %>/<%= project.name %>.svg?style=flat-square)](https://coveralls.io/github/<%= account.coveralls %>/<%= project.name %>)
 <% }
+
 if (control.packagist) { -%>
 [![Total Downloads](https://img.shields.io/packagist/dt/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>)
+[![Monthly Downloads](https://img.shields.io/packagist/dm/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>)
 <% } -%>
 
 # <%= project.name %>
