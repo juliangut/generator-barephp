@@ -81,8 +81,9 @@ var BarePHP = module.exports = function BarePHP() {
 
     this.defaults.owner.name = _.clean(userHomeDirectory.split(path.sep).pop());
   } else {
-    this.defaults.owner.name = _.clean(shell.exec('git config --global user.name', {silent: true}).output, '\n');
-    this.defaults.owner.email = _.clean(shell.exec('git config --global user.email', {silent: true}).output, '\n');
+    this.defaults.owner.name = _.clean(shell.exec('git config user.name', {silent: true}).output, '\n');
+    this.defaults.owner.email = _.clean(shell.exec('git config user.email', {silent: true}).output, '\n');
+    this.defaults.owner.homepage = _.clean(shell.exec('git config user.homepage', {silent: true}).output, '\n');
   }
 
   if (fs.existsSync('composer.json')) {
