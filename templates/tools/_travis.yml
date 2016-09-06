@@ -17,6 +17,7 @@ php:
 <% } -%>
 <% if (project.phpVersion <= 7.0) { -%>
   - 7.0
+  - 7.1
 <% } -%>
   - hhvm
 
@@ -24,6 +25,7 @@ matrix:
   fast_finish: true
   allow_failures:
     - php: hhvm
+    - php: 7.1
 
 before_script:
   - travis_retry composer self-update

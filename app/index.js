@@ -126,7 +126,7 @@ util.inherits(BarePHP, yeoman.generators.Base);
 
 BarePHP.prototype.welcome = function() {
   this.log(
-    yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Grunt, Travis, and many, many more integrations!')
+    yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Gulp, Travis, and many, many more integrations!')
   );
 };
 
@@ -458,7 +458,7 @@ BarePHP.prototype.askCodeConfig = function() {
       type: 'list',
       name: 'phpVersion',
       message: 'What is the minimum supported PHP version for the project?',
-      choices: ['5.3', '5.4', '5.5', '5.6', '7.0'],
+      choices: ['5.3', '5.4', '5.5', '5.6', '7.0'/*, '7.1'*/],
       default: this.defaults.project.phpVersion.toFixed(1)
     },
     {

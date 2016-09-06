@@ -12,7 +12,7 @@ Normally when starting a new PHP project you'd just copy/paste configuration fil
 
 > Scaffolding project environments with the same files once and again is painfully boring, error prone, and leaves a feeling of time waste.
 
-Let Yeoman do the heavy lifting and get your projects scaffolded and ready to start developing in a breeze with this generator, it will prepare a shiny bare bones PHP project structure ready to develop for you, sit and focus on the actual code.
+Let Yeoman do the heavy lifting and get your projects scaffold and ready to start developing in a breeze with this generator, it will prepare a shiny bare bones PHP project structure ready to develop for you, sit and focus on the actual code.
 
 ### Features
 
@@ -20,24 +20,36 @@ Let Yeoman do the heavy lifting and get your projects scaffolded and ready to st
 * Git use is assumed by default (.gitignore and .gitattributes included)
 * Integration with Github and Bitbucket accounts
 * Composer ready (global or local detection, or local installation)
-* Project ready to be added to Packagist
-* Select minimum supported PHP version (from 5.3 up)
+* Project ready to be added to [Packagist](https://packagist.org)
+* Select minimum [supported](https://secure.php.net/supported-versions.php) PHP version (from 5.3 up)
 * Symfony polyfills compatibility packages included based on minimum supported PHP version
 * Laravel Homestead integration (optionally with PhpMyAdmin)
-* Integration with Vagrant hostupdater plugin if installed
-* Select task runner integration, Gulp or Grunt
+* Integration with [Vagrant hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin if installed
+* [Gulp](http://gulpjs.com/) (preferred) or [Grunt](http://gruntjs.com/) task runner integration
 * Optimized (JIT) Grunt integration
-* Auto synchronization in-browser with Browsersync
-* Already configured Travis integration (PHP >=5.3 and HHVM)
-* Coveralls integration (triggered by Travis build)
-* Scrutinizer integration
-* StyleCI integration
-* Editorconfig definitions file
-* PHPUnit testing environment already set up and integrated into Gulp and Grunt
-* QA utilities (Linting, PHPCS, PHPMD, PHPCPD, Composer outdated) configured and integrated into Gulp and Grunt
+* Auto synchronization in-browser with [Browsersync](https://www.browsersync.io/)
+* Already configured [Travis CI](https://travis-ci.org) integration (PHP >=5.3 and HHVM)
+* [Coveralls](https://coveralls.io) integration (triggered by Travis build)
+* [Scrutinizer](https://scrutinizer-ci.com) integration
+* [StyleCI](https://styleci.io) integration
+* [Editorconfig](http://editorconfig.org/) definitions file
+* QA utilities configured and integrated into Gulp and Grunt
+  * [PHPUnit](http://phpunit.de/) testing environment already set up and integrated into Gulp and Grunt
+  * PHP syntax linting
+  * [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) for coding style checking
+  * [PHPMD](https://phpmd.org/) for code mess detection
+  * [PHPCPD](https://github.com/sebastianbergmann/phpcpd)
+  * Composer [outdated](https://getcomposer.org/doc/03-cli.md#outdated) for packages updates available
 * Initial documentation structure in Markdown
 * Basic annotated kickoff code (with tests and coverage report!)
 * "Free Software" and "Open Source" License selection
+  * [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause.html)
+  * [BSD-2-Clause](https://spdx.org/licenses/BSD-2-Clause.html)
+  * [BSD-4-Clause](https://spdx.org/licenses/BSD-4-Clause.html)
+  * [MIT](https://spdx.org/licenses/MIT.html)
+  * [GPL-3.0](https://spdx.org/licenses/GPL-3.0.html)
+  * [LGPL-3.0](https://spdx.org/licenses/LGPL-3.0.html)
+  * [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html)
 
 > And many, many more to come. Would like to see a tool, library, configuration, ... added to the generator? file an issue with your feature request
 
@@ -49,8 +61,16 @@ As the options and tools configured is getting quite long a quick/fast mode has 
 
 ### Install dependencies
 
+##### Using Gulp
+
+ ```
+npm install -g yo gulp-cli
 ```
-npm install -g yo gulp grunt
+
+##### Using Grunt
+
+```
+npm install -g yo grunt-cli
 ```
 
 ### Install generator
@@ -61,7 +81,7 @@ npm install -g generator-barephp
 
 ## Usage
 
-Once the generator is installed you can start using it by initiating the generator and answering his questions
+Once the generator and dependencies are installed you can start using it by calling Yeoman
 
 ```
 yo barephp
@@ -69,21 +89,21 @@ yo barephp
 
 ### Post run configuration
 
-`barephp` generator comes with many pre-configured services ready to be used, anyway some of them need extra setup once generator has finished:
+`barephp` generator comes with many pre-configured tools and services ready to be used, anyway some of them need extra setup once generator has finished:
 
-* [Packagist](https://packagist.org). Your package must be [submitted](https://packagist.org/packages/submit) to be available
-* [Travis](https://travis-ci.org). You need to activate the project repository in your profile page
-* [Coveralls](https://coveralls.io). The project repository needs to be [activated](https://coveralls.io/repos/new)
-* [Scrutinizer](https://scrutinizer-ci.com). The repository has to be added to Scrutinizer
-* [StyleCI](https://styleci.io). Enable the repo on your [account](https://styleci.io/account), then update repository code on README.md file.
+* Packagist: your package must be [submitted](https://packagist.org/packages/submit) to be available
+* Travis CI: you need to activate the project repository in your profile page
+* Coveralls: the project repository needs to be [activated](https://coveralls.io/repos/new)
+* Scrutinizer: rhe repository has to be added to [Scrutinizer](https://scrutinizer-ci.com)
+* StyleCI: enable the repo on your [account](https://styleci.io/account), then update StyleCI badge's repository code on README.md file.
 
-If you install Laravel Homestead then Nginx will be automatically configured to serve your project from **http://`project-name`.app** url.
+If you install Laravel Homestead then nginx will be automatically configured to serve your project from **http://`project-name`.app** url.
 
 If you installed PhpMyAdmin within Laravel Homestead it will be available at **http://phpmyadmin-`project-name`.app** url.
 
 *VirtualBox constraints hostname to only contain letters, numbers, hyphens and dots and so nginx has been configure to serve with those names for consistency*
 
-If you have [vagrant_hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin installed then `./etc/hosts` will be automatically updated every time you start/stop Vagrant (sudo privileges needed), otherwise you should configure hosts file manually.
+If you have Vagrant hostupdater plugin installed then host's `/etc/hosts` will be automatically updated every time you start/stop Vagrant (sudo privileges needed), otherwise you should configure hosts file manually.
 
 ## Contributing
 
