@@ -1,6 +1,8 @@
 !.gitignore
 composer.lock
+<% if (control.localComposer) { -%>
 composer.phar
+<% } -%>
 vendor/
 node_modules/
 .yo-rc.json
