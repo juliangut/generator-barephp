@@ -4,6 +4,7 @@
 [![Build status](https://img.shields.io/travis/juliangut/generator-barephp.svg?style=flat-square)](https://travis-ci.org/juliangut/generator-barephp)
 [![Total Downloads](https://img.shields.io/npm/dt/generator-barephp.svg?style=flat-square)](https://npmjs.org/package/generator-barephp)
 [![Monthly Downloads](https://img.shields.io/npm/dm/generator-barephp.svg?style=flat-square)](https://npmjs.org/package/generator-barephp)
+[![Downloads Statistics](https://img.shields.io/badge/downloads-statistics-%23aa000.svg?style=flat-square)](https://npm-stat.com/charts.html?package=generator-barephp)
 
 # Generator-BarePHP
 
