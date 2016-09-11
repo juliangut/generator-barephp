@@ -7,10 +7,10 @@ if (control.license && repository.type === 'github') { -%>
 <% } -%>
 
 <% if (control.travis) { -%>
-[![Build status](https://img.shields.io/travis/<%= account.travis %>/<%= project.name %>.svg?style=flat-square)](https://travis-ci.org/<%= account.travis %>/<%= project.name %>)
+[![Build Status](https://img.shields.io/travis/<%= account.travis %>/<%= project.name %>.svg?style=flat-square)](https://travis-ci.org/<%= account.travis %>/<%= project.name %>)
 <% }
 if (control.styleci) { -%>
-[![Style](https://styleci.io/repos/<%= account.styleci %>/shield)](https://styleci.io/repos/<%= account.styleci %>)
+[![Style Check](https://styleci.io/repos/<%= account.styleci %>/shield)](https://styleci.io/repos/<%= account.styleci %>)
 <% }
 if (control.scrutinizer) { -%>
 [![Code Quality](https://img.shields.io/scrutinizer/g/<%= account.scrutinizer %>/<%= project.name %>.svg?style=flat-square)](https://scrutinizer-ci.com/g/<%= account.scrutinizer %>/<%= project.name %>)
