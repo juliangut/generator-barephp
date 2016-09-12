@@ -37,8 +37,16 @@ install:
 <% } -%>
 
 script:
+<% if (control.customPHPCS) { -%>
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpcs --standard=PSR2 <%= dir.src %> <%= dir.tests %> ; fi
+<% } else { -%>
+  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpcs --standard=phpcs.xml <%= dir.src %> <%= dir.tests %> ; fi
+<% }
+if (control.customPHPMD) { -%>
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize ; fi
+<% } else { -%>
+  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpmd <%= dir.src %> phpmd.xml ; fi
+<% } -%>
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpcpd <%= dir.src %> ; fi
 <% if (!control.coveralls) { -%>
   - vendor/bin/phpunit

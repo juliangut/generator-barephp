@@ -6,7 +6,7 @@ module.exports.tasks = {
   phpcs: {
     options: {
       bin: 'vendor/bin/phpcs',
-      standard: 'PSR2'
+      standard: <% if (control.customPHPCS) { -%>'phpcs.xml'<% } else { -%>'PSR2'<% } -%>
     },
     application: {
       dir: [

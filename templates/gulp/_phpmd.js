@@ -9,7 +9,7 @@ gulp.task('phpmd', function() {
   return gulp.src([config.src + '/**/*.php'])
     .pipe(phpmd({
       bin: 'vendor/bin/phpmd',
-      ruleset: 'unusedcode,naming,design,controversial,codesize',
+      ruleset: <% if (control.customPHPMD) { -%>'phpmd.xml'<% } else { -%>'unusedcode,naming,design,controversial,codesize'<% } -%>,
       format: 'text'
     }))
     .pipe(phpmd.reporter('log'));

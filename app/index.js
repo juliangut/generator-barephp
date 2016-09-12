@@ -49,6 +49,8 @@ var BarePHP = module.exports = function BarePHP() {
       controlRepository: true,
       controlDirs: false,
       controlLicense: true,
+      controlCustomPHPCS: false,
+      controlCustomPHPMD: false,
       controlPackagist: true,
       controlTravis: true,
       controlCoveralls: true,
@@ -531,6 +533,16 @@ BarePHP.prototype.askForToolsInstall = function() {
   var done = this.async();
   var choiceList = [
     {
+      value: 'customPHPCS',
+      name: 'Custom PHPCS ruleset',
+      checked: this.config.get('controlCustomPHPCS')
+    },
+    {
+      value: 'customPHPMD',
+      name: 'Custom PHPMD ruleset',
+      checked: this.config.get('controlCustomPHPMD')
+    },
+    {
       value: 'packagist',
       name: 'Packagist',
       checked: this.config.get('controlPackagist')
@@ -584,6 +596,8 @@ BarePHP.prototype.askForToolsInstall = function() {
   this.prompt(prompts, function(props) {
     var hasMod = function(mod) { return props.tools.indexOf(mod) !== -1; };
 
+    this.config.set('controlCustomPHPCS', hasMod('customPHPCS'));
+    this.config.set('controlCustomPHPMD', hasMod('customPHPMD'));
     this.config.set('controlPackagist', hasMod('packagist'));
     this.config.set('controlTravis', hasMod('travis'));
     this.config.set('controlCoveralls', hasMod('coveralls'));
@@ -883,6 +897,8 @@ BarePHP.prototype.writing = {
       repository: this.config.get('controlRepository'),
       dirs: this.config.get('controlDirs'),
       license: this.config.get('controlLicense'),
+      customPHPCS: this.config.get('controlCustomPHPCS'),
+      customPHPMD: this.config.get('controlCustomPHPMD'),
       packagist: this.config.get('controlPackagist'),
       travis: this.config.get('controlTravis'),
       coveralls: this.config.get('controlCoveralls'),
@@ -1017,6 +1033,13 @@ BarePHP.prototype.writing = {
 
     this.template('../../templates/_phpunit.xml', 'phpunit.xml');
 
+    if (this.config.get('controlCustomPHPCS')) {
+      this.template('../../templates/_phpcs.xml', 'phpcs.xml');
+    }
+    if (this.config.get('controlCustomPHPMD')) {
+      this.template('../../templates/_phpmd.xml', 'phpmd.xml');
+    }
+
     if (this.defaults.project.type === 'project') {
       this.template('../../templates/code/_index.php', this.config.get('dirPublic') + '/index.php');
     }
@@ -1027,8 +1050,8 @@ BarePHP.prototype.writing = {
       this.template('../../templates/_Gruntfile.js', 'Gruntfile.js');
       this.template('../../templates/grunt/_config.js', 'grunt/config.js');
       this.copy('../../templates/grunt/phplint.js', 'grunt/phplint.js');
-      this.copy('../../templates/grunt/phpcs.js', 'grunt/phpcs.js');
-      this.copy('../../templates/grunt/phpmd.js', 'grunt/phpmd.js');
+      this.copy('../../templates/grunt/_phpcs.js', 'grunt/phpcs.js');
+      this.copy('../../templates/grunt/_phpmd.js', 'grunt/phpmd.js');
       this.copy('../../templates/grunt/phpcpd.js', 'grunt/phpcpd.js');
       this.copy('../../templates/grunt/phpunit.js', 'grunt/phpunit.js');
       this.copy('../../templates/grunt/security_checker.js', 'grunt/security_checker.js');
@@ -1046,8 +1069,8 @@ BarePHP.prototype.writing = {
       this.template('../../templates/_gulpfile.js', 'gulpfile.js');
       this.template('../../templates/gulp/_config.js', 'gulp/config.js');
       this.copy('../../templates/gulp/phplint.js', 'gulp/phplint.js');
-      this.copy('../../templates/gulp/phpcs.js', 'gulp/phpcs.js');
-      this.copy('../../templates/gulp/phpmd.js', 'gulp/phpmd.js');
+      this.copy('../../templates/gulp/_phpcs.js', 'gulp/phpcs.js');
+      this.copy('../../templates/gulp/_phpmd.js', 'gulp/phpmd.js');
       this.copy('../../templates/gulp/phpcpd.js', 'gulp/phpcpd.js');
       this.copy('../../templates/gulp/phpunit.js', 'gulp/phpunit.js');
       this.copy('../../templates/gulp/composer-outdated.js', 'gulp/composer-outdated.js');
