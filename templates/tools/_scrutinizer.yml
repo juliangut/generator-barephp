@@ -66,7 +66,6 @@ tools:
       standard: 'PSR2'
     filter:
       paths: [<%= dir.src %>, <%= dir.tests %><% if (project.type === 'project') { -%>, <%= dir.public %><% } -%>]
-
   php_cpd:
     enabled: true
     excluded_dirs: [<%= dir.dist %>, <%= dir.tests %>, vendor]
