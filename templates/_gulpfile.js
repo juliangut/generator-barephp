@@ -29,7 +29,7 @@ gulp.task('test',  function() {
 
 gulp.task('security', ['composer-outdated']);
 
-gulp.task('serve',  function() {
+gulp.task('serve', function() {
   runSequence(
     'phplint',
 <% if (!control.homestead) { -%>

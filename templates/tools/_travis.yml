@@ -27,8 +27,10 @@ matrix:
     - php: hhvm
     - php: 7.1
 
-before_script:
+before_install:
   - travis_retry composer self-update
+
+install:
   - travis_retry composer install --no-interaction --prefer-source
 <% if (control.coveralls) { -%>
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then travis_retry composer require satooshi/php-coveralls:dev-master --no-interaction ; fi
