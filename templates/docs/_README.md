@@ -4,6 +4,8 @@
 <% }
 if (control.license && repository.type === 'github') { -%>
 [![License](https://img.shields.io/github/license/<%= account.repository %>/<%= project.name %>.svg?style=flat-square)](https://github.com/<%= owner.account %>/<%= project.name %>/blob/master/LICENSE)
+<% } else if (control.license && control.packagist) { -%>
+![License](https://img.shields.io/packagist/l/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)
 <% } -%>
 
 <% if (control.travis) { -%>
@@ -17,9 +19,9 @@ if (control.scrutinizer) { -%>
 <% }
 if (control.coveralls) { -%>
 [![Code Coverage](https://img.shields.io/coveralls/<%= account.coveralls %>/<%= project.name %>.svg?style=flat-square)](https://coveralls.io/github/<%= account.coveralls %>/<%= project.name %>)
-<% }
+<% } -%>
 
-if (control.packagist) { -%>
+<% if (control.packagist) { -%>
 [![Total Downloads](https://img.shields.io/packagist/dt/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>)
 [![Monthly Downloads](https://img.shields.io/packagist/dm/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>)
 <% } -%>

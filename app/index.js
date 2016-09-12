@@ -8,7 +8,7 @@
 
 'use strict';
 
-var yeoman = require('yeoman-generator');
+var generators = require('yeoman-generator');
 var util = require('util');
 var path = require('path');
 var yosay = require('yosay');
@@ -21,7 +21,7 @@ var fs = require('fs');
 var sprintf = require('sprintf-js').sprintf;
 
 var BarePHP = module.exports = function BarePHP() {
-  yeoman.generators.Base.apply(this, arguments);
+  generators.Base.apply(this, arguments);
 
   this.defaults = {
     quickMode: false,
@@ -123,7 +123,7 @@ var BarePHP = module.exports = function BarePHP() {
   this.config.defaults(this.defaults.config);
 };
 
-util.inherits(BarePHP, yeoman.generators.Base);
+util.inherits(BarePHP, generators.Base);
 
 BarePHP.prototype.welcome = function() {
   this.log(
