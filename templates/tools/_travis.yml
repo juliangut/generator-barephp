@@ -5,18 +5,20 @@ sudo: false
 php:
 <% if (project.phpVersion <= 5.3) { -%>
   - 5.3
-<% } -%>
-<% if (project.phpVersion <= 5.4) { -%>
+<% }
+if (project.phpVersion <= 5.4) { -%>
   - 5.4
-<% } -%>
-<% if (project.phpVersion <= 5.5) { -%>
+<% }
+if (project.phpVersion <= 5.5) { -%>
   - 5.5
-<% } -%>
-<% if (project.phpVersion <= 5.6) { -%>
+<% }
+if (project.phpVersion <= 5.6) { -%>
   - 5.6
-<% } -%>
-<% if (project.phpVersion <= 7.0) { -%>
+<% }
+if (project.phpVersion <= 7.0) { -%>
   - 7.0
+<% }
+if (project.phpVersion <= 7.1) { -%>
   - 7.1
 <% } -%>
   - hhvm
@@ -37,25 +39,18 @@ install:
 <% } -%>
 
 script:
-<% if (control.customPHPCS) { -%>
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpcs --standard=PSR2 <%= dir.src %> <%= dir.tests %> ; fi
+<% if (control.customPHPMD) { -%>
+  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpmd <%= dir.src %> text phpmd.xml ; fi
 <% } else { -%>
-  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpcs --standard=phpcs.xml <%= dir.src %> <%= dir.tests %> ; fi
-<% }
-if (control.customPHPMD) { -%>
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize ; fi
-<% } else { -%>
-  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpmd <%= dir.src %> phpmd.xml ; fi
 <% } -%>
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpcpd <%= dir.src %> ; fi
 <% if (!control.coveralls) { -%>
   - vendor/bin/phpunit
-<% } -%>
-<% if (control.coveralls) { -%>
+<% } else { -%>
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpunit --coverage-clover build/logs/clover.xml ; fi
   - if [[ "$TRAVIS_PHP_VERSION" != "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpunit ; fi
-<% } -%>
-<% if (control.coveralls) { -%>
 
 after_script:
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then travis_retry php vendor/bin/coveralls -v ; fi

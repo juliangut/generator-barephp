@@ -30,9 +30,6 @@ if (control.taskRunner === 'Gulp') { -%>
 gulpfile.js      export-ignore
 <% } -%>
 phpunit.xml      export-ignore
-<% if (control.customPHPCS) { -%>
-phpcs.xml        export-ignore
-<% }
-if (control.customPHPMD) { -%>
+<% if (control.customPHPMD) { -%>
 phpmd.xml        export-ignore
 <% } -%>

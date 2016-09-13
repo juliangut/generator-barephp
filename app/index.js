@@ -49,7 +49,6 @@ var BarePHP = module.exports = function BarePHP() {
       controlRepository: true,
       controlDirs: false,
       controlLicense: true,
-      controlCustomPHPCS: false,
       controlCustomPHPMD: false,
       controlPackagist: true,
       controlTravis: true,
@@ -256,9 +255,6 @@ BarePHP.prototype.askForRepository = function() {
     if (!this.config.get('accountScrutinizer')) {
       this.config.set('accountScrutinizer', accountRepository);
     }
-    if (!this.config.get('accountStyleci')) {
-      this.config.set('accountStyleci', 'XXXXXXXX');
-    }
 
     var repositoryUrl = 'https://';
     switch (props.type.toLowerCase()) {
@@ -461,7 +457,7 @@ BarePHP.prototype.askCodeConfig = function() {
       type: 'list',
       name: 'phpVersion',
       message: 'What is the minimum supported PHP version for the project?',
-      choices: ['5.3', '5.4', '5.5', '5.6', '7.0'/*, '7.1'*/],
+      choices: ['5.3', '5.4', '5.5', '5.6', '7.0', '7.1'],
       default: this.defaults.project.phpVersion.toFixed(1)
     },
     {
@@ -533,16 +529,6 @@ BarePHP.prototype.askForToolsInstall = function() {
   var done = this.async();
   var choiceList = [
     {
-      value: 'customPHPCS',
-      name: 'Custom PHPCS ruleset',
-      checked: this.config.get('controlCustomPHPCS')
-    },
-    {
-      value: 'customPHPMD',
-      name: 'Custom PHPMD ruleset',
-      checked: this.config.get('controlCustomPHPMD')
-    },
-    {
       value: 'packagist',
       name: 'Packagist',
       checked: this.config.get('controlPackagist')
@@ -571,6 +557,11 @@ BarePHP.prototype.askForToolsInstall = function() {
       value: 'docs',
       name: 'Initial documentation',
       checked: this.config.get('controlDocs')
+    },
+    {
+      value: 'customPHPMD',
+      name: 'Customizable PHPMD ruleset',
+      checked: this.config.get('controlCustomPHPMD')
     }
   ];
 
@@ -596,13 +587,12 @@ BarePHP.prototype.askForToolsInstall = function() {
   this.prompt(prompts, function(props) {
     var hasMod = function(mod) { return props.tools.indexOf(mod) !== -1; };
 
-    this.config.set('controlCustomPHPCS', hasMod('customPHPCS'));
-    this.config.set('controlCustomPHPMD', hasMod('customPHPMD'));
     this.config.set('controlPackagist', hasMod('packagist'));
     this.config.set('controlTravis', hasMod('travis'));
     this.config.set('controlCoveralls', hasMod('coveralls'));
     this.config.set('controlScrutinizer', hasMod('scrutinizer'));
     this.config.set('controlStyleci', hasMod('styleci'));
+    this.config.set('controlCustomPHPMD', hasMod('customPHPMD'));
     this.config.set('controlHomestead', hasMod('homestead'));
     if (!hasMod('homestead')) {
       this.config.set('controlPhpMyAdmin', false);
@@ -706,7 +696,7 @@ BarePHP.prototype.askForScrutinizerAccount = function() {
 };
 
 BarePHP.prototype.askForStyleciAccount = function() {
-  if (this.defaults.quickMode || !this.config.get('controlStyleci')) {
+  if (this.defaults.quickMode || !this.config.get('controlStyleci') || !this.config.get('controlDocs')) {
     return;
   }
 
@@ -720,13 +710,10 @@ BarePHP.prototype.askForStyleciAccount = function() {
   ];
 
   this.prompt(prompts, function(props) {
-    var accountStyleci = _.clean(props.account).replace(/\s+/g, '_');
-    if (accountStyleci === '') {
-      accountStyleci = 'XXXXXXXX';
-    }
+    var accountStyleci = _.clean(props.account).replace(/\s+/g, '');
 
-    if (accountStyleci === 'XXXXXXXX') {
-      console.log(chalk.yellow.bold('  Remember to assign StyleCI repository code on readme file'));
+    if (accountStyleci === '') {
+      console.log(chalk.yellow.bold('  Remember to assign StyleCI repository code on README file'));
     }
 
     this.config.set('accountStyleci', accountStyleci);
@@ -897,7 +884,6 @@ BarePHP.prototype.writing = {
       repository: this.config.get('controlRepository'),
       dirs: this.config.get('controlDirs'),
       license: this.config.get('controlLicense'),
-      customPHPCS: this.config.get('controlCustomPHPCS'),
       customPHPMD: this.config.get('controlCustomPHPMD'),
       packagist: this.config.get('controlPackagist'),
       travis: this.config.get('controlTravis'),
@@ -981,7 +967,7 @@ BarePHP.prototype.writing = {
       travis: this.config.get('accountTravis'),
       coveralls: this.config.get('accountCoveralls'),
       scrutinizer: this.config.get('accountScrutinizer'),
-      styleci: this.config.get('accountStyleci')
+      styleci: this.config.get('accountStyleci') !== '' ? this.config.get('accountStyleci') : 'XXXXXXXX'
     };
 
     this.homestead = {
@@ -1033,9 +1019,6 @@ BarePHP.prototype.writing = {
 
     this.template('../../templates/_phpunit.xml', 'phpunit.xml');
 
-    if (this.config.get('controlCustomPHPCS')) {
-      this.template('../../templates/_phpcs.xml', 'phpcs.xml');
-    }
     if (this.config.get('controlCustomPHPMD')) {
       this.template('../../templates/_phpmd.xml', 'phpmd.xml');
     }
@@ -1050,7 +1033,7 @@ BarePHP.prototype.writing = {
       this.template('../../templates/_Gruntfile.js', 'Gruntfile.js');
       this.template('../../templates/grunt/_config.js', 'grunt/config.js');
       this.copy('../../templates/grunt/phplint.js', 'grunt/phplint.js');
-      this.copy('../../templates/grunt/_phpcs.js', 'grunt/phpcs.js');
+      this.copy('../../templates/grunt/phpcs.js', 'grunt/phpcs.js');
       this.copy('../../templates/grunt/_phpmd.js', 'grunt/phpmd.js');
       this.copy('../../templates/grunt/phpcpd.js', 'grunt/phpcpd.js');
       this.copy('../../templates/grunt/phpunit.js', 'grunt/phpunit.js');
@@ -1069,7 +1052,7 @@ BarePHP.prototype.writing = {
       this.template('../../templates/_gulpfile.js', 'gulpfile.js');
       this.template('../../templates/gulp/_config.js', 'gulp/config.js');
       this.copy('../../templates/gulp/phplint.js', 'gulp/phplint.js');
-      this.copy('../../templates/gulp/_phpcs.js', 'gulp/phpcs.js');
+      this.copy('../../templates/gulp/phpcs.js', 'gulp/phpcs.js');
       this.copy('../../templates/gulp/_phpmd.js', 'gulp/phpmd.js');
       this.copy('../../templates/gulp/phpcpd.js', 'gulp/phpcpd.js');
       this.copy('../../templates/gulp/phpunit.js', 'gulp/phpunit.js');

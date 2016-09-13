@@ -1,6 +1,6 @@
 {
   "name": "generator-barephp",
-  "version": "0.15.1",
+  "version": "1.0.0-rc.1",
   "description": "Barebones PHP project scaffold",
   "keywords": [
     "yeoman-generator",
@@ -20,6 +20,7 @@
     "styleci",
     "vagrant",
     "homestead",
+    "phpmyadmin",
     "browsersync"
   ],
   "homepage": "https://github.com/juliangut/generator-barephp",

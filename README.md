@@ -36,26 +36,26 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
 * QA utilities configured and integrated into Gulp and Grunt
   * [PHPUnit](http://phpunit.de/) testing environment already set up and integrated into Gulp and Grunt
   * PHP syntax linting
-  * [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) for coding style checking
-  * [PHPMD](https://phpmd.org/) for code mess detection
-  * [PHPCPD](https://github.com/sebastianbergmann/phpcpd)
-  * Composer [outdated](https://getcomposer.org/doc/03-cli.md#outdated) for packages updates available
+  * [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) for PSR2 coding standard checking
+  * [PHPMD](https://phpmd.org/) for code mess detection (optional customizable rule set)
+  * [PHPCPD](https://github.com/sebastianbergmann/phpcpd) for copy/paste detection
+  * Composer [outdated](https://getcomposer.org/doc/03-cli.md#outdated) for packages updates availability check
 * Initial documentation structure in Markdown
 * Basic annotated kickoff code (with tests and coverage report!)
 * "Free Software" and "Open Source" License selection
+  * [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html)
   * [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause.html)
   * [BSD-2-Clause](https://spdx.org/licenses/BSD-2-Clause.html)
   * [BSD-4-Clause](https://spdx.org/licenses/BSD-4-Clause.html)
-  * [MIT](https://spdx.org/licenses/MIT.html)
   * [GPL-3.0](https://spdx.org/licenses/GPL-3.0.html)
   * [LGPL-3.0](https://spdx.org/licenses/LGPL-3.0.html)
-  * [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html)
+  * [MIT](https://spdx.org/licenses/MIT.html)
 
-> And many, many more to come. Would like to see a tool, library, configuration, ... added to the generator? file an issue with your feature request
+> Would you like to see a tool, library, configuration, ... added to the generator? file an issue with your feature request
 
 #### Quick assistant / fast mode
 
-As the options and tools configured is getting quite long a quick/fast mode has been introduced. In fast mode only the basics questions will be asked and then the generator will do its best guessing the rest for you to get the environment ready faster.
+As the list options and tools configured is getting quite long a quick/fast mode has been introduced. In fast mode only the basics questions will be asked and then the generator will do its best guessing the rest for you to get the environment ready faster.
 
 ## Getting Started
 

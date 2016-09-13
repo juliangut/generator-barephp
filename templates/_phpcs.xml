@@ -1,8 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<ruleset name="<%= project.name %>">
-  <description><%= project.name %> rule set</description>
-
-  <!-- Import PSR2 entire rule set -->
-  <rule ref="PSR2"/>
-</ruleset>
