@@ -8,11 +8,13 @@
 
 # Generator-BarePHP
 
+#### PHP project scaffold with lots of integrations
+
 Normally when starting a new PHP project you'd just copy/paste configuration files from another project in order to set the project environment ready as quickly as possible, but you'll forget to copy some files and more often than not you'll forget to change names or routes on those files.
 
 > Scaffolding project environments with the same files once and again is painfully boring, error prone, and leaves a feeling of time waste.
 
-Let Yeoman do the heavy lifting and get your projects scaffold and ready to start developing in a breeze with this generator, it will prepare a shiny bare bones PHP project structure ready to develop for you, sit and focus on the actual code.
+Let Yeoman do the heavy lifting and get your projects scaffold and ready to start developing in a breeze with this generator, it will prepare a shiny and clean PHP project structure ready to develop for you, sit and focus on the actual code.
 
 ### Features
 
@@ -55,7 +57,7 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
 
 #### Quick assistant / fast mode
 
-As the list options and tools configured is getting quite long a quick/fast mode has been introduced. In fast mode only the basics questions will be asked and then the generator will do its best guessing the rest for you to get the environment ready faster.
+As the list options and tools configured is quite long a quick/fast mode has been introduced. In fast mode only the basic questions will be asked and then the generator will do its best guessing the rest for you to get the environment ready faster.
 
 ## Getting Started
 
