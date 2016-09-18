@@ -1037,7 +1037,6 @@ BarePHP.prototype.writing = {
       this.copy('../../templates/grunt/_phpmd.js', 'grunt/phpmd.js');
       this.copy('../../templates/grunt/phpcpd.js', 'grunt/phpcpd.js');
       this.copy('../../templates/grunt/phpunit.js', 'grunt/phpunit.js');
-      this.copy('../../templates/grunt/security_checker.js', 'grunt/security_checker.js');
       this.template('../../templates/grunt/_composer.js', 'grunt/composer.js');
 
       if (this.defaults.project.type === 'project') {
