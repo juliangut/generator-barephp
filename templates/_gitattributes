@@ -26,8 +26,9 @@ gulpfile.js      export-ignore
 if (control.homestead) { -%>
 Vagrantfile      export-ignore
 .vagrant/        export-ignore
-<% }
-if (control.docs) { -%>
+<% } -%>
+package.json     export-ignore
+<% if (control.docs) { -%>
 README.md        export-ignore
 CONTRIBUTING.md  export-ignore
 <% } -%>
