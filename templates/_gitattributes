@@ -15,6 +15,14 @@ if (control.scrutinizer) { -%>
 if (control.styleci) { -%>
 .styleci.yml     export-ignore
 <% }
+if (control.taskRunner === 'Grunt') { -%>
+grunt            export-ignore
+Gruntfile.js     export-ignore
+<% }
+if (control.taskRunner === 'Gulp') { -%>
+gulp             export-ignore
+gulpfile.js      export-ignore
+<% }
 if (control.homestead) { -%>
 Vagrantfile      export-ignore
 .vagrant/        export-ignore
@@ -22,12 +30,6 @@ Vagrantfile      export-ignore
 if (control.docs) { -%>
 README.md        export-ignore
 CONTRIBUTING.md  export-ignore
-<% }
-if (control.taskRunner === 'Grunt') { -%>
-Gruntfile.js     export-ignore
-<% }
-if (control.taskRunner === 'Gulp') { -%>
-gulpfile.js      export-ignore
 <% } -%>
 phpunit.xml      export-ignore
 <% if (control.customPHPMD) { -%>
