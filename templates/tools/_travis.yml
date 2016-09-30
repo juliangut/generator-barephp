@@ -21,21 +21,34 @@ if (project.phpVersion <= 7.0) { -%>
 if (project.phpVersion <= 7.1) { -%>
   - 7.1
 <% } -%>
+  - nightly
+<% if (project.supportHhvm) { -%>
   - hhvm
+<% } -%>
 
 matrix:
   fast_finish: true
   allow_failures:
+    - php: nightly
+<% if (project.supportHhvm) { -%>
     - php: hhvm
-    - php: 7.1
+<% } -%>
+
+env:
+  global:
+    - COMPOSER_GLOBAL_FLAGS="--prefer-source --no-interaction --no-scripts --no-progress"
+  matrix:
+    - COMPOSER_FLAGS="--prefer-stable"
 
 before_install:
-  - travis_retry composer self-update
+  - if [[ -f "~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" ]]; then phpenv config-rm xdebug.ini ; fi
+  - composer global require hirak/prestissimo
+  - composer self-update --stable --no-progress
 
 install:
-  - travis_retry composer install --no-interaction --prefer-source
+  - travis_retry composer update --profile $COMPOSER_GLOBAL_FLAGS $COMPOSER_FLAGS
 <% if (control.coveralls) { -%>
-  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then travis_retry composer require satooshi/php-coveralls:dev-master --no-interaction ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then travis_retry composer require satooshi/php-coveralls:dev-master $COMPOSER_GLOBAL_FLAGS ; fi
 <% } -%>
 
 script:
@@ -53,5 +66,5 @@ script:
   - if [[ "$TRAVIS_PHP_VERSION" != "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpunit ; fi
 
 after_script:
-  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then travis_retry php vendor/bin/coveralls -v ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then travis_retry php vendor/bin/coveralls --verbose ; fi
 <% } -%>

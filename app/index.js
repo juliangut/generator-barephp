@@ -42,7 +42,8 @@ var BarePHP = module.exports = function BarePHP() {
       license: 'BSD-3-Clause',
       licenseFile: 'bsd-new',
       phpVersion: 5.6,
-      testPhpVersion: 5.6
+      testPhpVersion: 5.6,
+      supportHhvm: false
     },
     config: {
       controlTaskRunner: 'Gulp',
@@ -463,6 +464,12 @@ BarePHP.prototype.askCodeConfig = function() {
       default: this.defaults.project.phpVersion.toFixed(1)
     },
     {
+      type: 'confirm',
+      name: 'supportHhvm',
+      message: 'Want to support HHVM?',
+      default: this.config.get('supportHhvm')
+    },
+    {
       name: 'namespace',
       message: 'What is the base namespace of the project?',
       default: this.config.get('projectNamespace')
@@ -475,6 +482,8 @@ BarePHP.prototype.askCodeConfig = function() {
       this.defaults.project.testPhpVersion = phpVersion;
     }
     this.defaults.project.phpVersion = phpVersion;
+
+    this.config.set('supportHhvm', props.supportHhvm);
 
     var projectNamespace = _.clean(_.cleanDiacritics(props.namespace));
     if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(projectNamespace) === false) {
@@ -917,6 +926,7 @@ BarePHP.prototype.writing = {
       keywords: this.defaults.project.keywords,
       homepage: this.defaults.project.homepage,
       phpVersion: this.defaults.project.phpVersion,
+      supportHhvm: this.config.get('supportHhvm'),
       testPhpVersion: this.defaults.project.testPhpVersion,
       license: this.defaults.project.license,
       namespace: this.config.get('projectNamespace'),
