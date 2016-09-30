@@ -101,6 +101,8 @@ var BarePHP = module.exports = function BarePHP() {
     }
     if (configs.type) {
       this.defaults.project.type = configs.type;
+    } else {
+      this.defaults.project.type = 'library';
     }
     if (configs.keywords && configs.keywords instanceof Array) {
       this.defaults.project.keywords = configs.keywords;
