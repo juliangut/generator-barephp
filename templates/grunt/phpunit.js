@@ -9,7 +9,7 @@ module.exports.tasks = {
       coverage: true
     },
     application: {
-      coverageHtml: config.dist + '/coverage'
+      coverageHtml: config.build + '/coverage'
     }
   }
 };

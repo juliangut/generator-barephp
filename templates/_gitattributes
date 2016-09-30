@@ -16,11 +16,11 @@ if (control.styleci) { -%>
 .styleci.yml     export-ignore
 <% }
 if (control.taskRunner === 'Grunt') { -%>
-grunt            export-ignore
+grunt/           export-ignore
 Gruntfile.js     export-ignore
 <% }
 if (control.taskRunner === 'Gulp') { -%>
-gulp             export-ignore
+gulp/            export-ignore
 gulpfile.js      export-ignore
 <% }
 if (control.homestead) { -%>

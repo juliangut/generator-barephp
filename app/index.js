@@ -64,7 +64,7 @@ var BarePHP = module.exports = function BarePHP() {
       projectNamespace: null,
       dirSrc: 'src',
       dirTests: 'tests',
-      dirDist: 'dist',
+      dirBuild: '.build',
       dirPublic: 'public',
       accountRepository: null,
       accountPackagist: null,
@@ -790,7 +790,7 @@ BarePHP.prototype.askForHomesteadIP = function() {
 BarePHP.prototype.askForChangeDirs = function() {
   var defaultDirs = this.config.get('dirSrc') +
     ', ' + this.config.get('dirTests') +
-    ', ' + this.config.get('dirDist');
+    ', ' + this.config.get('dirBuild');
   if (this.defaults.project.type === 'project') {
     defaultDirs += ', ' + this.config.get('dirPublic');
   }
@@ -801,7 +801,7 @@ BarePHP.prototype.askForChangeDirs = function() {
       type: 'confirm',
       name: 'changeDirs',
       message: util.format('Would you like to change default directories (%s)?', defaultDirs),
-      default: this.config.get('controlDirs')
+      default: this.defaults.config.controlDirs
     }
   ];
 
@@ -830,9 +830,9 @@ BarePHP.prototype.askForCustomDirs = function() {
       default: this.config.get('dirTests')
     },
     {
-      name: 'dist',
-      message: 'What is the distribution directory?',
-      default: this.config.get('dirDist')
+      name: 'build',
+      message: 'What is the build directory?',
+      default: this.config.get('dirBuild')
     }
   ];
 
@@ -847,7 +847,7 @@ BarePHP.prototype.askForCustomDirs = function() {
   this.prompt(prompts, function(props) {
     this.config.set('dirSrc', props.src);
     this.config.set('dirTests', props.tests);
-    this.config.set('dirDist', props.dist);
+    this.config.set('dirBuild', props.build);
 
     if (this.defaults.project.type === 'project') {
       this.config.set('dirPublic', props.public);
@@ -959,7 +959,7 @@ BarePHP.prototype.writing = {
       src: this.config.get('dirSrc'),
       tests: this.config.get('dirTests'),
       testsSrc: this.config.get('projectNamespace').replace(/\\+/g, path.sep).split(path.sep).pop(),
-      dist: this.config.get('dirDist'),
+      build: this.config.get('dirBuild'),
       public: this.config.get('dirPublic')
     };
 

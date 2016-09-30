@@ -20,7 +20,7 @@ gulp.task('qa', function() {
   );
 });
 
-gulp.task('test',  function() {
+gulp.task('test', function() {
   runSequence(
     'phplint',
     'phpunit'
@@ -34,14 +34,14 @@ gulp.task('serve', function() {
   runSequence(
     'phplint',
 <% if (!control.homestead) { -%>
-    'connect-php',
+    'connect-php', // To change localhost port head to ./gulp/config.js
 <% } -%>
-    'browserSync' //Comment out if project doesn't have a frontend
+    'browserSync'
   );
 });
-<% } -%>
 
-gulp.task('build', ['test'], function() {
+<% } -%>
+gulp.task('build', function() {
   console.log('Task ready to be implemented');
 });
 

@@ -15,21 +15,17 @@ module.exports = function(grunt) {
 
   grunt.registerTask('qa', ['phplint', 'phpcs', 'phpmd', 'phpcpd']);
   grunt.registerTask('test', ['phplint', 'phpunit']);
+  grunt.registerTask('security', ['composer:outdated']);
 
 <% if (project.type === 'project') { -%>
   grunt.registerTask('serve', function() {
-    grunt.task.run(['phplint', 'browserSync'<% if (!control.homestead) { -%>, 'php'<% } -%>]); //Comment out 'browserSync' if project doesn't have a frontend
+    grunt.task.run(['phplint', 'browserSync'<% if (!control.homestead) { -%>, 'php'<% } -%>]);<% if (!control.homestead) { -%> // To change localhost port head to ./grunt/config.js<% } -%>
 
   });
 
-  grunt.registerTask('server', function() {
-    grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
-    grunt.task.run(['serve']);
-  });
 <% } -%>
-
-  grunt.task.registerTask('build', 'Project build', ['test'], function() {
-    grunt.task.run(['test']);
+  grunt.registerTask('build', function() {
+    grunt.log.warn('Task ready to be implemented');
   });
 
   grunt.registerTask('default', ['qa', 'test']);

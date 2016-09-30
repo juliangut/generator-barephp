@@ -6,4 +6,4 @@ composer.phar
 vendor/
 node_modules/
 .yo-rc.json
-<%= dir.dist %>/
+<%= dir.build %>/
