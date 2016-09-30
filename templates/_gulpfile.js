@@ -29,6 +29,7 @@ gulp.task('test',  function() {
 
 gulp.task('security', ['composer-outdated']);
 
+<% if (project.type === 'project') { -%>
 gulp.task('serve', function() {
   runSequence(
     'phplint',
@@ -38,6 +39,7 @@ gulp.task('serve', function() {
     'browserSync' //Comment out if project doesn't have a frontend
   );
 });
+<% } -%>
 
 gulp.task('build', ['test'], function() {
   console.log('Task ready to be implemented');
