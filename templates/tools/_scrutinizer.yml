@@ -1,12 +1,12 @@
 # language: php
 
 filter:
-  paths:
-    - <%= dir.src %>/*
-    - <%= dir.tests %>/*
-<% if (control.homestead) { -%>
-    - <%= dir.public %>/*
-<% } -%>
+  paths: [<%= dir.src %>/*]
+  excluded_paths: [<% if (project.type === 'project') { -%><%= dir.public %>, <% } -%><%= dir.tests %>/*, vendor/*]
+
+before_commands:
+  - 'composer self-update'
+  - 'composer update --prefer-stable --prefer-source --no-interaction --no-scripts --no-progress --no-suggest'
 
 coding_style:
   php:
@@ -15,6 +15,31 @@ coding_style:
         general: lower
       constants:
         true_false_null: lower
+    spaces:
+      around_operators:
+          concatenation: true
+          negation: true
+      other:
+        after_type_cast: true
+
+tools:
+  php_code_coverage: false
+  php_code_sniffer:
+    enabled: true
+    config:
+      standard: 'PSR2'
+    filter:
+      paths: [<%= dir.src %>/*, <%= dir.tests %>/*]
+  php_mess_detector:
+    enabled: true
+    config:
+      ruleset: <% if (control.customPHPMD) { -%>phpmd.xml<% } else { -%>'unusedcode,naming,design,controversial,codesize'<% } -%>
+
+  php_cpd: true
+  php_loc: true
+  php_pdepend: true
+  php_analyzer: true
+  sensiolabs_security_checker: true
 
 checks:
   php:
@@ -57,30 +82,3 @@ checks:
     fix_linefeed: true
     fix_line_ending: true
     fix_identation_4spaces: true
-
-tools:
-  php_code_coverage: false
-  php_code_sniffer:
-    enabled: true
-    config:
-      standard: 'PSR2'
-    filter:
-      paths: [<%= dir.src %>, <%= dir.tests %><% if (project.type === 'project') { -%>, <%= dir.public %><% } -%>]
-  php_cpd:
-    enabled: true
-    excluded_dirs: [<%= dir.dist %>, <%= dir.tests %>, vendor]
-  php_mess_detector:
-    enabled: true
-    config:
-      ruleset: <% if (control.customPHPMD) { -%>phpmd.xml<% } else { -%>'unusedcode,naming,design,controversial,codesize'<% } -%>
-
-  php_loc:
-    enabled: true
-    excluded_dirs: [<%= dir.dist %>, <%= dir.tests %>, vendor]
-  php_pdepend: true
-  php_analyzer: true
-  sensiolabs_security_checker: true
-
-before_commands:
-  - 'composer self-update'
-  - 'composer install --no-interaction --prefer-source'

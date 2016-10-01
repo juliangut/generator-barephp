@@ -26,8 +26,7 @@ if (control.repository) { -%>
 
   },
 <% } -%>
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
 <% if (control.taskRunner === 'Grunt') { -%>
     "grunt": "~0.4.0",
