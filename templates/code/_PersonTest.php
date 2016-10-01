@@ -1,16 +1,17 @@
 <?php
-/**
- * <%= project.name %><% if (project.homepage) { -%> (<%= project.homepage %>)<% } -%>
+
+/*
+ * <%= project.name %><% if (project.homepage) { -%> (<%= project.homepage %>)<% } -%>.
 
 <% if (project.description) { -%>
- * <%= project.description %>
+ * <%= project.description %>.
 <% } -%>
  *
 <% if (control.license && project.license !== 'proprietary') { -%>
  * @license <%= project.license %>
 <% }
-if (control.repository && repository.homepage !== project.homepage) { -%>
- * @link <%= repository.homepage %>
+if (project.homepage) { -%>
+ * @link <%= project.homepage %>
 <% } -%>
  * @author <%= owner.name %><% if (owner.email) { -%> <<%= owner.email %>><% } -%>
 
@@ -21,7 +22,7 @@ namespace <%= project.namespace %>\Tests;
 use <%= project.namespace %>\Person;
 
 /**
- * Person tests example
+ * Person tests example.
  */
 class PersonTest extends \PHPUnit_Framework_TestCase
 {

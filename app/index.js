@@ -65,7 +65,7 @@ var BarePHP = module.exports = function BarePHP() {
       projectNamespace: null,
       dirSrc: 'src',
       dirTests: 'tests',
-      dirBuild: '.build',
+      dirBuild: 'build',
       dirPublic: 'public',
       accountRepository: null,
       accountPackagist: null,
@@ -1029,6 +1029,7 @@ BarePHP.prototype.writing = {
     );
     this.template('../../templates/code/_bootstrap.php', this.config.get('dirTests') + '/bootstrap.php');
 
+    this.template('../../templates/_php_cs', '.php_cs');
     this.template('../../templates/_phpunit.xml', 'phpunit.xml');
 
     if (this.config.get('controlCustomPHPMD')) {
@@ -1046,6 +1047,7 @@ BarePHP.prototype.writing = {
       this.template('../../templates/grunt/_config.js', 'grunt/config.js');
       this.copy('../../templates/grunt/phplint.js', 'grunt/phplint.js');
       this.copy('../../templates/grunt/phpcs.js', 'grunt/phpcs.js');
+      this.copy('../../templates/grunt/phpcs-fixer.js', 'grunt/phpcs-fixer.js');
       this.copy('../../templates/grunt/_phpmd.js', 'grunt/phpmd.js');
       this.copy('../../templates/grunt/phpcpd.js', 'grunt/phpcpd.js');
       this.copy('../../templates/grunt/phpunit.js', 'grunt/phpunit.js');
@@ -1064,6 +1066,7 @@ BarePHP.prototype.writing = {
       this.template('../../templates/gulp/_config.js', 'gulp/config.js');
       this.copy('../../templates/gulp/phplint.js', 'gulp/phplint.js');
       this.copy('../../templates/gulp/phpcs.js', 'gulp/phpcs.js');
+      this.copy('../../templates/gulp/phpcs-fixer.js', 'gulp/phpcs-fixer.js');
       this.copy('../../templates/gulp/_phpmd.js', 'gulp/phpmd.js');
       this.copy('../../templates/gulp/phpcpd.js', 'gulp/phpcpd.js');
       this.copy('../../templates/gulp/phpunit.js', 'gulp/phpunit.js');

@@ -41,6 +41,7 @@ if (project.license != '') { -%>
 
   },
   "require-dev": {
+    "friendsofphp/php-cs-fixer": "^1.0",
     "phpmd/phpmd": "^2.0",
     "phpunit/phpunit": "^4.5|^5.0",
     "sebastian/phpcpd": "^2.0",

@@ -16,7 +16,7 @@ tasks.forEach(function(task) {
 gulp.task('qa', function() {
   runSequence(
     'phplint',
-    ['phpcs', 'phpmd', 'phpcpd']
+    ['phpcs', 'phpcs-fixer-test', 'phpmd', 'phpcpd']
   );
 });
 
@@ -27,7 +27,19 @@ gulp.task('test', function() {
   );
 });
 
-gulp.task('security', ['composer-outdated']);
+gulp.task('fix', function() {
+  runSequence(
+    'phplint',
+    'phpcs-fixer'
+  );
+});
+
+gulp.task('security', function() {
+  runSequence(
+    'phplint',
+    'composer-outdated'
+  );
+});
 
 <% if (project.type === 'project') { -%>
 gulp.task('serve', function() {
