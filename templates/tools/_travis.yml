@@ -53,6 +53,7 @@ install:
 
 script:
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpcs --standard=PSR2 <%= dir.src %> <%= dir.tests %> ; fi
+  - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/php-cs-fixer fix --dry-run --verbose ; fi
 <% if (control.customPHPMD) { -%>
   - if [[ "$TRAVIS_PHP_VERSION" == "<%= project.testPhpVersion.toFixed(1) %>" ]]; then vendor/bin/phpmd <%= dir.src %> text phpmd.xml ; fi
 <% } else { -%>
