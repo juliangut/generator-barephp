@@ -10,6 +10,7 @@ gulp.task('phpmd', function() {
     .pipe(phpmd({
       bin: 'vendor/bin/phpmd',
       ruleset: <% if (control.customPHPMD) { -%>'phpmd.xml'<% } else { -%>'unusedcode,naming,design,controversial,codesize'<% } -%>,
+
       format: 'text'
     }))
     .pipe(phpmd.reporter('log'));

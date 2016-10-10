@@ -7,6 +7,7 @@ module.exports.tasks = {
     options: {
       bin: 'vendor/bin/phpmd',
       rulesets: <% if (control.customPHPMD) { -%>'phpmd.xml'<% } else { -%>'unusedcode,naming,design,controversial,codesize'<% } -%>,
+
       reportFormat: 'text'
     },
     application: {

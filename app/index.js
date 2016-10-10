@@ -60,6 +60,7 @@ var BarePHP = module.exports = function BarePHP() {
       controlPhpMyAdmin: false,
       controlDocs: true,
       repositoryType: 'Github',
+      repositorySSH: null,
       repositoryHomepage: null,
       projectName: null,
       projectNamespace: null,
@@ -259,18 +260,22 @@ BarePHP.prototype.askForRepository = function() {
       this.config.set('accountScrutinizer', accountRepository);
     }
 
+    var repositorySSH = 'git@';
     var repositoryUrl = 'https://';
     switch (props.type.toLowerCase()) {
       case 'github':
+        repositorySSH += 'github.com';
         repositoryUrl += 'github.com';
         break;
       case 'bitbucket':
+        repositorySSH += 'bitbucket.com';
         repositoryUrl += 'bitbucket.org';
         break;
     }
 
-    this.config.set('repositoryHomepage', repositoryUrl + '/' + accountRepository + '/');
     this.config.set('accountRepository', accountRepository);
+    this.config.set('repositorySSH', repositoryUrl + ':' + accountRepository + '/');
+    this.config.set('repositoryHomepage', repositoryUrl + '/' + accountRepository + '/');
 
     done();
   }.bind(this));
@@ -296,6 +301,11 @@ BarePHP.prototype.askForProject = function() {
     }
 
     if (this.config.get('controlRepository')) {
+      this.config.set(
+        'repositorySSH',
+        this.config.get('repositorySSH') + this.config.get('projectName') + '.git'
+      );
+
       this.config.set(
         'repositoryHomepage',
         this.config.get('repositoryHomepage') + this.config.get('projectName')
@@ -916,6 +926,7 @@ BarePHP.prototype.writing = {
 
     this.repository = {
       type: this.config.get('repositoryType'),
+      ssh: this.config.get('repositorySSH'),
       homepage: this.config.get('repositoryHomepage')
     };
 
@@ -1070,7 +1081,7 @@ BarePHP.prototype.writing = {
       this.copy('../../templates/gulp/_phpmd.js', 'gulp/phpmd.js');
       this.copy('../../templates/gulp/phpcpd.js', 'gulp/phpcpd.js');
       this.copy('../../templates/gulp/phpunit.js', 'gulp/phpunit.js');
-      this.copy('../../templates/gulp/composer-outdated.js', 'gulp/composer-outdated.js');
+      this.copy('../../templates/gulp/composer.js', 'gulp/composer.js');
 
       if (this.defaults.project.type === 'project') {
         if (!this.config.get('controlHomestead')) {
