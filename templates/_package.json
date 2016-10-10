@@ -61,5 +61,10 @@ if (project.type === 'project') { -%>
     "gulp-phpunit": "~0.14.0",
     "run-sequence": "^1.2.1"
 <% } -%>
+  }<% if (control.repository) { -%>,
+  "repository": {
+    "type": "git",
+    "url": "<%= repository.ssh -%>"
   }
+<% } -%>
 }
