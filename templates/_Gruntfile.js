@@ -2,7 +2,9 @@
 
 module.exports = function(grunt) {
   require('time-grunt')(grunt);
-  require('jit-grunt')(grunt);
+  require('jit-grunt')(grunt, {
+    'phpcsfixer': 'grunt-php-cs-fixer'
+  });
 
   grunt.loadNpmTasks('grunt-composer');
 
@@ -13,8 +15,9 @@ module.exports = function(grunt) {
   };
   grunt.initConfig(require('load-grunt-configs')(grunt, settings));
 
-  grunt.registerTask('qa', ['phplint', 'phpcs', 'phpmd', 'phpcpd']);
+  grunt.registerTask('qa', ['phplint', 'phpcs', 'phpcsfixer:test', 'phpmd', 'phpcpd']);
   grunt.registerTask('test', ['phplint', 'phpunit']);
+  grunt.registerTask('fix', ['phplint', 'phpcsfixer:fix']);
   grunt.registerTask('security', ['phplint', 'composer:outdated']);
 
 <% if (project.type === 'project') { -%>

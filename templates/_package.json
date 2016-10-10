@@ -37,6 +37,7 @@ if (control.repository) { -%>
 <% if (project.type === 'project' && !control.homestead) { -%>
     "grunt-php": "~1.5.1",
 <% } -%>
+    "grunt-php-cs-fixer": "~0.0.9",
     "grunt-phpcpd": "~0.1.0",
     "grunt-phpcs": "~0.2.0",
     "grunt-phplint": "~0.0.5",
