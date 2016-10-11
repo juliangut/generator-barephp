@@ -39,14 +39,14 @@ var BarePHP = module.exports = function BarePHP() {
       type: 'project',
       keywords: [],
       homepage: null,
-      license: 'BSD-3-Clause',
-      licenseFile: 'bsd-new',
+      license: 'MIT',
+      licenseFile: 'mit',
       phpVersion: 5.6,
       testPhpVersion: 5.6,
       supportHhvm: false
     },
     config: {
-      controlTaskRunner: 'Gulp',
+      controlTaskRunner: 'None',
       controlRepository: true,
       controlDirs: false,
       controlLicense: true,
@@ -413,13 +413,13 @@ BarePHP.prototype.askForLicense = function() {
       name: 'license',
       message: 'What is the license you want to use?',
       choices: [
+        'Apache-2.0',
         'BSD-3-Clause',
         'BSD-2-Clause',
         'BSD-4-Clause',
-        'MIT',
         'GPL-3.0',
         'LGPL-3.0',
-        'Apache-2.0',
+        'MIT',
         'Proprietary'
       ],
       default: this.defaults.project.license
@@ -883,7 +883,7 @@ BarePHP.prototype.askForTaskRunner = function() {
       type: 'list',
       name: 'taskRunner',
       message: 'What task runner do you want to use?',
-      choices: ['Gulp', 'Grunt'],
+      choices: ['None', 'Gulp', 'Grunt'],
       default: this.config.get('controlTaskRunner')
     }
   ];

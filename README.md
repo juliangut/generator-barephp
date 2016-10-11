@@ -35,10 +35,11 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
 * [Scrutinizer](https://scrutinizer-ci.com) integration
 * [StyleCI](https://styleci.io) integration
 * [Editorconfig](http://editorconfig.org/) definitions file
-* QA utilities configured and integrated into Gulp and Grunt
+* QA utilities configured and integrated into Composer scripts, Gulp and Grunt
   * [PHPUnit](http://phpunit.de/) testing environment already set up and integrated into Gulp and Grunt
   * PHP syntax linting
   * [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) for PSR2 coding standard checking
+  * [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer) for automatically fixing coding style
   * [PHPMD](https://phpmd.org/) for code mess detection (optional customizable rule set)
   * [PHPCPD](https://github.com/sebastianbergmann/phpcpd) for copy/paste detection
   * Composer [outdated](https://getcomposer.org/doc/03-cli.md#outdated) for packages updates availability check
