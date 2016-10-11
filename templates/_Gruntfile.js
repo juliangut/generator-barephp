@@ -15,6 +15,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('qa', ['phplint', 'phpcs', 'phpmd', 'phpcpd']);
   grunt.registerTask('test', ['phplint', 'phpunit']);
+  grunt.registerTask('fix', function() {
+    grunt.log.warn('Implementation pending');
+  });
   grunt.registerTask('security', ['phplint', 'composer:outdated']);
 
 <% if (project.type === 'project') { -%>
@@ -24,9 +27,5 @@ module.exports = function(grunt) {
   });
 
 <% } -%>
-  grunt.registerTask('build', function() {
-    grunt.log.warn('Task ready to be implemented');
-  });
-
   grunt.registerTask('default', ['qa', 'test']);
 };

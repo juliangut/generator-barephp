@@ -53,8 +53,5 @@ gulp.task('serve', function() {
 });
 
 <% } -%>
-gulp.task('build', function() {
-  console.log('Task ready to be implemented');
-});
 
 gulp.task('default', ['qa', 'test']);
