@@ -18,7 +18,7 @@ coding_style:
     spaces:
       around_operators:
           concatenation: true
-          negation: true
+          negation: false
       other:
         after_type_cast: true
 

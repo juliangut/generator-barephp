@@ -6,7 +6,7 @@ git:
   depth: 3
 
 env:
-  - COMPOSER_FLAGS="--prefer-source --no-interaction --no-scripts --no-progress"
+  - COMPOSER_FLAGS="--prefer-stable --prefer-source"
 
 php:
 <% if (project.phpVersion <= 5.3 && project.testPhpVersion != 5.3) { -%>
@@ -35,10 +35,13 @@ if (project.phpVersion <= 7.1 && project.testPhpVersion != 7.1) { -%>
 matrix:
   fast_finish: true
   include:
+    - php: <%= project.phpVersion %>
+      env:
+        - COMPOSER_FLAGS="--prefer-lowest --prefer-stable --prefer-source"
     - php: <%= project.testPhpVersion %>
       env:
         - TEST_VERSION=true
-        - COMPOSER_FLAGS="--prefer-source --no-interaction --no-scripts --no-progress"
+        - COMPOSER_FLAGS="--prefer-stable --prefer-source"
   allow_failures:
     - php: nightly
 <% if (project.supportHhvm) { -%>
@@ -46,14 +49,14 @@ matrix:
 <% } -%>
 
 before_install:
-  - if [[ -f "~/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" ]]; then phpenv config-rm xdebug.ini ; fi
+  - if [[ $TEST_VERSION != true && -f "/home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" ]]; then phpenv config-rm xdebug.ini; fi
   - composer global require hirak/prestissimo
   - composer self-update --stable --no-progress
 
 install:
-  - travis_retry composer update --profile --prefer-stable $COMPOSER_FLAGS
+  - travis_retry composer update $COMPOSER_FLAGS --no-interaction --no-scripts --no-progress
 <% if (control.coveralls) { -%>
-  - if [[ $TEST_VERSION == true ]]; then travis_retry composer require satooshi/php-coveralls:dev-master $COMPOSER_FLAGS ; fi
+  - if [[ $TEST_VERSION == true ]]; then travis_retry composer require satooshi/php-coveralls:dev-master $COMPOSER_FLAGS --no-interaction --no-scripts --no-progress ; fi
 <% } -%>
 
 script:
