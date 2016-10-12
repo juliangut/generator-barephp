@@ -2,7 +2,6 @@
 
 /*
  * <%= project.name %><% if (project.homepage) { -%> (<%= project.homepage %>)<% } -%>.
-
 <% if (project.description) { -%>
  * <%= project.description %>.
 <% } -%>
