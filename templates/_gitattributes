@@ -24,12 +24,14 @@ if (control.taskRunner === 'Gulp') { -%>
 gulp/            export-ignore
 gulpfile.js      export-ignore
 <% }
+if (control.taskRunner !== 'None') { -%>
+package.json     export-ignore
+<% }
 if (control.homestead) { -%>
 Vagrantfile      export-ignore
 .vagrant/        export-ignore
-<% } -%>
-package.json     export-ignore
-<% if (control.docs) { -%>
+<% }
+if (control.docs) { -%>
 README.md        export-ignore
 CONTRIBUTING.md  export-ignore
 <% } -%>

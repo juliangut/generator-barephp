@@ -1072,6 +1072,7 @@ BarePHP.prototype.writing = {
         this.template('../../templates/grunt/_browserSync.js', 'grunt/browserSync.js');
       }
     }
+
     if (this.config.get('controlTaskRunner') === 'Gulp') {
       this.template('../../templates/_gulpfile.js', 'gulpfile.js');
       this.template('../../templates/gulp/_config.js', 'gulp/config.js');
@@ -1131,10 +1132,15 @@ BarePHP.prototype.install = function() {
   var defaults = this.defaults;
   var options = this.options;
   var projectName = this.config.get('projectName');
+  var removePackageFile = this.config.get('controlTaskRunner') === 'None';
 
   this.installDependencies({
     bower: false,
     callback: function() {
+      if (removePackageFile) {
+        fs.unlink('package.json');
+      }
+
       var message = '\nProject ' + chalk.green.bold(projectName) + ' is set up and ready';
 
       if (options['skip-install']) {
