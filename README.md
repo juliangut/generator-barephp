@@ -27,15 +27,15 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
 * Symfony polyfills compatibility packages included based on minimum supported PHP version
 * Laravel Homestead integration (optionally with PhpMyAdmin)
 * Integration with [Vagrant hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin if installed
-* [Gulp](http://gulpjs.com/) (preferred) or [Grunt](http://gruntjs.com/) task runner integration
+* [Gulp](http://gulpjs.com/) and [Grunt](http://gruntjs.com/) task runner integration
 * Optimized (JIT) Grunt integration
 * Auto synchronization in-browser with [Browsersync](https://www.browsersync.io/)
-* Already configured [Travis CI](https://travis-ci.org) integration (PHP >=5.3 and HHVM)
+* Already configured [Travis CI](https://travis-ci.org) integration (PHP >=5.3, nightly and HHVM)
 * [Coveralls](https://coveralls.io) integration (triggered by Travis build)
 * [Scrutinizer](https://scrutinizer-ci.com) integration
 * [StyleCI](https://styleci.io) integration
 * [Editorconfig](http://editorconfig.org/) definitions file
-* QA utilities configured and integrated into Composer scripts, Gulp and Grunt
+* QA utilities configured and integrated into Composer scripts, Gulp, Grunt and Travis build
   * [PHPUnit](http://phpunit.de/) testing environment already set up and integrated into Gulp and Grunt
   * PHP syntax linting
   * [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) for PSR2 coding standard checking
@@ -52,7 +52,7 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
   * [BSD-4-Clause](https://spdx.org/licenses/BSD-4-Clause.html)
   * [GPL-3.0](https://spdx.org/licenses/GPL-3.0.html)
   * [LGPL-3.0](https://spdx.org/licenses/LGPL-3.0.html)
-  * [MIT](https://spdx.org/licenses/MIT.html)
+  * [MIT](https://spdx.org/licenses/MIT.html) (by default)
 
 > Would you like to see a tool, library, configuration, ... added to the generator? file an issue with your feature request
 
