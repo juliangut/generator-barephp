@@ -1,7 +1,7 @@
 !.gitignore
-composer.lock
+<% if (project.type === 'project') { -%>!<% } -%>composer.lock
 vendor/
 node_modules/
 .yo-rc.json
-*.cache
+.php_cs.cache
 <%= dir.build %>/
