@@ -2,7 +2,6 @@
 
 /*
  * <%= project.name %><% if (project.homepage) { -%> (<%= project.homepage %>)<% } -%>.
-
 <% if (project.description) { -%>
  * <%= project.description %>.
 <% } -%>
@@ -24,7 +23,6 @@ use Symfony\CS\FixerInterface;
 
 $header = <<<'HEADER'
 <%= project.name %><% if (project.homepage) { -%> (<%= project.homepage %>)<% } -%>.
-
 <% if (project.description) { -%>
 <%= project.description %>.
 <% } -%>
