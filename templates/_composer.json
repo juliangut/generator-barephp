@@ -72,7 +72,7 @@ if (project.license != '') { -%>
     "preferred-install": "dist"
   },
   "scripts": {
-    "phplint": "php -l <%= dir.src %> && php -l <%= dir.tests %>",
+    "php-lint": "php -l <%= dir.src %> && php -l <%= dir.tests %>",
     "phpcs": "phpcs --standard=PSR2 <%= dir.src %> <%= dir.tests %>",
     "phpcs-lint": "php-cs-fixer fix --dry-run --verbose",
     "phpcpd": "phpcpd <%= dir.src %>",
@@ -84,9 +84,18 @@ if (project.license != '') { -%>
     "phpunit": "phpunit",
     "phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
     "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml",
-    "qa": "composer phplint && composer phpcs && composer phpcs-lint && composer phpcpd && composer phpmd",
+    "qa": [
+      "@php-lint",
+      "@phpcs",
+      "@phpcs-lint",
+      "@phpcpd",
+      "@phpmd"
+    ],
     "fix": "php-cs-fixer fix --verbose",
     "security": "composer outdated",
-    "test": "composer qa && composer phpunit"
+    "test": [
+      "@qa",
+      "@phpunit"
+    ]
   }
 }
