@@ -414,9 +414,10 @@ BarePHP.prototype.askForLicense = function() {
       message: 'What is the license you want to use?',
       choices: [
         'Apache-2.0',
-        'BSD-3-Clause',
         'BSD-2-Clause',
+        'BSD-3-Clause',
         'BSD-4-Clause',
+        'GPL-2.0',
         'GPL-3.0',
         'LGPL-3.0',
         'MIT',
@@ -431,17 +432,20 @@ BarePHP.prototype.askForLicense = function() {
 
     var licenseFile = '';
     switch (props.license) {
-      case 'BSD-3-Clause':
-        licenseFile = 'bsd-new';
+      case 'Apache-2.0':
+        licenseFile = 'apache-2';
         break;
       case 'BSD-2-Clause':
         licenseFile = 'bsd-free';
         break;
+      case 'BSD-3-Clause':
+        licenseFile = 'bsd-new';
+        break;
       case 'BSD-4-Clause':
         licenseFile = 'bsd-original';
         break;
-      case 'MIT':
-        licenseFile = 'mit';
+      case 'GPL-2.0':
+        licenseFile = 'gpl-2';
         break;
       case 'GPL-3.0':
         licenseFile = 'gpl-3';
@@ -449,8 +453,8 @@ BarePHP.prototype.askForLicense = function() {
       case 'LGPL-3.0':
         licenseFile = 'lgpl-3';
         break;
-      case 'Apache-2.0':
-        licenseFile = 'apache-2';
+      case 'MIT':
+        licenseFile = 'mit';
         break;
       case 'Proprietary':
         this.defaults.project.license = this.defaults.project.license.toLowerCase();
