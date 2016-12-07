@@ -56,7 +56,7 @@ var BarePHP = module.exports = function BarePHP() {
       controlCoveralls: true,
       controlScrutinizer: true,
       controlStyleci: true,
-      controlHomestead: undefined,
+      controlDevEnv: null,
       controlPhpMyAdmin: false,
       controlDocs: true,
       repositoryType: 'Github',
@@ -355,8 +355,8 @@ BarePHP.prototype.askForProjectContinue = function() {
     this.defaults.project.description = _.trim(props.description);
     this.defaults.project.type = props.projectType.toLowerCase();
 
-    if (this.defaults.project.type === 'project' && this.config.get('controlHomestead') === undefined) {
-      this.config.set('controlHomestead', true);
+    if (this.defaults.project.type === 'project' && this.config.get('controlDevEnv') === null) {
+      this.config.set('controlDevEnv', 'docker');
     }
 
     this.defaults.project.keywords = props.keywords.length ?
@@ -552,7 +552,7 @@ BarePHP.prototype.askForToolsInstall = function() {
   }
 
   var done = this.async();
-  var choiceList = [
+  var prompts = [
     {
       value: 'packagist',
       name: 'Packagist',
@@ -590,25 +590,6 @@ BarePHP.prototype.askForToolsInstall = function() {
     }
   ];
 
-  if (this.defaults.project.type === 'project') {
-    choiceList.push(
-      {
-        value: 'homestead',
-        name: 'Laravel Homestead',
-        checked: this.config.get('controlHomestead')
-      }
-    );
-  }
-
-  var prompts = [
-    {
-      type: 'checkbox',
-      name: 'tools',
-      message: 'Which of this extra tools would you like to include?',
-      choices: choiceList
-    }
-  ];
-
   this.prompt(prompts, function(props) {
     var hasMod = function(mod) { return props.tools.indexOf(mod) !== -1; };
 
@@ -617,12 +598,43 @@ BarePHP.prototype.askForToolsInstall = function() {
     this.config.set('controlCoveralls', hasMod('coveralls'));
     this.config.set('controlScrutinizer', hasMod('scrutinizer'));
     this.config.set('controlStyleci', hasMod('styleci'));
+    this.config.set('controlDocs', hasMod('docs'));
     this.config.set('controlCustomPHPMD', hasMod('customPHPMD'));
-    this.config.set('controlHomestead', hasMod('homestead'));
-    if (!hasMod('homestead')) {
+
+    done();
+  }.bind(this));
+};
+
+BarePHP.prototype.askForDevEnv = function() {
+  if (this.defaults.quickMode || this.defaults.project.type !== 'project') {
+    return;
+  }
+
+  var done = this.async();
+  var prompts = [
+    {
+      type: 'list',
+      name: 'devenv',
+      message: 'Which development environment do you want to use?',
+      choices: [
+        'Docker',
+        'Homestead',
+        'None'
+      ],
+      default: this.config.get('controlDevEnv') === null ? 'None' : _.capitalize(this.config.get('controlDevEnv'))
+    }
+  ];
+
+  this.prompt(prompts, function(props) {
+    var devEnv = null;
+    if (!props.devenv !== 'None')) {
+      devEnv = props.devenv.toLowerCase();
+    }
+
+    if (devEnv !== 'homestead')) {
       this.config.set('controlPhpMyAdmin', false);
     }
-    this.config.set('controlDocs', hasMod('docs'));
+    this.config.set('controlDevEnv', devEnv);
 
     done();
   }.bind(this));
@@ -748,7 +760,7 @@ BarePHP.prototype.askForStyleciAccount = function() {
 };
 
 BarePHP.prototype.askForHomestead = function() {
-  if (this.defaults.quickMode || !this.config.get('controlHomestead')) {
+  if (this.defaults.quickMode || !this.config.get('controlDevEnv') === 'homestead') {
     return;
   }
 
@@ -784,7 +796,7 @@ BarePHP.prototype.askForHomestead = function() {
 };
 
 BarePHP.prototype.askForHomesteadIP = function() {
-  if (this.defaults.quickMode || !this.config.get('controlHomestead')) {
+  if (this.defaults.quickMode || !this.config.get('controlDevEnv') === 'homestead') {
     return;
   }
 
@@ -915,7 +927,8 @@ BarePHP.prototype.writing = {
       coveralls: this.config.get('controlCoveralls'),
       scrutinizer: this.config.get('controlScrutinizer'),
       styleci: this.config.get('controlStyleci'),
-      homestead: this.config.get('controlHomestead'),
+      homestead: this.config.get('controlDevEnv') === 'homestead',
+      docker: this.config.get('controlDevEnv') === 'docker',
       docs: this.config.get('controlDocs'),
       phpMyAdmin: this.config.get('controlPhpMyAdmin'),
       localComposer: this.defaults.localComposer
@@ -1013,8 +1026,11 @@ BarePHP.prototype.writing = {
       mkdirp(this.config.get('dirPublic'));
     }
 
-    if (this.config.get('controlHomestead')) {
+    if (this.config.get('controlDevEnv') === 'homestead') {
       mkdirp('.vagrant');
+    } else if (this.config.get('controlDevEnv') === 'docker') {
+      mkdirp('.docker/log');
+      mkdirp('.docker/data');
     }
 
     if (this.config.get('controlTaskRunner') === 'Grunt') {
@@ -1069,7 +1085,7 @@ BarePHP.prototype.writing = {
       this.template('../../templates/grunt/_composer.js', 'grunt/composer.js');
 
       if (this.defaults.project.type === 'project') {
-        if (!this.config.get('controlHomestead')) {
+        if (!this.config.get('controlDevEnv') === null) {
           this.copy('../../templates/grunt/php.js', 'grunt/php.js');
         }
 
@@ -1089,7 +1105,7 @@ BarePHP.prototype.writing = {
       this.copy('../../templates/gulp/composer.js', 'gulp/composer.js');
 
       if (this.defaults.project.type === 'project') {
-        if (!this.config.get('controlHomestead')) {
+        if (!this.config.get('controlDevEnv') === null) {
           this.copy('../../templates/gulp/connect-php.js', 'gulp/connect-php.js');
         }
 
@@ -1118,7 +1134,7 @@ BarePHP.prototype.writing = {
     if (this.config.get('controlLicense') && this.defaults.project.license !== 'proprietary') {
       this.template('../../templates/license/' + this.defaults.project.licenseFile, 'LICENSE');
     }
-    if (this.config.get('controlHomestead')) {
+    if (this.config.get('controlDevEnv') === 'homestead') {
       this.template('../../templates/tools/_Vagrantfile', 'Vagrantfile');
       if (this.config.get('homesteadFormat') === 'json') {
         this.template('../../templates/tools/_homestead.json', '.vagrant/homestead.json');
@@ -1128,6 +1144,8 @@ BarePHP.prototype.writing = {
       this.template('../../templates/tools/_provision.sh', '.vagrant/provision.sh');
       this.copy('../../templates/tools/aliases', '.vagrant/aliases');
       this.copy('../../templates/tools/vagrant_gitignore', '.vagrant/.gitignore');
+    } else if (this.config.get('controlDevEnv') === 'docker') {
+      this.template('../../templates/tools/_docker-compose.yml', 'docker-compose.yml');
     }
   }
 };
