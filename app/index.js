@@ -634,7 +634,7 @@ BarePHP.prototype.askForDevEnv = function() {
 
   this.prompt(prompts, function(props) {
     var devEnv = null;
-    if (!props.devenv !== 'None') {
+    if (props.devenv !== 'None') {
       devEnv = props.devenv.toLowerCase();
     }
 
@@ -767,7 +767,7 @@ BarePHP.prototype.askForStyleciAccount = function() {
 };
 
 BarePHP.prototype.askForHomestead = function() {
-  if (this.defaults.quickMode || !this.config.get('controlDevEnv') === 'homestead') {
+  if (this.defaults.quickMode || this.config.get('controlDevEnv') !== 'homestead') {
     return;
   }
 
@@ -803,7 +803,7 @@ BarePHP.prototype.askForHomestead = function() {
 };
 
 BarePHP.prototype.askForHomesteadIP = function() {
-  if (this.defaults.quickMode || !this.config.get('controlDevEnv') === 'homestead') {
+  if (this.defaults.quickMode || this.config.get('controlDevEnv') !== 'homestead') {
     return;
   }
 
@@ -1092,7 +1092,7 @@ BarePHP.prototype.writing = {
       this.template('../../templates/grunt/_composer.js', 'grunt/composer.js');
 
       if (this.defaults.project.type === 'project') {
-        if (!this.config.get('controlDevEnv') === null) {
+        if (this.config.get('controlDevEnv') !== null) {
           this.copy('../../templates/grunt/php.js', 'grunt/php.js');
         }
 
@@ -1112,7 +1112,7 @@ BarePHP.prototype.writing = {
       this.copy('../../templates/gulp/composer.js', 'gulp/composer.js');
 
       if (this.defaults.project.type === 'project') {
-        if (!this.config.get('controlDevEnv') === null) {
+        if (this.config.get('controlDevEnv') !== null) {
           this.copy('../../templates/gulp/connect-php.js', 'gulp/connect-php.js');
         }
 
