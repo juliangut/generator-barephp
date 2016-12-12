@@ -80,7 +80,6 @@ describe('yo barephp Grunt', function() {
       'Gruntfile.js',
       'LICENSE',
       'README.md',
-      'Vagrantfile',
       'composer.json',
       'package.json',
       'phpunit.xml'

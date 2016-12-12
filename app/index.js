@@ -554,39 +554,46 @@ BarePHP.prototype.askForToolsInstall = function() {
   var done = this.async();
   var prompts = [
     {
-      value: 'packagist',
-      name: 'Packagist',
-      checked: this.config.get('controlPackagist')
-    },
-    {
-      value: 'travis',
-      name: 'Travis',
-      checked: this.config.get('controlTravis')
-    },
-    {
-      value: 'coveralls',
-      name: 'Coveralls',
-      checked: this.config.get('controlCoveralls')
-    },
-    {
-      value: 'scrutinizer',
-      name: 'Scrutinizer',
-      checked: this.config.get('controlScrutinizer')
-    },
-    {
-      value: 'styleci',
-      name: 'StyleCI',
-      checked: this.config.get('controlStyleci')
-    },
-    {
-      value: 'docs',
-      name: 'Initial documentation',
-      checked: this.config.get('controlDocs')
-    },
-    {
-      value: 'customPHPMD',
-      name: 'Customizable PHPMD ruleset',
-      checked: this.config.get('controlCustomPHPMD')
+      type: 'checkbox',
+      name: 'tools',
+      message: 'Which of this extra tools would you like to include?',
+      choices: [
+        {
+          value: 'packagist',
+          name: 'Packagist',
+          checked: this.config.get('controlPackagist')
+        },
+        {
+          value: 'travis',
+          name: 'Travis',
+          checked: this.config.get('controlTravis')
+        },
+        {
+          value: 'coveralls',
+          name: 'Coveralls',
+          checked: this.config.get('controlCoveralls')
+        },
+        {
+          value: 'scrutinizer',
+          name: 'Scrutinizer',
+          checked: this.config.get('controlScrutinizer')
+        },
+        {
+          value: 'styleci',
+          name: 'StyleCI',
+          checked: this.config.get('controlStyleci')
+        },
+        {
+          value: 'docs',
+          name: 'Initial documentation',
+          checked: this.config.get('controlDocs')
+        },
+        {
+          value: 'customPHPMD',
+          name: 'Customizable PHPMD ruleset',
+          checked: this.config.get('controlCustomPHPMD')
+        }
+      ]
     }
   ];
 
@@ -627,11 +634,11 @@ BarePHP.prototype.askForDevEnv = function() {
 
   this.prompt(prompts, function(props) {
     var devEnv = null;
-    if (!props.devenv !== 'None')) {
+    if (!props.devenv !== 'None') {
       devEnv = props.devenv.toLowerCase();
     }
 
-    if (devEnv !== 'homestead')) {
+    if (devEnv !== 'homestead') {
       this.config.set('controlPhpMyAdmin', false);
     }
     this.config.set('controlDevEnv', devEnv);
