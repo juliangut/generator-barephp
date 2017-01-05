@@ -41,8 +41,8 @@ var BarePHP = module.exports = function BarePHP() {
       homepage: null,
       license: 'MIT',
       licenseFile: 'mit',
-      phpVersion: 5.6,
-      testPhpVersion: 5.6,
+      phpVersion: 7.0,
+      testPhpVersion: 7.0,
       supportHhvm: false
     },
     config: {
@@ -1069,6 +1069,7 @@ BarePHP.prototype.writing = {
 
     this.template('../../templates/_php_cs', '.php_cs');
     this.template('../../templates/_phpunit.xml', 'phpunit.xml');
+    this.template('../../templates/_humbug.json.dist', 'humbug.json.dist');
 
     if (this.config.get('controlCustomPHPMD')) {
       this.template('../../templates/_phpmd.xml', 'phpmd.xml');

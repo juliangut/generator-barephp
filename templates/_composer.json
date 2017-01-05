@@ -42,18 +42,14 @@ if (project.license != '') { -%>
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "^1.0",
+    "humbug/humbug": "~1.0@dev"<% if (control.homestead) { -%>,
+    "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
+<% } -%>,
     "phpmd/phpmd": "^2.0",
     "phpunit/phpunit": "^4.5|^5.0",
     "sebastian/phpcpd": "^2.0",
-    "squizlabs/php_codesniffer": "^2.0"<% if (control.homestead) { -%>,
-
-    "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
-
+    "squizlabs/php_codesniffer": "^2.0"
   },
-<% } else { -%>
-
-  },
-<% } -%>
   "suggest": {
   },
   "autoload": {
@@ -84,6 +80,7 @@ if (project.license != '') { -%>
     "phpunit": "phpunit",
     "phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
     "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml",
+    "humbug": "humbug",
     "qa": [
       "@php-lint",
       "@phpcs",
@@ -95,7 +92,8 @@ if (project.license != '') { -%>
     "security": "composer outdated",
     "test": [
       "@qa",
-      "@phpunit"
+      "@phpunit",
+      "@humbug"
     ]
   }
 }

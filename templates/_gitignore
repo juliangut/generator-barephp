@@ -4,4 +4,6 @@ vendor/
 node_modules/
 .yo-rc.json
 .php_cs.cache
+humbuglog.json
+humbuglog.txt
 <%= dir.build %>/

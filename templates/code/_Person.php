@@ -54,8 +54,6 @@ class Person
      * @param string $name
      *
      * @throws \InvalidArgumentException
-     *
-     * @return $this
      */
     public function setName($name)
     {
@@ -64,7 +62,5 @@ class Person
         }
 
         $this->name = trim($name);
-
-        return $this;
     }
 }
