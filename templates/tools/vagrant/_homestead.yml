@@ -36,7 +36,7 @@ databases:
 
 variables:
   - key: APP_ENV
-    value: local
+    value: development
 
 # blackfire:
 #  - id: foo

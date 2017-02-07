@@ -46,7 +46,7 @@ if (project.license != '') { -%>
     "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
 <% } -%>,
     "phpmd/phpmd": "^2.0",
-    "phpunit/phpunit": "^4.5|^5.0",
+    "phpunit/phpunit": "^5.7|^6.0",
     "sebastian/phpcpd": "^2.0",
     "squizlabs/php_codesniffer": "^2.0"
   },
@@ -65,18 +65,15 @@ if (project.license != '') { -%>
   "bin": [
   ],
   "config": {
-    "preferred-install": "dist"
+    "preferred-install": "dist",
+    "sort-packages": true
   },
   "scripts": {
     "php-lint": "php -l <%= dir.src %> && php -l <%= dir.tests %>",
     "phpcs": "phpcs --standard=PSR2 <%= dir.src %> <%= dir.tests %>",
     "phpcs-lint": "php-cs-fixer fix --dry-run --verbose",
     "phpcpd": "phpcpd <%= dir.src %>",
-<% if (control.customPHPMD) { -%>
-    "phpmd": "phpmd <%= dir.src %> text phpmd.xml",
-<% } else { -%>
     "phpmd": "phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize",
-<% } -%>
     "phpunit": "phpunit",
     "phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
     "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml",

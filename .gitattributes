@@ -1,6 +1,12 @@
 * text=auto
 
-.gitattributes   export-ignore
-.gitignore       export-ignore
-.editorconfig    export-ignore
-.travis.yaml     export-ignore
+.editorconfig  export-ignore
+.gitattributes export-ignore
+.gitignore     export-ignore
+.jscsrc        export-ignore
+.jshintrc      export-ignore
+.npmignore     export-ignore
+.travis.yaml   export-ignore
+gulpfile.js    export-ignore
+gulp/          export-ignore
+package.json   export-ignore

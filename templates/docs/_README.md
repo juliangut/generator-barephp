@@ -64,7 +64,7 @@ See file [CONTRIBUTING.md](<%= repository.homepage %>/blob/master/CONTRIBUTING.m
 if (repository.type == 'bitbucket') { -%>
 See file [CONTRIBUTING.md](./CONTRIBUTING.md)
 <% } -%>
-<% if (control.license && project.license !== 'proprietary') { -%>
+<% if (control.license) { -%>
 
 ## License
 

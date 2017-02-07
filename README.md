@@ -23,38 +23,33 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
 * Integration with Github and Bitbucket accounts
 * Composer ready (global or local detection, or local installation)
 * Project ready to be added to [Packagist](https://packagist.org)
-* Select minimum [supported PHP version](https://secure.php.net/supported-versions.php) (from 5.3 up)
+* Select minimum [supported PHP version](https://secure.php.net/supported-versions.php) (from 5.6 up)
 * Symfony polyfills compatibility packages included based on minimum supported PHP version
 * [Editorconfig](http://editorconfig.org/) definitions file
 * Development environment integration
   * [Docker](https://www.docker.com/) integration (with docker-compose)
   * [Laravel Homestead](https://laravel.com/docs/5.3/homestead) (Vagrant) integration (optionally with PhpMyAdmin)
     * Integration with [Vagrant hostupdater](https://github.com/cogitatio/vagrant-hostsupdater) plugin if installed
-* QA utilities configured and integrated into Composer scripts, Gulp, Grunt and Travis build
+* QA utilities configured and integrated into Composer scripts and Travis build
   * PHP syntax linting
   * [PHPUnit](http://phpunit.de/) testing environment
   * [Humbug](https://github.com/padraic/humbug/) mutation testing framework
   * [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) for PSR2 coding standard checking
   * [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer) for automatically fixing coding style
-  * [PHPMD](https://phpmd.org/) for code mess detection (optional customizable rule set)
+  * [PHPMD](https://phpmd.org/) for code mess detection
   * [PHPCPD](https://github.com/sebastianbergmann/phpcpd) for copy/paste detection
   * Composer [outdated](https://getcomposer.org/doc/03-cli.md#outdated) for packages updates availability check
 * External tools
-  * Already configured [Travis CI](https://travis-ci.org) integration (PHP >=5.3, nightly and HHVM)
+  * Already configured [Travis CI](https://travis-ci.org) integration (PHP >=5.6, nightly and HHVM)
   * [Coveralls](https://coveralls.io) integration (triggered by Travis build)
   * [Scrutinizer](https://scrutinizer-ci.com) integration
   * [StyleCI](https://styleci.io) integration
-* Optional task runner integration
-  * [Gulp](http://gulpjs.com/)
-  * [Grunt](http://gruntjs.com/) task runner integration
-    * Optimized (JIT) Grunt integration
-  * Auto synchronization in-browser with [Browsersync](https://www.browsersync.io/)
 * Initial documentation structure in [Markdown](https://daringfireball.net/projects/markdown/syntax)
 * Basic annotated kickoff code (with tests and coverage report!)
-* "Free Software" and "Open Source" License selection
+* Common [SPDX FOSS license](http://spdx.org/licenses) selection
   * [Apache-2.0](https://spdx.org/licenses/Apache-2.0.html)
-  * [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause.html)
   * [BSD-2-Clause](https://spdx.org/licenses/BSD-2-Clause.html)
+  * [BSD-3-Clause](https://spdx.org/licenses/BSD-3-Clause.html)
   * [BSD-4-Clause](https://spdx.org/licenses/BSD-4-Clause.html)
   * [GPL-3.0](https://spdx.org/licenses/GPL-3.0.html)
   * [LGPL-3.0](https://spdx.org/licenses/LGPL-3.0.html)
@@ -67,20 +62,6 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
 As the list options and tools configured is quite long a quick/fast mode has been introduced. In fast mode only the basic questions will be asked and then the generator will do its best guessing the rest for you to get the environment ready faster.
 
 ## Getting Started
-
-### Install dependencies
-
-##### Using Gulp
-
- ```
-npm install -g yo gulp-cli
-```
-
-##### Using Grunt
-
-```
-npm install -g yo grunt-cli
-```
 
 ### Install generator
 

@@ -12,7 +12,7 @@ var path = require('path');
 var helpers = require('yeoman-generator').test;
 var assert = require('yeoman-generator').assert;
 
-describe('yo barephp Gulp', function() {
+describe('yo barephp', function() {
   before(function(done) {
     helpers.run(path.join(__dirname, '../app'))
       .withOptions({
@@ -28,13 +28,12 @@ describe('yo barephp Gulp', function() {
         projectType: 'library',
         useLicense: false,
         install: false,
-        tools: 'packagist, travis, coveralls, scrutinizer',
-        taskRunner: 'Gulp'
+        tools: 'packagist, travis, coveralls, scrutinizer'
       })
       .on('end', done);
   });
 
-  it('creates with Gulp task runner', function() {
+  it('creates project', function() {
     assert.file([
       '.coveralls.yml',
       '.editorconfig',
@@ -42,46 +41,9 @@ describe('yo barephp Gulp', function() {
       '.gitignore',
       '.scrutinizer.yml',
       '.travis.yml',
-      'gulpfile.js',
       'composer.json',
-      'package.json',
-      'phpunit.xml'
-    ]);
-  });
-});
-
-describe('yo barephp Grunt', function() {
-  before(function(done) {
-    helpers.run(path.join(__dirname, '../app'))
-      .withOptions({
-        'skip-install': true
-      })
-      .withPrompts({
-        name: 'Julián Gutiérrez',
-        email: 'juliangut@gmail.com',
-        homepage: 'juliangut.com',
-        useRepository: true,
-        type: 'github',
-        account: 'juliangut',
-        install: false,
-        tools: 'styleci, homestead, docs',
-        taskRunner: 'Grunt'
-      })
-      .on('end', done);
-  });
-
-  it('creates with Grunt task runner', function() {
-    assert.file([
-      '.editorconfig',
-      '.gitattributes',
-      '.gitignore',
-      '.styleci.yml',
-      'CONTRIBUTING.md',
-      'Gruntfile.js',
-      'LICENSE',
-      'README.md',
-      'composer.json',
-      'package.json',
+      '.php_cs',
+      'humbug.json.dist',
       'phpunit.xml'
     ]);
   });

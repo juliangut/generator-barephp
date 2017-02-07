@@ -6,7 +6,7 @@
  * <%= project.description %>.
 <% } -%>
  *
-<% if (control.license && project.license !== 'proprietary') { -%>
+<% if (control.license) { -%>
  * @license <%= project.license %>
 <% }
 if (project.homepage) { -%>
@@ -19,11 +19,12 @@ if (project.homepage) { -%>
 namespace <%= project.namespace %>\Tests;
 
 use <%= project.namespace %>\Person;
+use PHPUnit\Framework\TestCase;
 
 /**
  * Person tests example.
  */
-class PersonTest extends \PHPUnit_Framework_TestCase
+class PersonTest extends TestCase
 {
     public function testGreetDefaults()
     {

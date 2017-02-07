@@ -33,7 +33,7 @@ tools:
   php_mess_detector:
     enabled: true
     config:
-      ruleset: <% if (control.customPHPMD) { -%>phpmd.xml<% } else { -%>'unusedcode,naming,design,controversial,codesize'<% } -%>
+      ruleset: 'unusedcode,naming,design,controversial,codesize'
 
   php_cpd: true
   php_loc: true

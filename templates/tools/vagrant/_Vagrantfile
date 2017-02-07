@@ -8,12 +8,12 @@ VAGRANTFILE_API_VERSION ||= "2"
 
 confDir = $confDir ||= File.expand_path("vendor/laravel/homestead", File.dirname(__FILE__))
 <% if (homestead.format == 'json') { -%>
-settingsFilePath = ".vagrant/homestead.json"
+settingsFilePath = "vagrant/homestead.json"
 <% } else { -%>
-settingsFilePath = ".vagrant/homestead.yml"
+settingsFilePath = "vagrant/homestead.yml"
 <% } -%>
-provisionScriptPath = ".vagrant/provision.sh"
-aliasesPath = ".vagrant/aliases"
+provisionScriptPath = "vagrant/provision.sh"
+aliasesPath = "vagrant/aliases"
 
 require File.expand_path(confDir + "/scripts/homestead.rb")
 

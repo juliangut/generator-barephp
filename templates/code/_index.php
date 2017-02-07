@@ -6,7 +6,7 @@
  * <%= project.description %>.
 <% } -%>
  *
-<% if (control.license && project.license !== 'proprietary') { -%>
+<% if (control.license) { -%>
  * @license <%= project.license %>
 <% }
 if (project.homepage) { -%>

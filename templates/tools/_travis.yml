@@ -9,16 +9,7 @@ env:
   - COMPOSER_FLAGS="--prefer-stable --prefer-source"
 
 php:
-<% if (project.phpVersion <= 5.3 && project.testPhpVersion != 5.3) { -%>
-  - 5.3
-<% }
-if (project.phpVersion <= 5.4 && project.testPhpVersion != 5.4) { -%>
-  - 5.4
-<% }
-if (project.phpVersion <= 5.5 && project.testPhpVersion != 5.5) { -%>
-  - 5.5
-<% }
-if (project.phpVersion <= 5.6 && project.testPhpVersion != 5.6) { -%>
+<% if (project.phpVersion <= 5.6 && project.testPhpVersion != 5.6) { -%>
   - 5.6
 <% }
 if (project.phpVersion <= 7.0 && project.testPhpVersion != 7.0) { -%>

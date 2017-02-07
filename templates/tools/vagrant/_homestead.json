@@ -42,7 +42,7 @@
   "variables": [
     {
       "key": "APP_ENV",
-      "value": "local"
+      "value": "development"
     }
   ],
   "ports": [
