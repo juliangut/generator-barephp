@@ -22,8 +22,8 @@ if (control.coveralls) { -%>
 <% } -%>
 
 <% if (control.packagist) { -%>
-[![Total Downloads](https://img.shields.io/packagist/dt/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>)
-[![Monthly Downloads](https://img.shields.io/packagist/dm/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>)
+[![Total Downloads](https://img.shields.io/packagist/dt/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>/stats)
+[![Monthly Downloads](https://img.shields.io/packagist/dm/<%= account.packagist %>/<%= project.name %>.svg?style=flat-square)](https://packagist.org/packages/<%= account.packagist %>/<%= project.name %>/stats)
 <% } -%>
 
 # <%= project.name %>
