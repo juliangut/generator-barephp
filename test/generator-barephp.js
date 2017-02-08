@@ -44,7 +44,7 @@ describe('yo barephp', function() {
       'composer.json',
       '.php_cs',
       'humbug.json.dist',
-      'phpunit.xml'
+      'phpunit.xml.dist'
     ]);
   });
 });
