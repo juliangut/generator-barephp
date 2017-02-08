@@ -11,6 +11,7 @@
 <% }
 if (project.license === 'Proprietary') { -%>
   "license": "LicenseRef-LICENSE",
+  "private": true,
 <% } else if (project.license != '') { -%>
   "license": "<%= project.license %>",
 <% } else { -%>

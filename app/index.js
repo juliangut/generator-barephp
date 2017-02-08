@@ -1067,7 +1067,9 @@ BarePHP.prototype.install = function() {
     bower: false,
     callback: function() {
       fs.unlink('package.json');
-      fs.rmdir('node_modules');
+      if (fs.existsSync('node_modules')) {
+        fs.rmdir('node_modules');
+      }
 
       var message = '\nProject ' + chalk.green.bold(projectName) + ' is set up and ready';
 
