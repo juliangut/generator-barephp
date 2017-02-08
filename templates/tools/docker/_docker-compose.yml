@@ -9,29 +9,29 @@ services:
     volumes_from:
       - storage
     volumes:
-      - docker/config/nginx.conf:/etc/nginx/nginx.conf
-      - docker/config/nvhost.conf:/etc/nginx/conf.d/default.conf
-      - docker/log/nginx:/var/log/nginx
+      - ./docker/config/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/config/nvhost.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/log/nginx:/var/log/nginx
     depends_on:
       - php-fpm
 
   php-fpm:
-      container_name: <%= project.name %>_php-fpm
-  <% if (project.phpVersion === 5.6) { -%>
-      image: juliangut/phpdev:5.6-fpm
-  <% } else if (project.phpVersion === 7.0) { -%>
-      image: juliangut/phpdev:7.0-fpm
-  <% } else if (project.phpVersion === 7.1) { -%>
-      image: juliangut/phpdev:7.1-fpm
-  <% } -%>
-      env:
-        - APP_ENV: development
-      volumes_from:
-        - storage
-      volumes:
-        - docker/log/php:/var/log/php
-      depends_on:
-        - mysql
+    container_name: <%= project.name %>_php-fpm
+<% if (project.phpVersion === 5.6) { -%>
+    image: juliangut/phpdev:5.6-fpm
+<% } else if (project.phpVersion === 7.0) { -%>
+    image: juliangut/phpdev:7.0-fpm
+<% } else if (project.phpVersion === 7.1) { -%>
+    image: juliangut/phpdev:7.1-fpm
+<% } -%>
+    environment:
+      APP_ENV: development
+    volumes_from:
+      - storage
+    volumes:
+      - ./docker/log/php:/var/log/php
+    depends_on:
+      - mysql
 
   mysql:
     container_name: <%= project.name %>_mysql
@@ -41,7 +41,7 @@ services:
       MYSQL_PASSWORD: secret
       MYSQL_DATABASE: <%= project.name %>
     volumes:
-      - docker/data/mysql:/var/lib/mysql
+      - ./docker/data/mysql:/var/lib/mysql
 
   storage:
     container_name: <%= project.name %>_storage
