@@ -43,6 +43,7 @@ var BarePHP = module.exports = function BarePHP() {
       licenseFile: 'mit',
       phpVersion: 7.0,
       testPhpVersion: 7.0,
+      supportNightly: true,
       supportHhvm: false
     },
     config: {
@@ -477,6 +478,12 @@ BarePHP.prototype.askCodeConfig = function() {
     },
     {
       type: 'confirm',
+      name: 'supportNightly',
+      message: 'Want to support PHP nightly build (PHP7.2)?',
+      default: this.config.get('supportNightly')
+    },
+    {
+      type: 'confirm',
       name: 'supportHhvm',
       message: 'Want to support HHVM?',
       default: this.config.get('supportHhvm')
@@ -495,6 +502,7 @@ BarePHP.prototype.askCodeConfig = function() {
     }
     this.defaults.project.phpVersion = phpVersion;
 
+    this.config.set('supportNightly', props.supportNightly);
     this.config.set('supportHhvm', props.supportHhvm);
 
     var projectNamespace = _.clean(_.cleanDiacritics(props.namespace));
@@ -926,6 +934,7 @@ BarePHP.prototype.writing = {
       keywords: this.defaults.project.keywords,
       homepage: this.defaults.project.homepage,
       phpVersion: this.defaults.project.phpVersion,
+      supportNightly: this.config.get('supportNightly'),
       supportHhvm: this.config.get('supportHhvm'),
       testPhpVersion: this.defaults.project.testPhpVersion,
       license: this.defaults.project.license,
