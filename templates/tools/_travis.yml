@@ -5,8 +5,12 @@ sudo: false
 git:
   depth: 3
 
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
 env:
-  - COMPOSER_FLAGS="--prefer-stable --prefer-source"
+  - COMPOSER_FLAGS="--prefer-stable --prefer-dist"
 
 php:
 <% if (project.phpVersion <= 5.6 && project.testPhpVersion != 5.6) { -%>
@@ -30,11 +34,11 @@ matrix:
   include:
     - php: <%= project.phpVersion %>
       env:
-        - COMPOSER_FLAGS="--prefer-lowest --prefer-stable --prefer-source"
+        - COMPOSER_FLAGS="--prefer-lowest --prefer-stable --prefer-dist"
     - php: <%= project.testPhpVersion %>
       env:
         - TEST_VERSION=true
-        - COMPOSER_FLAGS="--prefer-stable --prefer-source"
+        - COMPOSER_FLAGS="--prefer-stable --prefer-dist"
 <% if (project.supportNightly || project.supportHhvm) { -%>
   allow_failures:
 <% if (project.supportNightly) { -%>
@@ -46,22 +50,22 @@ if (project.supportHhvm) { -%>
 }-%>
 
 before_install:
-  - if [[ $TEST_VERSION != true && -f "/home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" ]]; then phpenv config-rm xdebug.ini; fi
+  - if [[ $TEST_VERSION && -f "/home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" ]]; then phpenv config-rm xdebug.ini; fi
   - composer global require hirak/prestissimo
   - composer self-update --stable --no-progress
 
 install:
   - travis_retry composer update $COMPOSER_FLAGS --no-interaction --no-scripts --no-progress
 <% if (control.coveralls) { -%>
-  - if [[ $TEST_VERSION == true ]]; then travis_retry composer require satooshi/php-coveralls:dev-master $COMPOSER_FLAGS --no-interaction --no-scripts --no-progress ; fi
+  - if [[ $TEST_VERSION ]]; then travis_retry composer require satooshi/php-coveralls:dev-master $COMPOSER_FLAGS --no-interaction --no-scripts --no-progress ; fi
 <% } -%>
 
 script:
-  - if [[ $TEST_VERSION == true ]]; then composer qa <% if (control.coveralls) { -%>&& composer phpunit-clover <% } -%>; fi
+  - if [[ $TEST_VERSION ]]; then composer qa <% if (control.coveralls) { -%>&& composer phpunit-clover <% } -%>; fi
 
-  - if [[ $TEST_VERSION != true ]]; then composer phpunit ; fi
+  - if [[ -z $TEST_VERSION ]]; then composer phpunit ; fi
 <% if (control.coveralls) { -%>
 
 after_script:
-  - if [[ $TEST_VERSION == true ]]; then travis_retry php vendor/bin/coveralls --verbose ; fi
+  - if [[ $TEST_VERSION ]]; then travis_retry php vendor/bin/coveralls --verbose ; fi
 <% } -%>
