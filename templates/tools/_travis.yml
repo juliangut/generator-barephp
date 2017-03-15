@@ -50,7 +50,7 @@ if (project.supportHhvm) { -%>
 }-%>
 
 before_install:
-  - if [[ $TEST_VERSION && -f "/home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" ]]; then phpenv config-rm xdebug.ini; fi
+  - if [[ -z $TEST_VERSION && -f "/home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" ]]; then phpenv config-rm xdebug.ini; fi
   - composer global require hirak/prestissimo
   - composer self-update --stable --no-progress
 

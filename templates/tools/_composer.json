@@ -46,6 +46,7 @@ if (project.license != '') { -%>
     "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
 <% } -%>,
     "phpmd/phpmd": "^2.0",
+    "phpmetrics/phpmetrics": "^2.0",
     "phpunit/phpunit": "^5.7|^6.0",
     "sebastian/phpcpd": "^2.0",
     "squizlabs/php_codesniffer": "^2.0"
@@ -74,6 +75,8 @@ if (project.license != '') { -%>
     "phpcs-lint": "php-cs-fixer fix --dry-run --verbose",
     "phpcpd": "phpcpd <%= dir.src %>",
     "phpmd": "phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize",
+    "phpmetrics": "phpmetrics --failure-condition='average.maintainabilityIndex < 50' src",
+    "phpmetrics-report": "phpmetrics --report-html=build/metrics/index.html --offline src",
     "phpunit": "phpunit",
     "phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
     "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml",
@@ -83,12 +86,17 @@ if (project.license != '') { -%>
       "@phpcs",
       "@phpcs-lint",
       "@phpcpd",
-      "@phpmd"
+      "@phpmd",
+      "@phpmetrics"
+    ],
+    "reports": [
+      "@phpmetrics-report",
+      "@phpunit-coverage"
     ],
     "fix": "php-cs-fixer fix --verbose",
     "security": "composer outdated",
     "test": [
-      "@qa",
+      "@php-lint",
       "@phpunit",
       "@humbug"
     ]
