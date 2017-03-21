@@ -1034,7 +1034,7 @@ BarePHP.prototype.writing = {
       this.template('../../templates/tools/_scrutinizer.yml', '.scrutinizer.yml');
     }
     if (this.config.get('controlStyleci')) {
-      this.template('../../templates/tools/styleci.yml', '.styleci.yml');
+      this.template('../../templates/tools/_styleci.yml', '.styleci.yml');
     }
 
     if (this.config.get('controlDocs')) {
