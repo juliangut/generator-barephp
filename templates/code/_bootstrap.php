@@ -16,6 +16,4 @@ if (project.homepage) { -%>
 
  */
 
-session_start();
-
 require __DIR__ . '/../vendor/autoload.php';
