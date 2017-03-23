@@ -480,13 +480,13 @@ BarePHP.prototype.askCodeConfig = function() {
       type: 'confirm',
       name: 'supportNightly',
       message: 'Want to support PHP nightly build (PHP7.2)?',
-      default: this.config.get('supportNightly')
+      default: this.defaults.project.supportNightly
     },
     {
       type: 'confirm',
       name: 'supportHhvm',
       message: 'Want to support HHVM?',
-      default: this.config.get('supportHhvm')
+      default: this.defaults.project.supportHhvm
     },
     {
       name: 'namespace',

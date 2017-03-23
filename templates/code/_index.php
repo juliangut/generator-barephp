@@ -15,7 +15,11 @@ if (project.homepage) { -%>
  * @author <%= owner.name %><% if (owner.email) { -%> <<%= owner.email %>><% } -%>
 
  */
+<% if (project.phpVersion >= 7.0) { -%>
 
+declare(strict_types=1);
+
+<% } -%>
 require __DIR__ . '/../vendor/autoload.php';
 
 phpinfo();
