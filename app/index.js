@@ -92,9 +92,9 @@ var BarePHP = module.exports = function BarePHP() {
     var configs = JSON.parse(fs.readFileSync('composer.json'));
 
     if (configs.authors && configs.authors instanceof Array) {
-      this.defaults.owner.name = configs.authors[0].name ? configs.authors[0].name : null ;
-      this.defaults.owner.email = configs.authors[0].email ? configs.authors[0].email : null;
-      this.defaults.owner.homepage = configs.authors[0].homepage ? configs.authors[0].homepage : null;
+      this.defaults.owner.name = configs.authors[0].name ? configs.authors[0].name : this.defaults.owner.name;
+      this.defaults.owner.email = configs.authors[0].email ? configs.authors[0].email : this.defaults.owner.email;
+      this.defaults.owner.homepage = configs.authors[0].homepage ? configs.authors[0].homepage : this.defaults.owner.homepage;
     }
 
     if (configs.description) {
@@ -124,7 +124,6 @@ var BarePHP = module.exports = function BarePHP() {
     this.defaults.freshRun = false;
   }
 
-  this.defaults.owner.homepage = null;
   this.config.defaults(this.defaults.config);
 };
 
