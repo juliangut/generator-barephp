@@ -18,8 +18,6 @@ if (project.homepage) { -%>
 
 use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
-use PhpCsFixer\Fixer\Comment\HeaderCommentFixer;
-use PhpCsFixer\FixerInterface;
 
 $header = <<<'HEADER'
 <%= project.name %><% if (project.homepage) { -%> (<%= project.homepage %>)<% } -%>.

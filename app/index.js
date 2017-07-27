@@ -124,6 +124,7 @@ var BarePHP = module.exports = function BarePHP() {
     this.defaults.freshRun = false;
   }
 
+  this.defaults.owner.homepage = null;
   this.config.defaults(this.defaults.config);
 };
 
@@ -945,7 +946,22 @@ BarePHP.prototype.writing = {
     switch (this.defaults.project.phpVersion) {
       case 5.6:
         this.project.dependencies = [
-          ['symfony/polyfill-php70', '^1.0']
+          ['symfony/polyfill-php70', '^1.0'],
+          ['symfony/polyfill-php71', '^1.0'],
+          ['symfony/polyfill-php72', '^1.0']
+        ];
+        break;
+
+      case 7.0:
+        this.project.dependencies = [
+          ['symfony/polyfill-php71', '^1.0'],
+          ['symfony/polyfill-php72', '^1.0']
+        ];
+        break;
+
+      case 7.1:
+        this.project.dependencies = [
+          ['symfony/polyfill-php72', '^1.0']
         ];
         break;
     }

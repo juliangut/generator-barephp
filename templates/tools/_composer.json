@@ -18,11 +18,8 @@ if (project.license != '') { -%>
   "authors": [
     {
       "name": "<%= owner.name %>"<% if (owner.email) { -%>,
-
       "email": "<%= owner.email %>"<% } -%><% if (owner.homepage) { -%>,
-
       "homepage": "<%= owner.homepage %>"<% } -%>,
-
       "role": "Developer"
     }
   ],
@@ -36,7 +33,6 @@ if (project.license != '') { -%>
   "prefer-stable": true,
   "require": {
     "php": "^<%= project.phpVersion.toFixed(1) %><% if (project.phpVersion.toFixed(1) < 7) { -%>|^7.0<% } -%>"<% for (var i = 0; i < project.dependencies.length; i++) { -%>,
-
     "<%= project.dependencies[i][0] %>": "<%= project.dependencies[i][1] %>"<% } -%>
 
   },
@@ -46,7 +42,9 @@ if (project.license != '') { -%>
     "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
 <% } -%>,
     "phpmd/phpmd": "^2.0",
-    "phpmetrics/phpmetrics": "^2.0",
+    "phpmetrics/phpmetrics": "^2.0", <% if (project.phpVersion >= 7.0) { -%>
+
+    "phpstan/phpstan": "~0.8",<% } %>
     "phpunit/phpunit": "^5.7|^6.0",
     "sebastian/phpcpd": "^2.0",
     "squizlabs/php_codesniffer": "^2.0"
@@ -75,8 +73,9 @@ if (project.license != '') { -%>
     "phpcs-lint": "php-cs-fixer fix --dry-run --verbose",
     "phpcpd": "phpcpd <%= dir.src %>",
     "phpmd": "phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize",
-    "phpmetrics": "phpmetrics --failure-condition='average.maintainabilityIndex < 50' src",
-    "phpmetrics-report": "phpmetrics --report-html=build/metrics/index.html --offline src",
+    "phpmetrics-report": "phpmetrics --report-html=build/metrics/index.html --offline src",<% if (project.phpVersion >= 7.0) { -%>
+
+    "phpstan": "phpstan analyse --level 7 src",<% } %>
     "phpunit": "phpunit",
     "phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
     "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml",
@@ -86,8 +85,8 @@ if (project.license != '') { -%>
       "@phpcs",
       "@phpcs-lint",
       "@phpcpd",
-      "@phpmd",
-      "@phpmetrics"
+      "@phpmd"<% if (project.phpVersion >= 7.0) { -%>,
+      "@phpstan"<% } %>
     ],
     "reports": [
       "@phpmetrics-report",
