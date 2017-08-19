@@ -37,6 +37,7 @@ if (project.license != '') { -%>
 
   },
   "require-dev": {
+    "brainmaestro/composer-git-hooks": "^2.1",
     "friendsofphp/php-cs-fixer": "^2.0",
     "humbug/humbug": "~1.0@dev"<% if (control.homestead) { -%>,
     "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
@@ -68,6 +69,9 @@ if (project.license != '') { -%>
     "sort-packages": true
   },
   "scripts": {
+    "cghooks": "cghooks",
+    "post-install-cmd": "cghooks add --ignore-lock",
+    "post-update-cmd": "cghooks update",
     "php-lint": "php -l <%= dir.src %> && php -l <%= dir.tests %>",
     "phpcs": "phpcs --standard=PSR2 <%= dir.src %> <%= dir.tests %>",
     "phpcs-lint": "php-cs-fixer fix --dry-run --verbose",
@@ -99,5 +103,10 @@ if (project.license != '') { -%>
       "@phpunit",
       "@humbug"
     ]
+  },
+  "extra": {
+    "hooks": {
+      "pre-commit": "composer qa && composer phpunit"
+    }
   }
 }

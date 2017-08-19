@@ -1,5 +1,6 @@
 !.gitignore
 <% if (project.type === 'project') { -%>!<% } -%>composer.lock
+cghooks.lock
 vendor/
 .yo-rc.json
 *.cache
