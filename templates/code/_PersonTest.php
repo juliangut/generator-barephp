@@ -22,8 +22,13 @@ declare(strict_types=1);
 <% } -%>
 namespace <%= project.namespace %>\Tests;
 
-use <%= project.namespace %>\Person;
+<% if (project.namespace > 'PHPUnit\Framework\TestCase') { -%>
 use PHPUnit\Framework\TestCase;
+<% } -%>
+use <%= project.namespace %>\Person;
+<% if (project.namespace < 'PHPUnit\Framework\TestCase') { -%>
+use PHPUnit\Framework\TestCase;
+<% } -%>
 
 /**
  * Person tests example.
