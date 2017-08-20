@@ -5,7 +5,7 @@ services:
     container_name: <%= project.name %>_nginx
     image: nginx:alpine
     ports:
-      - "80:80"
+      - 80:80
     volumes_from:
       - data
     volumes:
