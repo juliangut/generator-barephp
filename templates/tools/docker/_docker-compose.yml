@@ -7,16 +7,16 @@ services:
     ports:
       - "80:80"
     volumes_from:
-      - storage
+      - data
     volumes:
       - ./docker/config/nginx.conf:/etc/nginx/nginx.conf
-      - ./docker/config/nvhost.conf:/etc/nginx/conf.d/default.conf
+      - ./docker/config/vhost.conf:/etc/nginx/conf.d/default.conf
       - ./docker/log/nginx:/var/log/nginx
     depends_on:
-      - php-fpm
+      - fpm
 
-  php-fpm:
-    container_name: <%= project.name %>_php-fpm
+  fpm:
+    container_name: <%= project.name %>_fpm
 <% if (project.phpVersion === 5.6) { -%>
     image: juliangut/phpdev:5.6-fpm
 <% } else if (project.phpVersion === 7.0) { -%>
@@ -29,11 +29,17 @@ services:
     environment:
       APP_ENV: development
     volumes_from:
-      - storage
+      - data
     volumes:
       - ./docker/log/php:/var/log/php
     depends_on:
       - mysql
+
+  data:
+    container_name: <%= project.name %>_data
+    image: busybox:latest
+    volumes:
+      - .:/app
 
   mysql:
     container_name: <%= project.name %>_mysql
@@ -41,12 +47,7 @@ services:
     environment:
       MYSQL_USER: <%= project.name %>
       MYSQL_PASSWORD: secret
+      MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: <%= project.name %>
     volumes:
       - ./docker/data/mysql:/var/lib/mysql
-
-  storage:
-    container_name: <%= project.name %>_storage
-    image: busybox:latest
-    volumes:
-      - .:/app
