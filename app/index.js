@@ -473,19 +473,19 @@ BarePHP.prototype.askCodeConfig = function() {
       type: 'list',
       name: 'phpVersion',
       message: 'What is the minimum supported PHP version for the project?',
-      choices: ['5.6', '7.0', '7.1'],
+      choices: ['5.6', '7.0', '7.1', '7.2'],
       default: this.defaults.project.phpVersion.toFixed(1)
     },
     {
       type: 'confirm',
       name: 'supportNightly',
-      message: 'Want to support PHP nightly build (PHP7.2)?',
+      message: 'Want to support PHP nightly build on Travis?',
       default: this.defaults.project.supportNightly
     },
     {
       type: 'confirm',
       name: 'supportHhvm',
-      message: 'Want to support HHVM?',
+      message: 'Want to support HHVM on Travis?',
       default: this.defaults.project.supportHhvm
     },
     {

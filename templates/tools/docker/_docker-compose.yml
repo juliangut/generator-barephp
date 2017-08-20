@@ -23,6 +23,8 @@ services:
     image: juliangut/phpdev:7.0-fpm
 <% } else if (project.phpVersion === 7.1) { -%>
     image: juliangut/phpdev:7.1-fpm
+<% } else if (project.phpVersion === 7.2) { -%>
+    image: juliangut/phpdev:7.2-fpm
 <% } -%>
     environment:
       APP_ENV: development

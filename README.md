@@ -18,10 +18,11 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
 
 ### Features
 
+* Project complies with [pds/skeleton](https://github.com/php-pds/skeleton) directory structure
 * Load existing configuration from composer.json
 * Git use is assumed by default (.gitignore and .gitattributes included)
 * Integration with Github and Bitbucket accounts
-* Composer ready (global or local detection, or local installation)
+* Composer ready (global/local detection, or local installation)
 * Project ready to be added to [Packagist](https://packagist.org)
 * Select minimum [supported PHP version](https://secure.php.net/supported-versions.php) (from 5.6 up)
 * Symfony polyfills compatibility packages included based on minimum supported PHP version
@@ -34,6 +35,7 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
   * PHP syntax linting
   * [PHPUnit](http://phpunit.de/) testing environment
   * [Humbug](https://github.com/padraic/humbug/) mutation testing framework
+  * [Editorconfig-checker](https://github.com/editorconfig-checker/editorconfig-checker.php) for editorconfig adherence
   * [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) for PSR2 coding standard checking
   * [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer) for automatically fixing coding style
   * [PHPMD](https://phpmd.org/) for code mess detection
