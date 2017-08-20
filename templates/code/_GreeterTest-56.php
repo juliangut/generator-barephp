@@ -16,8 +16,6 @@ if (project.homepage) { -%>
 
  */
 
-declare(strict_types=1);
-
 namespace <%= project.namespace %>\Tests;
 
 <% if (project.namespace > 'PHPUnit\Framework\TestCase') { -%>

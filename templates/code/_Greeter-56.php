@@ -16,8 +16,6 @@ if (project.homepage) { -%>
 
  */
 
-declare(strict_types=1);
-
 namespace <%= project.namespace %>;
 
 /**
@@ -32,7 +30,7 @@ class Greeter
      *
      * @return string
      */
-    public function greet(Person $person): string
+    public function greet(Person $person)
     {
         return 'Hello ' . $person->getName();
     }

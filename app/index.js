@@ -1017,21 +1017,39 @@ BarePHP.prototype.writing = {
     this.template('../../templates/tools/_composer.json', 'composer.json');
     this.template('../../templates/tools/npm/_package.json', 'package.json');
 
-    this.template('../../templates/code/_Person.php', this.config.get('dirSrc') + '/Person.php');
-    this.template(
-      '../../templates/code/_PersonTest.php',
-      this.config.get('dirTests') + '/' + this.dir.testsSrc + '/PersonTest.php'
-    );
-    this.template('../../templates/code/_Greeter.php', this.config.get('dirSrc') + '/Greeter.php');
-    this.template(
-      '../../templates/code/_GreeterTest.php',
-      this.config.get('dirTests') + '/' + this.dir.testsSrc + '/GreeterTest.php'
-    );
-    this.template('../../templates/code/_bootstrap.php', this.config.get('dirTests') + '/bootstrap.php');
+    if (this.defaults.project.phpVersion < 7.0) {
+      this.template('../../templates/code/_Person-56.php', this.config.get('dirSrc') + '/Person.php');
+      this.template(
+        '../../templates/code/_PersonTest-56.php',
+        this.config.get('dirTests') + '/' + this.dir.testsSrc + '/PersonTest.php'
+      );
+      this.template('../../templates/code/_Greeter-56.php', this.config.get('dirSrc') + '/Greeter.php');
+      this.template(
+        '../../templates/code/_GreeterTest-56.php',
+        this.config.get('dirTests') + '/' + this.dir.testsSrc + '/GreeterTest.php'
+      );
+      this.template('../../templates/code/_bootstrap-56.php', this.config.get('dirTests') + '/bootstrap.php');
+    } else {
+      this.template('../../templates/code/_Person.php', this.config.get('dirSrc') + '/Person.php');
+      this.template(
+        '../../templates/code/_PersonTest.php',
+        this.config.get('dirTests') + '/' + this.dir.testsSrc + '/PersonTest.php'
+      );
+      this.template('../../templates/code/_Greeter.php', this.config.get('dirSrc') + '/Greeter.php');
+      this.template(
+        '../../templates/code/_GreeterTest.php',
+        this.config.get('dirTests') + '/' + this.dir.testsSrc + '/GreeterTest.php'
+      );
+      this.template('../../templates/code/_bootstrap.php', this.config.get('dirTests') + '/bootstrap.php');
+    }
 
     this.template('../../templates/tools/qa/_php_cs', '.php_cs');
     this.template('../../templates/tools/qa/_phpunit.xml.dist', 'phpunit.xml.dist');
     this.template('../../templates/tools/qa/_humbug.json.dist', 'humbug.json.dist');
+
+    if (this.defaults.project.phpVersion >= 7.1) {
+      this.template('../../templates/tools/qa/phpstan.neon', 'phpstan.neon');
+    }
 
     if (this.defaults.project.type === 'project') {
       this.template('../../templates/code/_index.php', this.config.get('dirPublic') + '/index.php');

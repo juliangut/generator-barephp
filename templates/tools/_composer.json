@@ -44,11 +44,13 @@ if (project.license != '') { -%>
     "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
 <% } -%>,
     "phpmd/phpmd": "^2.0",
-    "phpmetrics/phpmetrics": "^2.0", <% if (project.phpVersion >= 7.0) { -%>
+    "phpmetrics/phpmetrics": "^2.0",<% if (project.phpVersion >= 7.0) { -%>
 
     "phpstan/phpstan": "~0.8",<% } %>
     "phpunit/phpunit": "^5.7|^6.0",
-    "sebastian/phpcpd": "^2.0",
+    "sebastian/phpcpd": "^2.0",<% if (project.phpVersion >= 7.1) { -%>
+
+    "thecodingmachine/phpstan-strict-rules": "~0.7",<% } %>
     "squizlabs/php_codesniffer": "^2.0"
   },
   "suggest": {
@@ -83,7 +85,7 @@ if (project.license != '') { -%>
     "phpmd": "phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize",
     "phpmetrics-report": "phpmetrics --report-html=build/metrics/index.html --offline src",<% if (project.phpVersion >= 7.0) { -%>
 
-    "phpstan": "phpstan analyse --level 7 src",<% } %>
+    "phpstan": "phpstan analyse --level 7<% if (project.phpVersion >= 7.1) { -%> -c phpstan.neon<% } -%> src",<% } %>
     "phpunit": "phpunit",
     "phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
     "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml",

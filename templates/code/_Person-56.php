@@ -16,8 +16,6 @@ if (project.homepage) { -%>
 
  */
 
-declare(strict_types=1);
-
 namespace <%= project.namespace %>;
 
 /**
@@ -35,7 +33,7 @@ class Person
      *
      * @param string $name
      */
-    public function __construct(string $name = 'No one')
+    public function __construct($name = 'No one')
     {
         $this->setName($name);
     }
@@ -45,7 +43,7 @@ class Person
      *
      * @return string
      */
-    public function getName(): string
+    public function getName()
     {
         return $this->name;
     }
@@ -55,12 +53,9 @@ class Person
      *
      * @param string $name
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
      */
-    public function setName(string $name)<% if (project.phpVersion >= 7.1) { -%>: void<% } -%>
-
+    public function setName($name)
     {
         if (trim($name) === '') {
             throw new \InvalidArgumentException(sprintf('"%s" is not a valid name', $name));

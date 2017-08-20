@@ -16,24 +16,6 @@ if (project.homepage) { -%>
 
  */
 
-declare(strict_types=1);
+require __DIR__ . '/../vendor/autoload.php';
 
-namespace <%= project.namespace %>;
-
-/**
- * Example class.
- */
-class Greeter
-{
-    /**
-     * Greet a person.
-     *
-     * @param Person $person
-     *
-     * @return string
-     */
-    public function greet(Person $person): string
-    {
-        return 'Hello ' . $person->getName();
-    }
-}
+phpinfo();
