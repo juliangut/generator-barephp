@@ -17,15 +17,7 @@ services:
 
   fpm:
     container_name: <%= project.name %>_fpm
-<% if (project.phpVersion === 5.6) { -%>
-    image: juliangut/phpdev:5.6-fpm
-<% } else if (project.phpVersion === 7.0) { -%>
-    image: juliangut/phpdev:7.0-fpm
-<% } else if (project.phpVersion === 7.1) { -%>
-    image: juliangut/phpdev:7.1-fpm
-<% } else if (project.phpVersion === 7.2) { -%>
-    image: juliangut/phpdev:7.2-fpm
-<% } -%>
+    image: juliangut/phpdev:<%= project.phpVersion %>-fpm
     environment:
       APP_ENV: development
     volumes_from:
