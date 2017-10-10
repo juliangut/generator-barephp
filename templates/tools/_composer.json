@@ -48,6 +48,7 @@ if (project.license != '') { -%>
 
     "phpstan/phpstan": "~0.8",<% } %>
     "phpunit/phpunit": "^5.7|^6.0",
+    "roave/security-advisories": "dev-master",
     "sebastian/phpcpd": "^2.0",<% if (project.phpVersion >= 7.1) { -%>
 
     "thecodingmachine/phpstan-strict-rules": "~0.7",<% } %>
