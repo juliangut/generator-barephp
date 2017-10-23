@@ -84,7 +84,7 @@ if (project.license != '') { -%>
     "phpcs-fix": "php-cs-fixer fix --verbose",
     "phpcpd": "phpcpd <%= dir.src %>",
     "phpmd": "phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize",
-    "phpmetrics-report": "phpmetrics --report-html=build/metrics/index.html --offline src",<% if (project.phpVersion >= 7.0) { -%>
+    "phpmetrics-report": "phpmetrics --report-html=build/metrics --offline .",<% if (project.phpVersion >= 7.0) { -%>
 
     "phpstan": "phpstan analyse --level 7<% if (project.phpVersion >= 7.1) { -%> -c phpstan.neon<% } -%> src",<% } %>
     "phpunit": "phpunit",
