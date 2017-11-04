@@ -47,7 +47,7 @@ if (project.license != '') { -%>
     "phpmetrics/phpmetrics": "^2.0",<% if (project.phpVersion >= 7.0) { -%>
 
     "phpstan/phpstan": "~0.8",<% } %>
-    "phpunit/phpunit": "^5.7|^6.0",
+    "phpunit/phpunit": "<% if (project.phpVersion < 7.0) { -%>^5.7|<% } -%>^6.0",
     "roave/security-advisories": "dev-master",
     "sebastian/phpcpd": "^2.0",<% if (project.phpVersion >= 7.1) { -%>
 
