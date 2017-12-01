@@ -22,6 +22,9 @@ if (project.phpVersion <= 7.0 && project.testPhpVersion != 7.0) { -%>
 if (project.phpVersion <= 7.1 && project.testPhpVersion != 7.1) { -%>
   - 7.1
 <% }
+if (project.phpVersion <= 7.2 && project.testPhpVersion != 7.2) { -%>
+  - 7.2
+<% }
 if (project.supportNightly) { -%>
   - nightly
 <% }
