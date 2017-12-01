@@ -41,17 +41,17 @@ if (project.license != '') { -%>
     "editorconfig-checker/editorconfig-checker": "^7.0",
     "friendsofphp/php-cs-fixer": "^2.0",
     "humbug/humbug": "~1.0@dev"<% if (control.homestead) { -%>,
-    "laravel/homestead": <% if (project.phpVersion < 7.0) { -%>"^2.2"<% } else { -%>"^3.0"<% } -%>
+    "laravel/homestead": "^6.0"
 <% } -%>,
     "phpmd/phpmd": "^2.0",
     "phpmetrics/phpmetrics": "^2.0",<% if (project.phpVersion >= 7.0) { -%>
 
-    "phpstan/phpstan": "~0.8",<% } %>
+    "phpstan/phpstan": "~0.9",<% } %>
     "phpunit/phpunit": "<% if (project.phpVersion < 7.0) { -%>^5.7|<% } -%>^6.0",
     "roave/security-advisories": "dev-master",
     "sebastian/phpcpd": "^2.0",<% if (project.phpVersion >= 7.1) { -%>
 
-    "thecodingmachine/phpstan-strict-rules": "~0.7",<% } %>
+    "thecodingmachine/phpstan-strict-rules": "~0.9",<% } %>
     "squizlabs/php_codesniffer": "^2.0"
   },
   "suggest": {
