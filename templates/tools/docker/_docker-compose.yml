@@ -14,6 +14,8 @@ services:
       - ./docker/log/nginx:/var/log/nginx
     depends_on:
       - fpm
+    networks:
+      - <%= project.name %>
 
   fpm:
     container_name: <%= project.name %>_fpm
@@ -26,6 +28,8 @@ services:
       - ./docker/log/php:/var/log/php
     depends_on:
       - mysql
+    networks:
+      - <%= project.name %>
 
   data:
     container_name: <%= project.name %>_data
@@ -43,3 +47,9 @@ services:
       MYSQL_DATABASE: <%= project.name %>
     volumes:
       - ./docker/data/mysql:/var/lib/mysql
+    networks:
+      - <%= project.name %>
+
+networks:
+  <%= project.name %>:
+    driver: bridge
