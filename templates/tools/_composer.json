@@ -44,6 +44,7 @@ if (project.license != '') { -%>
     "laravel/homestead": "^6.0"
 <% } -%>,
     "phpmd/phpmd": "^2.0",
+    "povils/phpmnd": "^1.1",
     "phpmetrics/phpmetrics": "^2.0",<% if (project.phpVersion >= 7.0) { -%>
 
     "phpstan/phpstan": "~0.9",<% } %>
@@ -84,6 +85,7 @@ if (project.license != '') { -%>
     "phpcs-fix": "php-cs-fixer fix --verbose",
     "phpcpd": "phpcpd <%= dir.src %>",
     "phpmd": "phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize",
+    "phpmnd": "phpmnd ./ --exclude=<%= dir.tests %>",
     "phpmetrics-report": "phpmetrics --report-html=build/metrics --offline .",<% if (project.phpVersion >= 7.0) { -%>
 
     "phpstan": "phpstan analyse --level 7<% if (project.phpVersion >= 7.1) { -%> -c phpstan.neon<% } -%> src",<% } %>
@@ -97,7 +99,8 @@ if (project.license != '') { -%>
       "@phpcs",
       "@phpcs-lint",
       "@phpcpd",
-      "@phpmd"<% if (project.phpVersion >= 7.0) { -%>,
+      "@phpmd",
+      "@phpmnd"<% if (project.phpVersion >= 7.0) { -%>,
       "@phpstan"<% } %>
     ],
     "reports": [
