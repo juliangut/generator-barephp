@@ -27,9 +27,6 @@ if (project.phpVersion <= 7.2 && project.testPhpVersion != 7.2) { -%>
 <% }
 if (project.supportNightly) { -%>
   - nightly
-<% }
-if (project.supportHhvm) { -%>
-  - hhvm
 <% } -%>
 
 matrix:
@@ -42,15 +39,10 @@ matrix:
       env:
         - TEST_VERSION=true
         - COMPOSER_FLAGS="--prefer-stable --prefer-dist"
-<% if (project.supportNightly || project.supportHhvm) { -%>
-  allow_failures:
 <% if (project.supportNightly) { -%>
+  allow_failures:
     - php: nightly
-<% }
-if (project.supportHhvm) { -%>
-    - php: hhvm
-<% }
-}-%>
+<% } -%>
 
 before_install:
   - if [[ -z $TEST_VERSION && -f "/home/travis/.phpenv/versions/$(phpenv version-name)/etc/conf.d/xdebug.ini" ]]; then phpenv config-rm xdebug.ini; fi

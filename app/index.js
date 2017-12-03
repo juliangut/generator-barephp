@@ -43,8 +43,7 @@ var BarePHP = module.exports = function BarePHP() {
       licenseFile: 'mit',
       phpVersion: 7.0,
       testPhpVersion: 7.0,
-      supportNightly: true,
-      supportHhvm: false
+      supportNightly: true
     },
     config: {
       controlRepository: true,
@@ -477,18 +476,6 @@ BarePHP.prototype.askCodeConfig = function() {
       default: this.defaults.project.phpVersion.toFixed(1)
     },
     {
-      type: 'confirm',
-      name: 'supportNightly',
-      message: 'Want to support PHP nightly build on Travis?',
-      default: this.defaults.project.supportNightly
-    },
-    {
-      type: 'confirm',
-      name: 'supportHhvm',
-      message: 'Want to support HHVM on Travis?',
-      default: this.defaults.project.supportHhvm
-    },
-    {
       name: 'namespace',
       message: 'What is the base namespace of the project?',
       default: this.config.get('projectNamespace')
@@ -501,9 +488,6 @@ BarePHP.prototype.askCodeConfig = function() {
       this.defaults.project.testPhpVersion = phpVersion;
     }
     this.defaults.project.phpVersion = phpVersion;
-
-    this.config.set('supportNightly', props.supportNightly);
-    this.config.set('supportHhvm', props.supportHhvm);
 
     var projectNamespace = _.clean(_.cleanDiacritics(props.namespace));
     if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(projectNamespace) === false) {
@@ -677,11 +661,19 @@ BarePHP.prototype.askForTravisAccount = function() {
       default: this.config.get('controlRepository') ?
         this.config.get('accountTravis') :
         this.defaults.owner.canonical
+    },
+    {
+      type: 'confirm',
+      name: 'supportNightly',
+      message: 'Want to support PHP nightly version on Travis?',
+      default: this.defaults.project.supportNightly
     }
   ];
 
   this.prompt(prompts, function(props) {
     this.config.set('accountTravis', _.clean(props.account).replace(/\s+/g, '_'));
+
+    this.config.set('supportNightly', props.supportNightly);
 
     done();
   }.bind(this));
@@ -935,7 +927,6 @@ BarePHP.prototype.writing = {
       homepage: this.defaults.project.homepage,
       phpVersion: this.defaults.project.phpVersion,
       supportNightly: this.config.get('supportNightly'),
-      supportHhvm: this.config.get('supportHhvm'),
       testPhpVersion: this.defaults.project.testPhpVersion,
       license: this.defaults.project.license,
       namespace: this.config.get('projectNamespace'),

@@ -42,7 +42,7 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
   * [PHPCPD](https://github.com/sebastianbergmann/phpcpd) for copy/paste detection
   * Composer [outdated](https://getcomposer.org/doc/03-cli.md#outdated) for packages updates availability check
 * External tools
-  * Already configured [Travis CI](https://travis-ci.org) integration (PHP >=5.6, nightly and HHVM)
+  * Already configured [Travis CI](https://travis-ci.org) integration (PHP >=5.6, and nightly)
   * [Coveralls](https://coveralls.io) integration (triggered by Travis build)
   * [Scrutinizer](https://scrutinizer-ci.com) integration
   * [StyleCI](https://styleci.io) integration
