@@ -1,0 +1,6 @@
+includes:
+  - vendor/phpstan/phpstan-strict-rules/rules.neon<% if (project.phpVersion >= 7.1) { -%>
+
+  - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon
+<% } -%>
+
