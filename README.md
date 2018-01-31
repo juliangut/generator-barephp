@@ -34,7 +34,7 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
 * QA utilities configured and integrated into Composer scripts and Travis build
   * PHP syntax linting
   * [PHPUnit](http://phpunit.de/) testing environment
-  * [Humbug](https://github.com/padraic/humbug/) mutation testing framework
+  * [Infection](https://github.com/infection/infection/) mutation testing framework
   * [Editorconfig-checker](https://github.com/editorconfig-checker/editorconfig-checker.php) for editorconfig adherence
   * [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) for PSR2 coding standard checking
   * [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer) for automatically fixing coding style

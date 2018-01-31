@@ -1036,9 +1036,9 @@ BarePHP.prototype.writing = {
 
     this.template('../../templates/tools/qa/_php_cs', '.php_cs');
     this.template('../../templates/tools/qa/_phpunit.xml.dist', 'phpunit.xml.dist');
-    this.template('../../templates/tools/qa/_humbug.json.dist', 'humbug.json.dist');
 
     if (this.defaults.project.phpVersion >= 7.0) {
+      this.template('../../templates/tools/qa/_infection.json.dist', 'infection.json.dist');
       this.template('../../templates/tools/qa/_phpstan.neon', 'phpstan.neon');
     }
 

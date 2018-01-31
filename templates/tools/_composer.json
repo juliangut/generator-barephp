@@ -39,8 +39,8 @@ if (project.license != '') { -%>
   "require-dev": {
     "brainmaestro/composer-git-hooks": "^2.1",
     "editorconfig-checker/editorconfig-checker": "^7.0",
-    "friendsofphp/php-cs-fixer": "^2.0",
-    "humbug/humbug": "~1.0@dev"<% if (control.homestead) { -%>,
+    "friendsofphp/php-cs-fixer": "^2.0"<% if (project.phpVersion >= 7.0) { -%>,
+    "infection/infection": "^0.7.0"<% } %><% if (control.homestead) { -%>,
     "laravel/homestead": "^6.0"
 <% } -%>,
     "phpmd/phpmd": "^2.0",
@@ -92,8 +92,9 @@ if (project.license != '') { -%>
     "phpstan": "phpstan analyse --level 7<% if (project.phpVersion >= 7.0) { -%> -c phpstan.neon<% } -%> src",<% } %>
     "phpunit": "phpunit",
     "phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
-    "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml",
-    "humbug": "humbug",
+    "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml"<% if (project.phpVersion >= 7.0) { -%>,
+    "infection": "infection"
+<% } -%>,
     "qa": [
       "@php-lint",
       "@editorconfig-lint",
@@ -115,8 +116,9 @@ if (project.license != '') { -%>
     "security": "composer outdated",
     "test": [
       "@php-lint",
-      "@phpunit",
-      "@humbug"
+      "@phpunit"<% if (project.phpVersion >= 7.0) { -%>,
+      "@infection"
+<% } -%>,
     ]
   },
   "extra": {

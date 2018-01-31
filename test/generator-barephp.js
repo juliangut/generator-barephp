@@ -43,7 +43,7 @@ describe('yo barephp', function() {
       '.travis.yml',
       'composer.json',
       '.php_cs',
-      'humbug.json.dist',
+      'infection.json.dist',
       'phpunit.xml.dist'
     ]);
   });
