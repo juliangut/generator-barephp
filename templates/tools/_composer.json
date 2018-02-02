@@ -40,20 +40,17 @@ if (project.license != '') { -%>
     "brainmaestro/composer-git-hooks": "^2.1",
     "editorconfig-checker/editorconfig-checker": "^7.0",
     "friendsofphp/php-cs-fixer": "^2.0"<% if (project.phpVersion >= 7.0) { -%>,
-    "infection/infection": "^0.7.0"<% } %><% if (control.homestead) { -%>,
-    "laravel/homestead": "^6.0"
-<% } -%>,
+    "infection/infection": "^0.7.0"<% } -%><% if (control.homestead) { -%>,
+    "laravel/homestead": "^6.0"<% } -%>,
     "phpmd/phpmd": "^2.0",
     "povils/phpmnd": "^1.1",
-    "phpmetrics/phpmetrics": "^2.0",<% if (project.phpVersion >= 7.0) { -%>
-
+    "phpmetrics/phpmetrics": "^2.0"<% if (project.phpVersion >= 7.0) { -%>,
     "phpstan/phpstan": "^0.9",
-    "phpstan/phpstan-strict-rules": "^0.9",<% } %>
+    "phpstan/phpstan-strict-rules": "<% if (project.phpVersion >= 7.1) { -%>^0.10<% } else { -%>0.9<% } -%>"<% } -%>,
     "phpunit/phpunit": "<% if (project.phpVersion < 7.0) { -%>^5.7|<% } -%>^6.0",
     "roave/security-advisories": "dev-master",
-    "sebastian/phpcpd": "^2.0",<% if (project.phpVersion >= 7.1) { -%>
-
-    "thecodingmachine/phpstan-strict-rules": "~0.9",<% } %>
+    "sebastian/phpcpd": "^2.0"<% if (project.phpVersion >= 7.1) { -%>,
+    "thecodingmachine/phpstan-strict-rules": "~0.9"<% } -%>,
     "squizlabs/php_codesniffer": "^2.0"
   },
   "suggest": {
@@ -87,14 +84,12 @@ if (project.license != '') { -%>
     "phpcpd": "phpcpd <%= dir.src %>",
     "phpmd": "phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize",
     "phpmnd": "phpmnd ./ --exclude=<%= dir.tests %>",
-    "phpmetrics-report": "phpmetrics --report-html=build/metrics --offline .",<% if (project.phpVersion >= 7.0) { -%>
-
-    "phpstan": "phpstan analyse --level 7<% if (project.phpVersion >= 7.0) { -%> -c phpstan.neon<% } -%> src",<% } %>
+    "phpmetrics-report": "phpmetrics --report-html=build/metrics --offline ."<% if (project.phpVersion >= 7.0) { -%>,
+    "phpstan": "phpstan analyse --level 7<% if (project.phpVersion >= 7.0) { -%> -c phpstan.neon<% } -%> src"<% } -%>,
     "phpunit": "phpunit",
     "phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
     "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml"<% if (project.phpVersion >= 7.0) { -%>,
-    "infection": "infection"
-<% } -%>,
+    "infection": "infection"<% } -%>,
     "qa": [
       "@php-lint",
       "@editorconfig-lint",
@@ -103,7 +98,8 @@ if (project.license != '') { -%>
       "@phpcpd",
       "@phpmd",
       "@phpmnd"<% if (project.phpVersion >= 7.0) { -%>,
-      "@phpstan"<% } %>
+      "@phpstan"<% } -%>
+
     ],
     "reports": [
       "@phpmetrics-report",
@@ -117,8 +113,8 @@ if (project.license != '') { -%>
     "test": [
       "@php-lint",
       "@phpunit"<% if (project.phpVersion >= 7.0) { -%>,
-      "@infection"
-<% } -%>,
+      "@infection"<% } -%>
+
     ]
   },
   "extra": {
