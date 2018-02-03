@@ -930,7 +930,8 @@ BarePHP.prototype.writing = {
       testPhpVersion: this.defaults.project.testPhpVersion,
       license: this.defaults.project.license,
       namespace: this.config.get('projectNamespace'),
-      dependencies: []
+      dependencies: [],
+      phpunitVersion: ''
     };
 
     switch (this.defaults.project.phpVersion) {
@@ -940,6 +941,7 @@ BarePHP.prototype.writing = {
           ['symfony/polyfill-php71', '^1.0'],
           ['symfony/polyfill-php72', '^1.0']
         ];
+        this.project.phpunitVersion = '^5.7';
         break;
 
       case 7.0:
@@ -947,12 +949,18 @@ BarePHP.prototype.writing = {
           ['symfony/polyfill-php71', '^1.0'],
           ['symfony/polyfill-php72', '^1.0']
         ];
+        this.project.phpunitVersion = '^5.7|^6.0';
         break;
 
       case 7.1:
         this.project.dependencies = [
           ['symfony/polyfill-php72', '^1.0']
         ];
+        this.project.phpunitVersion = '^6.0|^7.0';
+        break;
+
+      case 7.2:
+        this.project.phpunitVersion = '^6.0|^7.0';
         break;
     }
 

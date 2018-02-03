@@ -47,7 +47,7 @@ if (project.license != '') { -%>
     "phpmetrics/phpmetrics": "^2.0"<% if (project.phpVersion >= 7.0) { -%>,
     "phpstan/phpstan": "^0.9",
     "phpstan/phpstan-strict-rules": "<% if (project.phpVersion >= 7.1) { -%>^0.10<% } else { -%>0.9<% } -%>"<% } -%>,
-    "phpunit/phpunit": "<% if (project.phpVersion < 7.0) { -%>^5.7|<% } -%>^6.0",
+    "phpunit/phpunit": "<%= project.phpunitVersion %>",
     "roave/security-advisories": "dev-master",
     "sebastian/phpcpd": "^2.0"<% if (project.phpVersion >= 7.1) { -%>,
     "thecodingmachine/phpstan-strict-rules": "~0.9"<% } -%>,
