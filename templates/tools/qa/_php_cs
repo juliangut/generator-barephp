@@ -55,6 +55,9 @@ return Config::create()
         'cast_spaces' => true,
         'class_attributes_separation' => true,
         'combine_consecutive_unsets' => true,
+<% if (project.phpVersion >= 7.1) { -%>
+        'compact_nullable_typehint' => true,
+<% } -%>
         'concat_space' => [
             'spacing' => 'one'
         ],
