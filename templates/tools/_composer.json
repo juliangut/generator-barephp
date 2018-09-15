@@ -38,26 +38,28 @@ if (project.license != '') { -%>
   },
   "require-dev": {
     "brainmaestro/composer-git-hooks": "^2.1",
-    "editorconfig-checker/editorconfig-checker": "^7.0",
     "friendsofphp/php-cs-fixer": "^2.0"<% if (project.phpVersion >= 7.0) { -%>,
-    "infection/infection": "^0.7.0"<% } -%><% if (control.homestead) { -%>,
+    "infection/infection": "<% if (project.phpVersion >= 7.1) { -%>^0.9<% } else { -%>0.8<% } -%>"<% } -%><% if (control.homestead) { -%>,
     "laravel/homestead": "^6.0"<% } -%>,
     "phpmd/phpmd": "^2.0",
     "phpmetrics/phpmetrics": "^2.0"<% if (project.phpVersion >= 7.0) { -%>,
-    "phpstan/phpstan": "^0.9",
+    "phpstan/phpstan": "<% if (project.phpVersion >= 7.1) { -%>^0.10<% } else { -%>0.9<% } -%>"<% if (project.phpVersion >= 7.1) { -%>,
+    "phpstan/phpstan-deprecation-rules": "^0.10",
+    "phpstan/phpstan-phpunit": "^0.10"<% } -%>,
     "phpstan/phpstan-strict-rules": "<% if (project.phpVersion >= 7.1) { -%>^0.10<% } else { -%>0.9<% } -%>"<% } -%>,
     "phpunit/phpunit": "<%= project.phpunitVersion %>",
-    "povils/phpmnd": "^1.1",
+    "povils/phpmnd": "<% if (project.phpVersion >= 7.1) { -%>^2.0<% } else { -%>^1.1<% } -%>",
     "roave/security-advisories": "dev-master",
-    "sebastian/phpcpd": "^2.0"<% if (project.phpVersion >= 7.1) { -%>,
-    "thecodingmachine/phpstan-strict-rules": "~0.9"<% } -%>,
-    "squizlabs/php_codesniffer": "^2.0"
+    "sebastian/phpcpd": "<% if (project.phpVersion >= 7.1) { -%>^4.0<% } else { -%>^3.0<% } -%>",
+    "squizlabs/php_codesniffer": "^2.0"<% if (project.phpVersion >= 7.1) { -%>,
+    "thecodingmachine/phpstan-strict-rules": "~0.10.1"<% } -%>
+
   },
   "suggest": {
   },
   "autoload": {
     "psr-4": {
-      "<%= project.namespace.replace(/\\/g, '\\\\') %>\\": "src/"
+      "<%= project.namespace.replace(/\\/g, '\\\\') %>\\": "<%= dir.src %>/"
     }
   },
   "autoload-dev": {
@@ -75,51 +77,49 @@ if (project.license != '') { -%>
     "cghooks": "cghooks",
     "post-install-cmd": "cghooks add --ignore-lock",
     "post-update-cmd": "cghooks update",
-    "php-lint": "php -l <%= dir.src %> && php -l <%= dir.tests %>",
-    "editorconfig-lint": "editorconfig-checker <%= dir.src %>/* <%= dir.tests %>/*",
-    "editorconfig-fix": "editorconfig-checker --auto-fix <%= dir.src %>/* <%= dir.tests %>/*",
-    "phpcs": "phpcs --standard=PSR2 <%= dir.src %> <%= dir.tests %>",
-    "phpcs-lint": "php-cs-fixer fix --dry-run --verbose",
-    "phpcs-fix": "php-cs-fixer fix --verbose",
-    "phpcpd": "phpcpd <%= dir.src %>",
-    "phpmd": "phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize",
-    "phpmnd": "phpmnd ./ --exclude=<%= dir.tests %>",
-    "phpmetrics-report": "phpmetrics --report-html=build/metrics --offline ."<% if (project.phpVersion >= 7.0) { -%>,
-    "phpstan": "phpstan analyse --level max<% if (project.phpVersion >= 7.0) { -%> -c phpstan.neon<% } -%> src"<% } -%>,
-    "phpunit": "phpunit",
-    "phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
-    "phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml"<% if (project.phpVersion >= 7.0) { -%>,
-    "infection": "infection"<% } -%>,
-    "qa": [
-      "@php-lint",
-      "@editorconfig-lint",
-      "@phpcs",
-      "@phpcs-lint",
-      "@phpcpd",
-      "@phpmd",
-      "@phpmnd"<% if (project.phpVersion >= 7.0) { -%>,
-      "@phpstan"<% } -%>
-
-    ],
-    "reports": [
-      "@phpmetrics-report",
-      "@phpunit-coverage"
+    "lint-php": "php -l <%= dir.src %> && php -l <%= dir.tests %>",
+    "lint-phpcs": "phpcs --standard=PSR2 <%= dir.src %> <%= dir.tests %>",
+    "lint-phpcs-fixer": "php-cs-fixer fix --dry-run --verbose",
+    "fix-phpcs": "php-cs-fixer fix --verbose",
+    "qa-phpcpd": "phpcpd <%= dir.src %>",
+    "qa-phpmd": "phpmd <%= dir.src %> text unusedcode,naming,design,controversial,codesize",
+    "qa-phpmnd": "phpmnd ./ --exclude=<%= dir.tests %>"<% if (project.phpVersion >= 7.0) { -%>,
+    "qa-phpstan": "phpstan analyse --level max<% if (project.phpVersion >= 7.0) { -%> -c phpstan.neon<% } -%> src"<% } -%>,
+    "test-phpunit": "phpunit"<% if (project.phpVersion >= 7.0) { -%>,
+    "test-infection": "infection"<% } -%>,
+    "report-phpmetrics": "phpmetrics --report-html=build/metrics --offline .",
+    "report-phpunit-coverage": "phpunit --coverage-html <%= dir.build %>/coverage",
+    "report-phpunit-clover": "phpunit --coverage-clover build/logs/clover.xml",
+    "lint": [
+      "@lint-php",
+      "@lint-phpcs",
+      "@lint-phpcs-fixer"
     ],
     "fix": [
-      "@editorconfig-fix",
-      "@phpcs-fix"
+      "@fix-phpcs"
+    ],
+    "qa": [
+      "@qa-phpcpd",
+      "@qa-phpmd",
+      "@qa-phpmnd"<% if (project.phpVersion >= 7.0) { -%>,
+      "@qa-phpstan"<% } -%>
+
     ],
     "security": "composer outdated",
     "test": [
-      "@php-lint",
-      "@phpunit"<% if (project.phpVersion >= 7.0) { -%>,
-      "@infection"<% } -%>
+      "@test-phpunit"<% if (project.phpVersion >= 7.0) { -%>,
+      "@test-infection"<% } -%>
 
+    ],
+    "report": [
+      "report-phpmetrics",
+      "report-phpunit-coverage",
+      "report-phpunit-clover"
     ]
   },
   "extra": {
     "hooks": {
-      "pre-commit": "composer qa && composer phpunit"
+      "pre-commit": "composer lint && composer qa && composer test-phpunit"
     }
   }
 }

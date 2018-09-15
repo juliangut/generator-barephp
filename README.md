@@ -35,12 +35,12 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
   * PHP syntax linting
   * [PHPUnit](http://phpunit.de/) testing environment
   * [Infection](https://github.com/infection/infection/) mutation testing framework
-  * [Editorconfig-checker](https://github.com/editorconfig-checker/editorconfig-checker.php) for editorconfig adherence
   * [PHPCS](https://github.com/squizlabs/PHP_CodeSniffer) for PSR2 coding standard checking
   * [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer) for automatically fixing coding style
   * [PHPMD](https://github.com/phpmd/phpmd) for [code smell](https://en.wikipedia.org/wiki/Code_smell) detection
   * [PHPMND](https://github.com/povils/phpmnd) for [magic code](https://en.wikipedia.org/wiki/Magic_number_(programming)#Unnamed_numerical_constants) detection
   * [PHPCPD](https://github.com/sebastianbergmann/phpcpd) for copy/paste detection
+  * [PHPStan](https://github.com/phpstan/phpstan) for static analysis of the code
   * Composer [outdated](https://getcomposer.org/doc/03-cli.md#outdated) for packages updates availability check
 * External tools
   * Already configured [Travis CI](https://travis-ci.org) integration (PHP >=5.6, and nightly)

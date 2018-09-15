@@ -17,7 +17,8 @@ Find here a few rules to follow in order to keep the code clean and easy to revi
 
 Composer scripts are provided to help you keep code quality and run the test suite:
 
-- `composer qa` will run quality assurance tools: PHP linting, [Editorconfig-checker](https://github.com/editorconfig-checker/editorconfig-checker.php) for editorconfig adherence, [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) for coding style guidelines, [PHPMD](https://github.com/phpmd/phpmd) for code smells, [PHPMND](https://github.com/povils/phpmnd) for magic code detection, [PHPCPD](https://github.com/sebastianbergmann/phpcpd) for copy/paste detection<% if (project.phpVersion >= 7.0) { -%>, [PHPStan](https://github.com/phpstan/phpstan) for static code analysis<% } %>
-- `composer test` will run unit tests with [PHPUnit](https://github.com/sebastianbergmann/phpunit) for unit tests
-- `composer fix` will run [Editorconfig-checker](https://github.com/editorconfig-checker/editorconfig-checker.php) and [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer) for fixing style
+- `composer lint` will run PHP linting and [PHP Code Sniffer](https://github.com/squizlabs/PHP_CodeSniffer) and [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer) for coding style guidelines check
+- `composer fix` will run [PHP-CS-Fixer](https://github.com/FriendsOfPhp/PHP-CS-Fixer) trying to fix coding styles
+- `composer qa` will run [PHPCPD](https://github.com/sebastianbergmann/phpcpd) for copy/paste detection, [PHPMD](https://github.com/phpmd/phpmd) and [PHPStan](https://github.com/phpstan/phpstan) for static analysis
 - `composer security` will run [Composer](https://getcomposer.org) (>=1.1.0) for outdated dependencies
+- `composer test` will run [PHPUnit](https://github.com/sebastianbergmann/phpunit) for unit tests and [Infection](https://github.com/infection/infection) for mutation tests

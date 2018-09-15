@@ -57,7 +57,6 @@ install:
 
 script:
   - if [[ $TEST_VERSION ]]; then composer qa <% if (control.coveralls) { -%>&& composer phpunit-clover <% } -%>; fi
-
   - if [[ -z $TEST_VERSION ]]; then composer phpunit ; fi
 <% if (control.coveralls) { -%>
 
