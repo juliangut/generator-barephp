@@ -112,9 +112,9 @@ if (project.license != '') { -%>
 
     ],
     "report": [
-      "report-phpmetrics",
-      "report-phpunit-coverage",
-      "report-phpunit-clover"
+      "@report-phpmetrics",
+      "@report-phpunit-coverage",
+      "@report-phpunit-clover"
     ]
   },
   "extra": {
