@@ -37,7 +37,7 @@ if (project.license != '') { -%>
 
   },
   "require-dev": {
-    "brainmaestro/composer-git-hooks": "^2.1",
+    "brainmaestro/composer-git-hooks": "^2.5",
     "friendsofphp/php-cs-fixer": "^2.0"<% if (project.phpVersion >= 7.0) { -%>,
     "infection/infection": "<% if (project.phpVersion >= 7.1) { -%>^0.9<% } else { -%>0.8<% } -%>"<% } -%><% if (control.homestead) { -%>,
     "laravel/homestead": "^6.0"<% } -%>,
@@ -75,7 +75,7 @@ if (project.license != '') { -%>
   },
   "scripts": {
     "cghooks": "cghooks",
-    "post-install-cmd": "cghooks add --ignore-lock",
+    "post-install-cmd": "cghooks add --no-lock",
     "post-update-cmd": "cghooks update",
     "lint-php": "php -l <%= dir.src %> && php -l <%= dir.tests %>",
     "lint-phpcs": "phpcs --standard=PSR2 <%= dir.src %> <%= dir.tests %>",
