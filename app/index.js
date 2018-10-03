@@ -1107,7 +1107,7 @@ BarePHP.prototype.install = function() {
   this.installDependencies({
     bower: false,
     callback: function() {
-      fs.unlink('package.json');
+      fs.unlinkSync('package.json');
       if (fs.existsSync('node_modules')) {
         fs.rmdir('node_modules');
       }
