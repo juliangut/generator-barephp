@@ -50,7 +50,7 @@ if (project.license != '') { -%>
     "phpunit/phpunit": "<%= project.phpunitVersion %>",
     "povils/phpmnd": "<% if (project.phpVersion >= 7.1) { -%>^2.0<% } else { -%>^1.1<% } -%>",
     "roave/security-advisories": "dev-master",
-    "sebastian/phpcpd": "<% if (project.phpVersion >= 7.1) { -%>^4.0<% } else { -%>^3.0<% } -%>",
+    "sebastian/phpcpd": "^2.0|^4.0",
     "squizlabs/php_codesniffer": "^2.0"<% if (project.phpVersion >= 7.1) { -%>,
     "thecodingmachine/phpstan-strict-rules": "~0.10.1"<% } -%>
 

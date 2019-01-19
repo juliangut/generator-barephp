@@ -41,8 +41,8 @@ var BarePHP = module.exports = function BarePHP() {
       homepage: null,
       license: 'MIT',
       licenseFile: 'mit',
-      phpVersion: 7.0,
-      testPhpVersion: 7.0,
+      phpVersion: 7.2,
+      testPhpVersion: 7.2,
       supportNightly: true
     },
     config: {
@@ -472,7 +472,7 @@ BarePHP.prototype.askCodeConfig = function() {
       type: 'list',
       name: 'phpVersion',
       message: 'What is the minimum supported PHP version for the project?',
-      choices: ['5.6', '7.0', '7.1', '7.2'],
+      choices: ['5.6', '7.0', '7.1', '7.2', '7.3'],
       default: this.defaults.project.phpVersion.toFixed(1)
     },
     {
@@ -939,7 +939,8 @@ BarePHP.prototype.writing = {
         this.project.dependencies = [
           ['symfony/polyfill-php70', '^1.0'],
           ['symfony/polyfill-php71', '^1.0'],
-          ['symfony/polyfill-php72', '^1.0']
+          ['symfony/polyfill-php72', '^1.0'],
+          ['symfony/polyfill-php73', '^1.0']
         ];
         this.project.phpunitVersion = '^5.7';
         break;
@@ -947,19 +948,28 @@ BarePHP.prototype.writing = {
       case 7.0:
         this.project.dependencies = [
           ['symfony/polyfill-php71', '^1.0'],
-          ['symfony/polyfill-php72', '^1.0']
+          ['symfony/polyfill-php72', '^1.0'],
+          ['symfony/polyfill-php73', '^1.0']
         ];
         this.project.phpunitVersion = '^5.7|^6.0';
         break;
 
       case 7.1:
         this.project.dependencies = [
-          ['symfony/polyfill-php72', '^1.0']
+          ['symfony/polyfill-php72', '^1.0'],
+          ['symfony/polyfill-php73', '^1.0']
         ];
         this.project.phpunitVersion = '^6.0|^7.0';
         break;
 
       case 7.2:
+        this.project.dependencies = [
+          ['symfony/polyfill-php73', '^1.0']
+        ];
+        this.project.phpunitVersion = '^6.0|^7.0';
+        break;
+
+      case 7.3:
         this.project.phpunitVersion = '^6.0|^7.0';
         break;
     }
