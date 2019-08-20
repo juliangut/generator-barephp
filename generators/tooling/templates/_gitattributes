@@ -1,0 +1,32 @@
+* text=auto
+
+.gitattributes      export-ignore
+.gitignore          export-ignore
+.editorconfig       export-ignore
+.php_cs             export-ignore
+<% if (accountTravis !== null) { -%>
+.travis.yml         export-ignore
+<% }
+if (accountCoveralls !== null) { -%>
+.coveralls.yml      export-ignore
+<% }
+if (accountScrutinizer !== null) { -%>
+.scrutinizer.yml    export-ignore
+<% }
+if (accountStyleci !== null) { -%>
+.styleci.yml        export-ignore
+<% } -%>
+infection.json.dist export-ignore
+<% if (controlDevEnv === 'homestead') { -%>
+Vagrantfile         export-ignore
+vagrant/            export-ignore
+<% }
+if (controlDevEnv === 'docker') { -%>
+docker-compose.yml  export-ignore
+docker/             export-ignore
+<% }
+if (controlDocs) { -%>
+README.md           export-ignore
+CONTRIBUTING.md     export-ignore
+<% } -%>
+phpunit.xml.dist    export-ignore

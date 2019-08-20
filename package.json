@@ -37,7 +37,10 @@
     "type": "git",
     "url": "git://git@github.com/juliangut/generator-barephp.git"
   },
-  "main": "app/index.js",
+  "files": [
+    "generators"
+  ],
+  "main": "generators/app/index.js",
   "scripts": {
     "test": "mocha"
   },
@@ -49,7 +52,7 @@
     "underscore.string": "^3.1.1",
     "util": "^0.10.3",
     "validator": "^4.7.1",
-    "yeoman-generator": "^0.21.0",
+    "yeoman-generator": "^4.0.0",
     "yo": ">=1.0.0",
     "yosay": "^1.0.5"
   },
@@ -59,7 +62,9 @@
     "gulp-jshint": "^2.0.0",
     "jshint-stylish": "^2.2.0",
     "mocha": "^2.2.0",
-    "run-sequence": "^1.2.0"
+    "run-sequence": "^1.2.0",
+    "yeoman-assert": "^3.1.1",
+    "yeoman-test": "^2.0.0"
   },
   "engines": {
     "node": ">=0.10.0",

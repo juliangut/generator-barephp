@@ -2,20 +2,21 @@
  * generator-barephp
  * https://github.com/juliangut/generator-barephp
  *
- * Copyright (c) 2016 Julián Gutiérrez (juliangut@gmail.com)
+ * Copyright (c) 2019 Julián Gutiérrez (juliangut@gmail.com)
  * Licensed under the BSD-3-Clause license.
  */
 
 'use strict';
 
-var path = require('path');
-var helpers = require('yeoman-generator').test;
-var assert = require('yeoman-generator').assert;
+const path = require('path');
+const helpers = require('yeoman-test');
+const assert = require('yeoman-assert');
 
 describe('yo barephp', function() {
   before(function(done) {
-    helpers.run(path.join(__dirname, '../app'))
+    helpers.run(path.join(__dirname, '../generators/app'))
       .withOptions({
+        'skip-welcome-message': true,
         'skip-install': true
       })
       .withPrompts({

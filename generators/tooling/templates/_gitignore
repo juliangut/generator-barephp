@@ -1,0 +1,7 @@
+!.gitignore
+<% if (projectType === 'project') { -%>!<% } -%>composer.lock
+vendor/
+.yo-rc.json
+*.cache
+infection-log.*
+<%= dirBuild %>/
