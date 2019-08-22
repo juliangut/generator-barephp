@@ -45,16 +45,16 @@
     "test": "mocha"
   },
   "dependencies": {
-    "chalk": "^1.1.0",
-    "mkdirp": "^0.5.1",
-    "shelljs": "^0.5.3",
-    "sprintf-js": "^1.0.3",
-    "underscore.string": "^3.1.1",
+    "chalk": "^2.0.0",
+    "mkdirp": "^0.5.0",
+    "shelljs": "^0.8.0",
+    "sprintf-js": "^1.1.0",
+    "underscore.string": "^3.0.0",
     "util": "^0.10.3",
-    "validator": "^4.7.1",
+    "validator": "^10.0.0",
     "yeoman-generator": "^4.0.0",
-    "yo": ">=1.0.0",
-    "yosay": "^1.0.5"
+    "yo": ">=2.0.0",
+    "yosay": "^2.0.0"
   },
   "devDependencies": {
     "gulp": "^3.9.0",
@@ -63,7 +63,7 @@
     "jshint-stylish": "^2.2.0",
     "mocha": "^2.2.0",
     "run-sequence": "^1.2.0",
-    "yeoman-assert": "^3.1.1",
+    "yeoman-assert": "^3.1.0",
     "yeoman-test": "^2.0.0"
   },
   "engines": {
