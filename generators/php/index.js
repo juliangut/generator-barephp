@@ -86,28 +86,33 @@ module.exports = class extends Generator{
 
       projectComposerGitHooksVersion: '^2.5',
       projectPhpCsFixerVersion: "^2.0",
-      projectInfectionVersion: null,
+      projectInfectionVersion: '~0.10',
       projectHomesteadVersion: this.config.get('controlDevEnv') === 'homestead' ? '^6.0' : null,
       projectPhpmdVersion: "^2.0",
       projectPhpmetricsVersion: this.config.get('projectType') === 'project' ? "^2.0" : null,
-      projectPhpstanVersion: null,
-      projectPhpstanDeprecationRulesVersion: null,
-      projectPhpstanPhpunitVersion: null,
-      projectPhpstanStrictRulesVersion: null,
+      projectPhpstanExtensionInstallerVersion: '^1.0.1',
+      projectPhpstanVersion: '~0.11',
+      projectPhpstanDeprecationRulesVersion: "~0.11",
+      projectPhpstanPhpunitVersion: "~0.11",
+      projectPhpstanStrictRulesVersion: "~0.11",
       projectPhpunitVersion: null,
-      projectPhpmndVersion: null,
+      projectPhpmndVersion: '^2.0',
       projectPhpcpdVersion: "^2.0|^4.0",
       projectPhpCodeSnifferVersion: "^2.0",
-      projectTheCodingMachinePhpstanStrictRulesVersion: null
+      projectTheCodingMachinePhpstanStrictRulesVersion: "~0.11.2"
     };
 
     switch (this.config.get('projectPhpVersion')) {
       case 7.0:
-        configs.projectInfectionVersion = '0.8';
-        configs.projectPhpstanVersion = '0.9';
-        configs.projectPhpstanStrictRulesVersion = '0.9';
-        configs.projectPhpunitVersion = '^5.7|^6.0';
+        configs.projectInfectionVersion = '^0.8';
+        configs.projectPhpstanExtensionInstallerVersion = null;
+        configs.projectPhpstanVersion = '^0.8|^0.9';
+        configs.projectPhpstanDeprecationRulesVersion = null;
+        configs.projectPhpstanPhpunitVersion = '^0.9';
+        configs.projectPhpstanStrictRulesVersion = '^0.9';
+        configs.projectPhpunitVersion = '^6.0';
         configs.projectPhpmndVersion = '^1.1';
+        configs.projectTheCodingMachinePhpstanStrictRulesVersion = null;
 
         if (this.config.get('controlPolyfills')) {
           configs.projectDependencies = [
@@ -120,14 +125,7 @@ module.exports = class extends Generator{
         break;
 
       case 7.1:
-        configs.projectInfectionVersion = '^0.9';
-        configs.projectPhpstanVersion = '^0.10';
-        configs.projectPhpstanDeprecationRulesVersion = "^0.10";
-        configs.projectPhpstanPhpunitVersion = "^0.10";
-        configs.projectPhpstanStrictRulesVersion = '^0.10';
         configs.projectPhpunitVersion = '^6.0|^7.0';
-        configs.projectPhpmndVersion = '^2.0';
-        configs.projectTheCodingMachinePhpstanStrictRulesVersion = "~0.10.1";
 
         if (this.config.get('controlPolyfills')) {
           configs.projectDependencies = [
@@ -139,14 +137,7 @@ module.exports = class extends Generator{
         break;
 
       case 7.2:
-        configs.projectInfectionVersion = '^0.9';
-        configs.projectPhpstanVersion = '^0.10';
-        configs.projectPhpstanDeprecationRulesVersion = "^0.10";
-        configs.projectPhpstanPhpunitVersion = "^0.10";
-        configs.projectPhpstanStrictRulesVersion = '^0.10';
         configs.projectPhpunitVersion = '^6.0|^7.0';
-        configs.projectPhpmndVersion = '^2.0';
-        configs.projectTheCodingMachinePhpstanStrictRulesVersion = "~0.10.1";
 
         if (this.config.get('controlPolyfills')) {
           configs.projectDependencies = [
@@ -157,20 +148,17 @@ module.exports = class extends Generator{
         break;
 
       case 7.3:
-        configs.projectInfectionVersion = '^0.9';
-        configs.projectPhpstanVersion = '^0.10';
-        configs.projectPhpstanDeprecationRulesVersion = "^0.10";
-        configs.projectPhpstanPhpunitVersion = "^0.10";
-        configs.projectPhpstanStrictRulesVersion = '^0.10';
         configs.projectPhpunitVersion = '^6.0|^7.0|^8.0';
-        configs.projectPhpmndVersion = '^2.0';
-        configs.projectTheCodingMachinePhpstanStrictRulesVersion = "~0.10.1";
 
         if (this.config.get('controlPolyfills')) {
           configs.projectDependencies = [
             ['symfony/polyfill-php74', '^1.12']
           ];
         }
+        break;
+
+      case 7.4:
+        configs.projectPhpunitVersion = '^6.0|^7.0|^8.0';
         break;
     }
 

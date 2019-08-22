@@ -40,12 +40,11 @@ class PersonTest extends TestCase
         static::assertEquals('No one', $person->getName());
     }
 
-    /**
-     * @expectedException \InvalidArgumentException
-     * @expectedExceptionMessage " " is not a valid name
-     */
     public function testInvalidName()
     {
+        $this->expectException(\InvalidArgumentException::class);
+        $this->expectExceptionMessage('" " is not a valid name');
+
         new Person(' ');
     }
 

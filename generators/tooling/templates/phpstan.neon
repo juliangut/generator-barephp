@@ -1,11 +1,10 @@
+<% if (projectPhpVersion === 7.0) { -%>
 includes:
   - vendor/phpstan/phpstan-strict-rules/rules.neon
   - vendor/phpstan/phpstan-phpunit/extension.neon
-  - vendor/phpstan/phpstan-phpunit/rules.neon<% if (projectPhpVersion >= 7.1) { -%>
+  - vendor/phpstan/phpstan-phpunit/rules.neon
 
-  - vendor/phpstan/phpstan-deprecation-rules/rules.neon
-  - vendor/thecodingmachine/phpstan-strict-rules/phpstan-strict-rules.neon<% } -%>
-
+<% } -%>
 parameters:
   level: max
   paths:

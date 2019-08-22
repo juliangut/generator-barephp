@@ -42,7 +42,8 @@ class GreeterTest extends TestCase
     /**
      * {@inheritdoc}
      */
-    public function setUp()
+    public function setUp()<% if (projectPhpVersion >= 7.1) { -%>: void<% } -%>
+
     {
         $this->greeter = new Greeter();
     }
