@@ -43,25 +43,25 @@ module.exports = class extends Generator{
       {
         name: 'account',
         message: 'What is your repository account name?',
-        default: this.config.get('accountRepository')
-          ? this.config.get('accountRepository')
-          : this.config.get('ownerCanonical')
+        default: this.config.get('accountRepository') !== '' ?
+          this.config.get('accountRepository') :
+          this.config.get('ownerCanonical')
       }
     ];
 
     return this.prompt(prompts).then(answers => {
       const accountRepository = _.cleanDiacritics(_.clean(answers.account)).replace(/\s+/g, '_');
 
-      if (!this.config.get('accountPackagist')) {
+      if (this.config.get('accountPackagist') === '') {
         this.config.set('accountPackagist', accountRepository);
       }
-      if (!this.config.get('accountTravis')) {
+      if (this.config.get('accountTravis') === '') {
         this.config.set('accountTravis', accountRepository);
       }
-      if (!this.config.get('accountCoveralls')) {
+      if (this.config.get('accountCoveralls') === '') {
         this.config.set('accountCoveralls', accountRepository);
       }
-      if (!this.config.get('accountScrutinizer')) {
+      if (this.config.get('accountScrutinizer') === '') {
         this.config.set('accountScrutinizer', accountRepository);
       }
 

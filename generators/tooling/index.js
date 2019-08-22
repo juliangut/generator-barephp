@@ -105,7 +105,7 @@ module.exports = class extends Generator{
       {
         name: 'account',
         message: 'What is your Packagist account name?',
-        default: this.config.get('controlRepository') ?
+        default: this.config.get('accountRepository') !== '' ?
           this.config.get('accountPackagist') :
           this.config.get('ownerCanonical')
       }
@@ -121,7 +121,7 @@ module.exports = class extends Generator{
       {
         name: 'account',
         message: 'What is your Travis account name?',
-        default: this.config.get('controlRepository') ?
+        default: this.config.get('accountRepository') !== '' ?
           this.config.get('accountTravis') :
           this.config.get('ownerCanonical')
       },
@@ -145,7 +145,7 @@ module.exports = class extends Generator{
       {
         name: 'account',
         message: 'What is your Coveralls account name?',
-        default: this.config.get('controlRepository') ?
+        default: this.config.get('accountRepository') !== '' ?
           this.config.get('accountCoveralls') :
           this.config.get('ownerCanonical')
       }
@@ -161,7 +161,7 @@ module.exports = class extends Generator{
       {
         name: 'account',
         message: 'What is your Scrutinizer account name?',
-        default: this.config.get('controlRepository') ?
+        default: this.config.get('accountRepository') !== '' ?
           this.config.get('accountScrutinizer') :
           this.config.get('ownerCanonical')
       }
@@ -177,7 +177,7 @@ module.exports = class extends Generator{
       {
         name: 'account',
         message: 'What is this project StyleCI repository code?',
-        default: this.config.get('accountStyleci')
+        default: this.config.get('accountRepository') !== '' ? this.config.get('accountStyleci') : ''
       }
     ];
 

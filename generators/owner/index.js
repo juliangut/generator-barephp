@@ -41,13 +41,17 @@ module.exports = class extends Generator{
 
     return this.prompt(prompts).then(answers => {
       this.config.set('ownerName', _.clean(answers.name));
-      this.config.set('ownerCanonical', _.cleanDiacritics(_.clean(answers.name)).replace(/\s+/g, '-').toLowerCase());
 
       var ownerEmail = _.clean(answers.email).split(' ').shift();
       if (ownerEmail !== '' && !validator.isEmail(ownerEmail)) {
         throw new Error(util.format('"%s" is not a valid email', ownerEmail));
       }
       this.config.set('ownerEmail', ownerEmail);
+
+      const canonical = ownerEmail !== '' ?
+        ownerEmail.split('@')[0] :
+        _.clean(answers.name).replace(/\s+/g, '-');
+      this.config.set('ownerCanonical', _.cleanDiacritics(canonical).toLowerCase());
 
       var ownerHomepage = _.clean(answers.homepage).split(' ').shift();
       if (ownerHomepage !== '') {
