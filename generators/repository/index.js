@@ -19,7 +19,6 @@ module.exports = class extends Generator{
   }
 
   prompting() {
-    const done = this.async();
     const prompts = [
       {
         type: 'list',
@@ -30,19 +29,16 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('repositoryType', answers.type);
 
-      done();
-
       if (answers.type !== 'none') {
-        this._repositoryAccount();
+        return this._repositoryAccount();
       }
     });
   }
 
   _repositoryAccount() {
-    const done = this.async();
     const prompts = [
       {
         name: 'account',
@@ -53,7 +49,7 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       const accountRepository = _.cleanDiacritics(_.clean(answers.account)).replace(/\s+/g, '_');
 
       if (!this.config.get('accountPackagist')) {
@@ -85,8 +81,6 @@ module.exports = class extends Generator{
       this.config.set('accountRepository', accountRepository);
       this.config.set('repositorySSH', repositoryUrl + ':' + accountRepository + '/');
       this.config.set('repositoryHomepage', repositoryUrl + '/' + accountRepository + '/');
-
-      done();
     });
   }
 };

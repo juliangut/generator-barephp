@@ -24,7 +24,6 @@ module.exports = class extends Generator{
   }
 
   prompting() {
-    const done = this.async();
     const prompts = [
       {
         type: 'checkbox',
@@ -63,61 +62,42 @@ module.exports = class extends Generator{
           }
         ],
         when: this.config.get('mode') !== 'quick'
-      },
-      {
-        type: 'list',
-        name: 'devenv',
-        message: 'Which development environment do you want to use?',
-        choices: ['none', 'docker', 'homestead'],
-        default: this.config.get('controlDevEnv'),
-        when: this.config.get('mode') !== 'quick' && this.config.get('projectType') === 'project'
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(async answers => {
       if (this.config.get('mode') !== 'quick') {
         const hasMod = function (mod) {
           return answers.tools.indexOf(mod) !== -1;
         };
 
         if (hasMod('packagist')) {
-          this._packagist();
+          await this._packagist();
         }
         if (hasMod('travis')) {
-          this._travis();
+          await this._travis();
         }
         if (hasMod('coveralls')) {
-          this._coveralls();
+          await this._coveralls();
         }
         if (hasMod('scrutinizer')) {
-          this._scrutinizer();
+          await this._scrutinizer();
         }
         if (hasMod('styleci') && hasMod('docs')) {
-          this._styleci();
+          await this._styleci();
         }
         if (hasMod('docs')) {
-          this.config.set('controlDocs', true);
+          await this.config.set('controlDocs', true);
         }
 
         if (this.config.get('projectType') === 'project') {
-          var devEnv = answers.devenv;
-
-          this.config.set('controlDevEnv', devEnv);
-
-          if (devEnv !== 'homestead') {
-            this.config.set('controlPhpMyAdmin', false);
-          } else {
-            this._homestead();
-          }
+          await this._devEnvironment();
         }
       }
-
-      done();
     });
   }
 
   _packagist() {
-    const done = this.async();
     const prompts = [
       {
         name: 'account',
@@ -128,15 +108,12 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('accountPackagist', _.clean(answers.account).replace(/\s+/g, '_'));
-
-      done();
     });
   }
 
   _travis() {
-    const done = this.async();
     const prompts = [
       {
         name: 'account',
@@ -153,17 +130,14 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('accountTravis', _.clean(answers.account).replace(/\s+/g, '_'));
 
       this.config.set('projectSupportNightly', answers.supportNightly);
-
-      done();
     });
   }
 
   _coveralls() {
-    const done = this.async();
     const prompts = [
       {
         name: 'account',
@@ -174,15 +148,12 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('accountCoveralls', _.clean(answers.account).replace(/\s+/g, '_'));
-
-      done();
     });
   }
 
   _scrutinizer() {
-    const done = this.async();
     const prompts = [
       {
         name: 'account',
@@ -193,15 +164,12 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('accountCoveralls', _.clean(answers.account).replace(/\s+/g, '_'));
-
-      done();
     });
   }
 
   _styleci() {
-    const done = this.async();
     const prompts = [
       {
         name: 'account',
@@ -210,7 +178,7 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       const accountStyleci = _.clean(answers.account).replace(/\s+/g, '');
 
       this.config.set('accountStyleci', accountStyleci);
@@ -218,13 +186,35 @@ module.exports = class extends Generator{
       if (accountStyleci === '') {
         console.log(chalk.yellow.bold('  Remember to assign StyleCI repository code on README file'));
       }
+    });
+  }
 
-      done();
+  _devEnvironment() {
+    const prompts = [
+      {
+        type: 'list',
+        name: 'devenv',
+        message: 'Which development environment do you want to use?',
+        choices: ['none', 'docker', 'homestead'],
+        default: this.config.get('controlDevEnv'),
+        when: this.config.get('mode') !== 'quick' && this.config.get('projectType') === 'project'
+      }
+    ];
+
+    return this.prompt(prompts).then(async answers => {
+      var devEnv = answers.devenv;
+
+      this.config.set('controlDevEnv', devEnv);
+
+      if (devEnv !== 'homestead') {
+        this.config.set('controlPhpMyAdmin', false);
+      } else {
+        await this._homestead();
+      }
     });
   }
 
   _homestead() {
-    const done = this.async();
     const defaultIp = sprintf('192.168.%1$d.%1$d', Math.max(100, Math.floor(Math.random() * 255)));
     const prompts = [
       {
@@ -247,7 +237,7 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('homesteadFormat', answers.format);
       this.config.set('controlPhpMyAdmin', answers.usePhpmyadmin);
 
@@ -258,8 +248,6 @@ module.exports = class extends Generator{
       }
 
       this.config.set('homesteadIP', homesteadIp);
-
-      done();
     });
   }
 

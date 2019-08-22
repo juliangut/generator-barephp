@@ -22,8 +22,6 @@ module.exports = class extends Generator{
   }
 
   prompting() {
-    const done = this.async();
-
     var defaultDirs = this.config.get('dirSrc') +
       ', ' + this.config.get('dirTests') +
       ', ' + this.config.get('dirBuild');
@@ -68,13 +66,6 @@ module.exports = class extends Generator{
         when: this.config.get('mode') !== 'quick'
       },
       {
-        type: 'confirm',
-        name: 'changeDirs',
-        message: 'Would you like to change default directories?',
-        default: this.config.get('controlDirs'),
-        when: this.config.get('mode') !== 'quick'
-      },
-      {
         type: 'list',
         name: 'license',
         message: 'What license do you want to use?',
@@ -92,10 +83,17 @@ module.exports = class extends Generator{
         ],
         default: this.config.get('projectLicense'),
         when: this.config.get('mode') !== 'quick'
+      },
+      {
+        type: 'confirm',
+        name: 'changeDirs',
+        message: 'Would you like to change default directories?',
+        default: this.config.get('controlDirs'),
+        when: this.config.get('mode') !== 'quick'
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('projectName', _.clean(_.cleanDiacritics(answers.name)).replace(/\s+/g, '_'));
 
       if (this.config.get('repositoryType') !== 'none') {
@@ -136,10 +134,6 @@ module.exports = class extends Generator{
         }
         this.config.set('projectHomepage', projectHomepage);
 
-        if (answers.changeDirs) {
-          this._dirs();
-        }
-
         if (answers.license !== 'none') {
           this.config.set('projectLicense', answers.license);
 
@@ -176,14 +170,15 @@ module.exports = class extends Generator{
 
           this.config.set('projectLicenseFile', licenseFile);
         }
-      }
 
-      done();
+        if (answers.changeDirs) {
+          return this._dirs();
+        }
+      }
     });
   }
 
   _dirs() {
-    const done = this.async();
     const prompts = [
       {
         name: 'src',
@@ -208,7 +203,7 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('dirSrc', answers.src);
       this.config.set('dirTests', answers.tests);
       this.config.set('dirBuild', answers.build);
@@ -216,8 +211,6 @@ module.exports = class extends Generator{
       if (this.config.get('projectType') === 'project') {
         this.config.set('dirPublic', answers.public);
       }
-
-      done();
     });
   }
 

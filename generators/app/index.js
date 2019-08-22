@@ -35,7 +35,6 @@ module.exports = class extends BaseGenerator {
   }
 
   prompting() {
-    const done = this.async();
     const prompts = [
       {
         type: 'confirm',
@@ -45,10 +44,8 @@ module.exports = class extends BaseGenerator {
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('mode', answers.quickMode ? 'quick' : 'full');
-
-      done();
     });
   }
 

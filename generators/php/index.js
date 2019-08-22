@@ -23,7 +23,6 @@ module.exports = class extends Generator{
   }
 
   prompting() {
-    const done = this.async();
     const defaultNamespace = _.capitalize(_.camelize(this.config.get('projectName')));
     const prompts = [
       {
@@ -47,7 +46,7 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       const phpVersion = parseFloat(answers.phpVersion);
       if (phpVersion > this.config.get('projectTestPhpVersion')) {
         this.config.set('projectTestPhpVersion', phpVersion);
@@ -64,8 +63,6 @@ module.exports = class extends Generator{
       if (this.config.get('composer') === null && answers.install) {
         this.config.set('composer', 'local');
       }
-
-      done();
     });
   }
 

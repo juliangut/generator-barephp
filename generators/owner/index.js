@@ -21,7 +21,6 @@ module.exports = class extends Generator{
   }
 
   prompting() {
-    const done = this.async();
     const prompts = [
       {
         name: 'name',
@@ -40,7 +39,7 @@ module.exports = class extends Generator{
       }
     ];
 
-    this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(answers => {
       this.config.set('ownerName', _.clean(answers.name));
       this.config.set('ownerCanonical', _.cleanDiacritics(_.clean(answers.name)).replace(/\s+/g, '-').toLowerCase());
 
@@ -61,8 +60,6 @@ module.exports = class extends Generator{
         }
       }
       this.config.set('ownerHomepage', ownerHomepage);
-
-      done();
     });
   }
 };
