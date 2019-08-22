@@ -1,4 +1,4 @@
-[![PHP version](https://img.shields.io/badge/PHP-%3E%3D<%= projectPhpVersion %>-8892BF.svg?style=flat-square)](http://php.net)
+[![PHP version](https://img.shields.io/badge/PHP-%3E%3D<%= projectPhpVersion.toFixed(1) %>-8892BF.svg?style=flat-square)](http://php.net)
 <% if (accountPackagist !== 'none') { -%>
 [![Latest Version](https://img.shields.io/packagist/v/<%= accountPackagist %>/<%= projectName %>.svg?style=flat-square)](https://packagist.org/packages/<%= accountPackagist %>/<%= projectName %>)
 <% }

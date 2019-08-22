@@ -22,13 +22,6 @@ module.exports = class extends Generator{
   }
 
   prompting() {
-    var defaultDirs = this.config.get('dirSrc') +
-      ', ' + this.config.get('dirTests') +
-      ', ' + this.config.get('dirBuild');
-    if (this.config.get('projectType') === 'project') {
-      defaultDirs += ', ' + this.config.get('dirPublic');
-    }
-
     const prompts = [
       {
         name: 'name',
@@ -70,7 +63,6 @@ module.exports = class extends Generator{
         name: 'license',
         message: 'What license do you want to use?',
         choices: [
-          'none',
           'Apache-2.0',
           'BSD-2-Clause',
           'BSD-3-Clause',
@@ -78,22 +70,16 @@ module.exports = class extends Generator{
           'GPL-2.0',
           'GPL-3.0',
           'LGPL-3.0',
+          'none',
           'MIT',
           'Proprietary'
         ],
         default: this.config.get('projectLicense'),
         when: this.config.get('mode') !== 'quick'
-      },
-      {
-        type: 'confirm',
-        name: 'changeDirs',
-        message: 'Would you like to change default directories?',
-        default: this.config.get('controlDirs'),
-        when: this.config.get('mode') !== 'quick'
       }
     ];
 
-    return this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(async answers => {
       this.config.set('projectName', _.clean(_.cleanDiacritics(answers.name)).replace(/\s+/g, '_'));
 
       if (this.config.get('repositoryType') !== 'none') {
@@ -112,17 +98,13 @@ module.exports = class extends Generator{
         this.config.set('projectDescription', _.trim(answers.description));
         this.config.set('projectType',  answers.type);
 
-        if (answers.type === 'project' && this.config.get('controlDevEnv') === null) {
-          this.config.set('controlDevEnv', 'docker');
-        }
-
         let keywords = _.clean(answers.keywords);
         keywords = keywords.length
           ? keywords.replace(/(\s+)?,\s+?/g, ',').replace(/,$/, '').split(',')
           : [];
         this.config.set('projectKeywords', keywords);
 
-        let projectHomepage  = _.trim(answers.homepage).split(' ').shift();
+        let projectHomepage = _.trim(answers.homepage).split(' ').shift();
         if (projectHomepage !== '') {
           if (!validator.isURL(projectHomepage)) {
             throw new Error(util.format('"%s" is not a valid URL', projectHomepage));
@@ -134,9 +116,9 @@ module.exports = class extends Generator{
         }
         this.config.set('projectHomepage', projectHomepage);
 
-        if (answers.license !== 'none') {
-          this.config.set('projectLicense', answers.license);
+        this.config.set('projectLicense', answers.license);
 
+        if (answers.license !== 'none') {
           let licenseFile = '';
           switch (answers.license) {
             case 'Apache-2.0':
@@ -172,13 +154,38 @@ module.exports = class extends Generator{
         }
 
         if (answers.changeDirs) {
-          return this._dirs();
+          await this._changeDirs();
         }
       }
     });
   }
 
-  _dirs() {
+  _changeDirs() {
+    var defaultDirs = this.config.get('dirSrc') +
+      ', ' + this.config.get('dirTests') +
+      ', ' + this.config.get('dirBuild');
+    if (this.config.get('projectType') === 'project') {
+      defaultDirs += ', ' + this.config.get('dirPublic');
+    }
+
+    const prompts = [
+      {
+        type: 'confirm',
+        name: 'changeDirs',
+        message: 'Would you like to change default directories? (' + defaultDirs + ')',
+        default: false,
+        when: this.config.get('mode') !== 'quick'
+      }
+    ];
+
+    return this.prompt(prompts).then(async answers => {
+        if (answers.changeDirs) {
+          await this._selectDirs();
+        }
+    })
+  }
+
+  _selectDirs() {
     const prompts = [
       {
         name: 'src',
@@ -199,7 +206,7 @@ module.exports = class extends Generator{
         name: 'public',
         message: 'What is the public directory?',
         default: this.config.get('dirPublic'),
-        when: this.config.get('projectType') !== 'project'
+        when: this.config.get('projectType') === 'project'
       }
     ];
 

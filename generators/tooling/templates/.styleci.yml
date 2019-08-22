@@ -16,9 +16,7 @@ enabled:
 <% } -%>
   - concat_with_spaces
   - declare_equal_normalize
-<% if (projectPhpVersion >= 7.0) { -%>
   - declare_strict_types
-<% } -%>
   - function_typehint_space
   - hash_to_slash_comment
   - heredoc_to_nowdoc
@@ -78,9 +76,7 @@ enabled:
   - phpdoc_var_without_name
   - pow_to_exponentiation
   - random_api_migration
-<% if (projectPhpVersion >= 7.0) { -%>
   - return_type_declaration
-<% } -%>
   - self_accessor
   - short_array_syntax
   - short_scalar_cast
@@ -89,9 +85,7 @@ enabled:
   - space_after_semicolon
   - standardize_not_equals
   - ternary_operator_spaces
-<% if (projectPhpVersion >= 7.0) { -%>
   - ternary_to_null_coalescing
-<% } -%>
   - trailing_comma_in_multiline_array
   - trim_array_spaces
   - unary_operator_spaces

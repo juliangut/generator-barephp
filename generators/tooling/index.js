@@ -55,11 +55,6 @@ module.exports = class extends Generator{
             name: 'StyleCI',
             checked: this.config.get('controlStyleci')
           },
-          {
-            value: 'docs',
-            name: 'Initial documentation',
-            checked: this.config.get('controlDocs')
-          }
         ],
         when: this.config.get('mode') !== 'quick'
       }
@@ -71,24 +66,32 @@ module.exports = class extends Generator{
           return answers.tools.indexOf(mod) !== -1;
         };
 
+        this.config.set('controlPackagist', hasMod('packagist'));
         if (hasMod('packagist')) {
           await this._packagist();
         }
+
+        this.config.set('controlTravis', hasMod('travis'));
         if (hasMod('travis')) {
           await this._travis();
         }
+
+        this.config.set('controlCoveralls', hasMod('coveralls'));
         if (hasMod('coveralls')) {
           await this._coveralls();
         }
+
+        this.config.set('controlScrutinizer', hasMod('scrutinizer'));
         if (hasMod('scrutinizer')) {
           await this._scrutinizer();
         }
-        if (hasMod('styleci') && hasMod('docs')) {
+
+        this.config.set('controlStyleci', hasMod('styleci'));
+        if (hasMod('styleci')) {
           await this._styleci();
         }
-        if (hasMod('docs')) {
-          await this.config.set('controlDocs', true);
-        }
+
+        await this._documentation();
 
         if (this.config.get('projectType') === 'project') {
           await this._devEnvironment();
@@ -189,6 +192,22 @@ module.exports = class extends Generator{
     });
   }
 
+  _documentation() {
+    const prompts = [
+      {
+        type: 'confirm',
+        name: 'docs',
+        message: 'Would you like to add initial documentation?',
+        default: this.config.get('controlDocs'),
+        when: this.config.get('mode') !== 'quick'
+      }
+    ];
+
+    return this.prompt(prompts).then(async answers => {
+      this.config.set('controlDocs', answers.docs);
+    });
+  }
+
   _devEnvironment() {
     const prompts = [
       {
@@ -206,16 +225,18 @@ module.exports = class extends Generator{
 
       this.config.set('controlDevEnv', devEnv);
 
-      if (devEnv !== 'homestead') {
-        this.config.set('controlPhpMyAdmin', false);
-      } else {
+      if (devEnv === 'homestead') {
         await this._homestead();
       }
+
+      await this._mysql();
     });
   }
 
   _homestead() {
-    const defaultIp = sprintf('192.168.%1$d.%1$d', Math.max(100, Math.floor(Math.random() * 255)));
+    const homesteadIP = this.config.get('homesteadIP') ?
+      this.config.get('homesteadIP') :
+      sprintf('192.168.%1$d.%1$d', Math.max(100, Math.floor(Math.random() * 255)));
     const prompts = [
       {
         type: 'list',
@@ -225,21 +246,14 @@ module.exports = class extends Generator{
         default: this.config.get('homesteadFormat')
       },
       {
-        type: 'confirm',
-        name: 'usePhpmyadmin',
-        message: 'Would you like to install PhpMyAdmin in Homestead?',
-        default: this.config.get('controlPhpMyAdmin')
-      },
-      {
         name: 'ip',
         message: 'What will be homestead local IP?',
-        default: defaultIp
+        default: homesteadIP
       }
     ];
 
     return this.prompt(prompts).then(answers => {
       this.config.set('homesteadFormat', answers.format);
-      this.config.set('controlPhpMyAdmin', answers.usePhpmyadmin);
 
       const homesteadIp = _.trim(answers.ip);
 
@@ -248,6 +262,21 @@ module.exports = class extends Generator{
       }
 
       this.config.set('homesteadIP', homesteadIp);
+    });
+  }
+
+  _mysql() {
+    const prompts = [
+      {
+        type: 'confirm',
+        name: 'usePhpmyadmin',
+        message: 'Would you like to install PhpMyAdmin in Homestead?',
+        default: this.config.get('controlPhpMyAdmin')
+      }
+    ];
+
+    return this.prompt(prompts).then(answers => {
+      this.config.set('controlPhpMyAdmin', answers.usePhpmyadmin);
     });
   }
 

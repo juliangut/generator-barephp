@@ -19,15 +19,16 @@ services:
 
   fpm:
     container_name: <%= projectName %>_fpm
-    image: juliangut/phpdev:<%= projectPhpVersion %>-fpm
+    image: juliangut/phpdev:<%= projectPhpVersion.toFixed(1) %>-fpm
     environment:
       APP_ENV: development
     volumes_from:
       - data
     volumes:
-      - ./docker/log/php:/var/log/php
+      - ./docker/log/php:/var/log/php<% if (controlPhpMyAdmin) { -%>
     depends_on:
-      - mysql
+      - mysql<% } -%>
+
     networks:
       - <%= projectName %>
 
@@ -35,7 +36,7 @@ services:
     container_name: <%= projectName %>_data
     image: busybox:latest
     volumes:
-      - .:/app
+      - .:/app<% if (controlPhpMyAdmin) { -%>
 
   mysql:
     container_name: <%= projectName %>_mysql
@@ -48,7 +49,8 @@ services:
     volumes:
       - ./docker/data/mysql:/var/lib/mysql
     networks:
-      - <%= projectName %>
+      - <%= projectName %><% } -%>
+
 
 networks:
   <%= projectName %>:

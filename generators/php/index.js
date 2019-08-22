@@ -11,7 +11,6 @@
 const Generator = require('yeoman-generator');
 const util = require('util');
 const _ = require('underscore.string');
-const path = require('path');
 const fs = require('fs');
 const shell = require('shelljs');
 
@@ -30,12 +29,23 @@ module.exports = class extends Generator{
         name: 'phpVersion',
         message: 'What is the minimum supported PHP version for the project?',
         choices: ['7.0', '7.1', '7.2', '7.3'],
-        default: this.config.get('projectPhpVersion').toFixed(1)
+        default: this.config.get('projectPhpVersion').toString()
       },
       {
+        type: 'confirm',
+        name: 'polyfills',
+        message: 'Would you like to add polyfills up to newest PHP version?',
+        default: this.config.get('controlPolyfills')
+      },{
         name: 'namespace',
         message: 'What is the base namespace of the project?',
         default: defaultNamespace
+      },
+      {
+        type: 'confirm',
+        name: 'code',
+        message: 'Would you like to bootstrap initial code?',
+        default: this.config.get('controlCode')
       },
       {
         type: 'confirm',
@@ -53,12 +63,16 @@ module.exports = class extends Generator{
       }
       this.config.set('projectPhpVersion', phpVersion);
 
+      this.config.set('controlPolyfills', answers.polyfills);
+
       const namespace = _.clean(_.cleanDiacritics(answers.namespace));
       if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(namespace) === false) {
         throw new Error(util.format('"%s" is not a valid PHP namespace', namespace));
       }
 
       this.config.set('projectNamespace', namespace);
+
+      this.config.set('controlCode', answers.code);
 
       if (this.config.get('composer') === null && answers.install) {
         this.config.set('composer', 'local');
@@ -68,37 +82,95 @@ module.exports = class extends Generator{
 
   writing() {
     let configs = {
+      projectDependencies: [],
+
+      projectComposerGitHooksVersion: '^2.5',
+      projectPhpCsFixerVersion: "^2.0",
+      projectInfectionVersion: null,
+      projectHomesteadVersion: this.config.get('controlDevEnv') === 'homestead' ? '^6.0' : null,
+      projectPhpmdVersion: "^2.0",
+      projectPhpmetricsVersion: this.config.get('projectType') === 'project' ? "^2.0" : null,
+      projectPhpstanVersion: null,
+      projectPhpstanDeprecationRulesVersion: null,
+      projectPhpstanPhpunitVersion: null,
+      projectPhpstanStrictRulesVersion: null,
       projectPhpunitVersion: null,
-      projectDependencies: []
+      projectPhpmndVersion: null,
+      projectPhpcpdVersion: "^2.0|^4.0",
+      projectPhpCodeSnifferVersion: "^2.0",
+      projectTheCodingMachinePhpstanStrictRulesVersion: null
     };
 
     switch (this.config.get('projectPhpVersion')) {
       case 7.0:
+        configs.projectInfectionVersion = '0.8';
+        configs.projectPhpstanVersion = '0.9';
+        configs.projectPhpstanStrictRulesVersion = '0.9';
         configs.projectPhpunitVersion = '^5.7|^6.0';
-        configs.projectDependencies = [
-          ['symfony/polyfill-php71', '^1.0'],
-          ['symfony/polyfill-php72', '^1.0'],
-          ['symfony/polyfill-php73', '^1.0']
-        ];
+        configs.projectPhpmndVersion = '^1.1';
+
+        if (this.config.get('controlPolyfills')) {
+          configs.projectDependencies = [
+            ['symfony/polyfill-php71', '^1.12'],
+            ['symfony/polyfill-php72', '^1.12'],
+            ['symfony/polyfill-php73', '^1.12'],
+            ['symfony/polyfill-php74', '^1.12']
+          ];
+        }
         break;
 
       case 7.1:
+        configs.projectInfectionVersion = '^0.9';
+        configs.projectPhpstanVersion = '^0.10';
+        configs.projectPhpstanDeprecationRulesVersion = "^0.10";
+        configs.projectPhpstanPhpunitVersion = "^0.10";
+        configs.projectPhpstanStrictRulesVersion = '^0.10';
         configs.projectPhpunitVersion = '^6.0|^7.0';
-        configs.projectDependencies = [
-          ['symfony/polyfill-php72', '^1.0'],
-          ['symfony/polyfill-php73', '^1.0']
-        ];
+        configs.projectPhpmndVersion = '^2.0';
+        configs.projectTheCodingMachinePhpstanStrictRulesVersion = "~0.10.1";
+
+        if (this.config.get('controlPolyfills')) {
+          configs.projectDependencies = [
+            ['symfony/polyfill-php72', '^1.12'],
+            ['symfony/polyfill-php73', '^1.12'],
+            ['symfony/polyfill-php74', '^1.12']
+          ];
+        }
         break;
 
       case 7.2:
+        configs.projectInfectionVersion = '^0.9';
+        configs.projectPhpstanVersion = '^0.10';
+        configs.projectPhpstanDeprecationRulesVersion = "^0.10";
+        configs.projectPhpstanPhpunitVersion = "^0.10";
+        configs.projectPhpstanStrictRulesVersion = '^0.10';
         configs.projectPhpunitVersion = '^6.0|^7.0';
-        configs.projectDependencies = [
-          ['symfony/polyfill-php73', '^1.0']
-        ];
+        configs.projectPhpmndVersion = '^2.0';
+        configs.projectTheCodingMachinePhpstanStrictRulesVersion = "~0.10.1";
+
+        if (this.config.get('controlPolyfills')) {
+          configs.projectDependencies = [
+            ['symfony/polyfill-php73', '^1.12'],
+            ['symfony/polyfill-php74', '^1.12']
+          ];
+        }
         break;
 
       case 7.3:
-        configs.projectPhpunitVersion = '^6.0|^7.0';
+        configs.projectInfectionVersion = '^0.9';
+        configs.projectPhpstanVersion = '^0.10';
+        configs.projectPhpstanDeprecationRulesVersion = "^0.10";
+        configs.projectPhpstanPhpunitVersion = "^0.10";
+        configs.projectPhpstanStrictRulesVersion = '^0.10';
+        configs.projectPhpunitVersion = '^6.0|^7.0|^8.0';
+        configs.projectPhpmndVersion = '^2.0';
+        configs.projectTheCodingMachinePhpstanStrictRulesVersion = "~0.10.1";
+
+        if (this.config.get('controlPolyfills')) {
+          configs.projectDependencies = [
+            ['symfony/polyfill-php74', '^1.12']
+          ];
+        }
         break;
     }
 
@@ -108,39 +180,41 @@ module.exports = class extends Generator{
       {...this.config.getAll(), ...configs}
     );
 
-    this.fs.copyTpl(
-      this.templatePath('Person.php'),
-      this.destinationPath(this.config.get('dirSrc'), 'Person.php'),
-      this.config.getAll()
-    );
-    this.fs.copyTpl(
-      this.templatePath('Greeter.php'),
-      this.destinationPath(this.config.get('dirSrc'), 'Greeter.php'),
-      this.config.getAll()
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('bootstrap.php'),
-      this.destinationPath(this.config.get('dirTests'), 'bootstrap.php'),
-      this.config.getAll()
-    );
-    this.fs.copyTpl(
-      this.templatePath('PersonTest.php'),
-      this.destinationPath(this.config.get('dirTestsSrc'), 'PersonTest.php'),
-      this.config.getAll()
-    );
-    this.fs.copyTpl(
-      this.templatePath('GreeterTest.php'),
-      this.destinationPath(this.config.get('dirTestsSrc'), 'GreeterTest.php'),
-      this.config.getAll()
-    );
-
-    if (this.config.get('projectType') === 'project') {
+    if (this.config.get('controlCode')) {
       this.fs.copyTpl(
-        this.templatePath('index.php'),
-        this.destinationPath(this.config.get('dirPublic'), 'index.php'),
+        this.templatePath('Person.php'),
+        this.destinationPath(this.config.get('dirSrc'), 'Person.php'),
         this.config.getAll()
       );
+      this.fs.copyTpl(
+        this.templatePath('Greeter.php'),
+        this.destinationPath(this.config.get('dirSrc'), 'Greeter.php'),
+        this.config.getAll()
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('bootstrap.php'),
+        this.destinationPath(this.config.get('dirTests'), 'bootstrap.php'),
+        this.config.getAll()
+      );
+      this.fs.copyTpl(
+        this.templatePath('PersonTest.php'),
+        this.destinationPath(this.config.get('dirTestsSrc'), 'PersonTest.php'),
+        this.config.getAll()
+      );
+      this.fs.copyTpl(
+        this.templatePath('GreeterTest.php'),
+        this.destinationPath(this.config.get('dirTestsSrc'), 'GreeterTest.php'),
+        this.config.getAll()
+      );
+
+      if (this.config.get('projectType') === 'project') {
+        this.fs.copyTpl(
+          this.templatePath('index.php'),
+          this.destinationPath(this.config.get('dirPublic'), 'index.php'),
+          this.config.getAll()
+        );
+      }
     }
 
     if (this.config.composer === 'local' && !fs.existsSync('composer.phar')) {

@@ -1,4 +1,4 @@
-Copyright (c) <%= (new Date).toISOString().split('-')[0] %>, <%= ownerName %><% if (ownerEmail) { -%> (<%= ownerEmail %>)<% } -%>
+Copyright (c) <%= (new Date).toISOString().split('-')[0] %>, <%= ownerName %><% if (ownerEmail !== '') { -%> (<%= ownerEmail %>)<% } -%>
 
 All rights reserved.
 

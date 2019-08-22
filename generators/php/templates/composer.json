@@ -9,16 +9,16 @@
     "<%= projectKeywords[i] %>"<% if (i < projectKeywords.length - 1) { -%>,<% } -%><% } -%>
 
   ],
-<% if (projectHomepage) { -%>
+<% if (projectHomepage !== '') { -%>
   "homepage": "<%= projectHomepage %>",
 <% }
-if (projectLicense != '') { -%>
+if (projectLicense !== 'none') { -%>
   "license": "<%= projectLicense %>",
 <% } -%>
   "authors": [
     {
-      "name": "<%= ownerName %>"<% if (ownerEmail) { -%>,
-      "email": "<%= ownerEmail %>"<% } -%><% if (ownerHomepage) { -%>,
+      "name": "<%= ownerName %>"<% if (ownerEmail !== '') { -%>,
+      "email": "<%= ownerEmail %>"<% } -%><% if (ownerHomepage !== '') { -%>,
       "homepage": "<%= ownerHomepage %>"<% } -%>,
       "role": "Developer"
     }
@@ -32,27 +32,27 @@ if (projectLicense != '') { -%>
   "minimum-stability": "dev",
   "prefer-stable": true,
   "require": {
-    "php": "^<%= projectPhpVersion.toFixed(1) %><% if (projectPhpVersion.toFixed(1) < 7) { -%>|^7.0<% } -%>"<% for (var i = 0; i < projectDependencies.length; i++) { -%>,
+    "php": "^<%= projectPhpVersion.toFixed(1) %>"<% for (var i = 0; i < projectDependencies.length; i++) { -%>,
     "<%= projectDependencies[i][0] %>": "<%= projectDependencies[i][1] %>"<% } -%>
 
   },
   "require-dev": {
-    "brainmaestro/composer-git-hooks": "^2.5",
-    "friendsofphp/php-cs-fixer": "^2.0"<% if (projectPhpVersion >= 7.0) { -%>,
-    "infection/infection": "<% if (projectPhpVersion >= 7.1) { -%>^0.9<% } else { -%>0.8<% } -%>"<% } -%><% if (controlDevEnv === 'homestead') { -%>,
-    "laravel/homestead": "^6.0"<% } -%>,
-    "phpmd/phpmd": "^2.0",
-    "phpmetrics/phpmetrics": "^2.0"<% if (projectPhpVersion >= 7.0) { -%>,
-    "phpstan/phpstan": "<% if (projectPhpVersion >= 7.1) { -%>^0.10<% } else { -%>0.9<% } -%>"<% if (projectPhpVersion >= 7.1) { -%>,
-    "phpstan/phpstan-deprecation-rules": "^0.10",
-    "phpstan/phpstan-phpunit": "^0.10"<% } -%>,
-    "phpstan/phpstan-strict-rules": "<% if (projectPhpVersion >= 7.1) { -%>^0.10<% } else { -%>0.9<% } -%>"<% } -%>,
+    "brainmaestro/composer-git-hooks": "<%= projectComposerGitHooksVersion %>",
+    "friendsofphp/php-cs-fixer": "<%= projectPhpCsFixerVersion %>",
+    "infection/infection": "<%= projectInfectionVersion %>"<% if (projectHomesteadVersion !== null) { -%>,
+    "laravel/homestead": "<%= projectHomesteadVersion %>"<% } -%>,
+    "phpmd/phpmd": "<%= projectPhpmdVersion %>"<% if (projectPhpmetricsVersion !== null) { -%>,
+    "phpmetrics/phpmetrics": "<%= projectPhpmetricsVersion %>"<% } -%>,
+    "phpstan/phpstan": "<%= projectPhpstanVersion %>"<% if (projectPhpstanDeprecationRulesVersion !== null) { -%>,
+    "phpstan/phpstan-deprecation-rules": "<%= projectPhpstanDeprecationRulesVersion %>"<% } -%><% if (projectPhpstanPhpunitVersion !== null) { -%>,
+    "phpstan/phpstan-phpunit": "<%= projectPhpstanPhpunitVersion %>"<% } -%>,
+    "phpstan/phpstan-strict-rules": "<%= projectPhpstanStrictRulesVersion %>",
     "phpunit/phpunit": "<%= projectPhpunitVersion %>",
-    "povils/phpmnd": "<% if (projectPhpVersion >= 7.1) { -%>^2.0<% } else { -%>^1.1<% } -%>",
+    "povils/phpmnd": "<%= projectPhpmndVersion %>",
     "roave/security-advisories": "dev-master",
-    "sebastian/phpcpd": "^2.0|^4.0",
-    "squizlabs/php_codesniffer": "^2.0"<% if (projectPhpVersion >= 7.1) { -%>,
-    "thecodingmachine/phpstan-strict-rules": "~0.10.1"<% } -%>
+    "sebastian/phpcpd": "<%= projectPhpcpdVersion %>",
+    "squizlabs/php_codesniffer": "<%= projectPhpCodeSnifferVersion %>"<% if (projectTheCodingMachinePhpstanStrictRulesVersion !== null) { -%>,
+    "thecodingmachine/phpstan-strict-rules": "<%= projectTheCodingMachinePhpstanStrictRulesVersion %>"<% } -%>
 
   },
   "suggest": {
@@ -64,7 +64,7 @@ if (projectLicense != '') { -%>
   },
   "autoload-dev": {
     "psr-4": {
-      "<%= projectNamespace.replace(/\\/g, '\\\\') %>\\Tests\\": "tests/<%= dirTestsSrc %>/"
+      "<%= projectNamespace.replace(/\\/g, '\\\\') %>\\Tests\\": "<%= dirTestsSrc %>/"
     }
   },
   "bin": [
@@ -83,11 +83,11 @@ if (projectLicense != '') { -%>
     "fix-phpcs": "php-cs-fixer fix --verbose",
     "qa-phpcpd": "phpcpd <%= dirSrc %>",
     "qa-phpmd": "phpmd <%= dirSrc %> text unusedcode,naming,design,controversial,codesize",
-    "qa-phpmnd": "phpmnd ./ --exclude=<%= dirTests %>"<% if (projectPhpVersion >= 7.0) { -%>,
-    "qa-phpstan": "phpstan analyse --level max<% if (projectPhpVersion >= 7.0) { -%> -c phpstan.neon<% } -%> src"<% } -%>,
-    "test-phpunit": "phpunit"<% if (projectPhpVersion >= 7.0) { -%>,
-    "test-infection": "infection"<% } -%>,
-    "report-phpmetrics": "phpmetrics --report-html=build/metrics --offline .",
+    "qa-phpmnd": "phpmnd ./ --exclude=<%= dirTests %>",
+    "qa-phpstan": "phpstan analyse --level max -c phpstan.neon src",
+    "test-phpunit": "phpunit",
+    "test-infection": "infection"<% if (projectType === 'project') { -%>,
+    "report-phpmetrics": "phpmetrics --report-html=build/metrics --offline ."<% } -%>,
     "report-phpunit-coverage": "phpunit --coverage-html <%= dirBuild %>/coverage",
     "report-phpunit-clover": "phpunit --coverage-clover <%= dirBuild %>/logs/clover.xml",
     "lint": [
@@ -101,18 +101,18 @@ if (projectLicense != '') { -%>
     "qa": [
       "@qa-phpcpd",
       "@qa-phpmd",
-      "@qa-phpmnd"<% if (projectPhpVersion >= 7.0) { -%>,
-      "@qa-phpstan"<% } -%>
-
+      "@qa-phpmnd",
+      "@qa-phpstan"
     ],
     "security": "composer outdated",
     "test": [
-      "@test-phpunit"<% if (projectPhpVersion >= 7.0) { -%>,
-      "@test-infection"<% } -%>
-
+      "@test-phpunit",
+      "@test-infection"
     ],
-    "report": [
-      "@report-phpmetrics",
+    "report": [<% if (projectType === 'project') { -%>
+
+      "@report-phpmetrics",<% } -%>
+
       "@report-phpunit-coverage",
       "@report-phpunit-clover"
     ]

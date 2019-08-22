@@ -13,17 +13,16 @@ const path = require('path');
 const yosay = require('yosay');
 const chalk = require('chalk');
 const mkdirp = require('mkdirp');
+const fs = require('fs');
 const shell = require('shelljs');
 
 module.exports = class extends BaseGenerator {
   welcome() {
-    if (this.options['skip-welcome-message']) {
-      return;
+    if (!this.options['skip-welcome-message']) {
+      this.log(
+        yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Travis, Docker and many more integrations!')
+      );
     }
-
-    this.log(
-      yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Travis, Docker and many more integrations!')
-    );
   }
 
   initializing() {
@@ -77,7 +76,12 @@ module.exports = class extends BaseGenerator {
   }
 
   install() {
-    let message = '\nProject ' + chalk.green.bold(this.config.get('projectName')) + ' is set up and ready';
+    let message = '\nProject ' + chalk.green.bold(this.config.get('projectName')) + ' is set up and ready\n';
+
+    if (shell.which('git') && (!fs.existsSync('.git') || !fs.lstatSync('.git').isDirectory())) {
+      this.log('');
+      shell.exec('git init');
+    }
 
     if (!this.options['skip-install']) {
       if (this.config.get('freshRun')) {

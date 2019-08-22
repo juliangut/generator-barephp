@@ -1,4 +1,4 @@
-Copyright (C) <%= (new Date).toISOString().split('-')[0] %>, <%= ownerName %><% if (ownerEmail) { -%> (<%= ownerEmail %>)<% } -%>
+Copyright (C) <%= (new Date).toISOString().split('-')[0] %>, <%= ownerName %><% if (ownerEmail !== '') { -%> (<%= ownerEmail %>)<% } -%>
 
 This program is free software; you can redistribute it and/or modify it under
 the terms of the GNU General Public License as published by the Free Software

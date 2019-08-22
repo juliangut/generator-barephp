@@ -1,7 +1,7 @@
 <?php
 
 /*
- * <%= projectName %><% if (projectHomepage) { -%> (<%= projectHomepage %>)<% } -%>.
+ * <%= projectName %><% if (projectHomepage !== '') { -%> (<%= projectHomepage %>)<% } -%>.
 <% if (projectDescription !== '') { -%>
  * <%= projectDescription %>.
 <% } -%>
@@ -9,10 +9,10 @@
 <% if (projectLicense !== 'none') { -%>
  * @license <%= projectLicense %>
 <% }
-if (projectHomepage) { -%>
+if (projectHomepage !== '') { -%>
  * @link <%= projectHomepage %>
 <% } -%>
- * @author <%= ownerName %><% if (ownerEmail) { -%> <<%= ownerEmail %>><% } -%>
+ * @author <%= ownerName %><% if (ownerEmail !== '') { -%> <<%= ownerEmail %>><% } -%>
 
  */
 
@@ -49,9 +49,9 @@ class GreeterTest extends TestCase
 
     public function testGreet()
     {
-        $person = self::getMockBuilder(Person::class)->disableOriginalConstructor()->getMock();
-        $person->expects(self::once())->method('getName')->will(self::returnValue('John Doe'));
+        $person = static::getMockBuilder(Person::class)->disableOriginalConstructor()->getMock();
+        $person->expects(static::once())->method('getName')->will(static::returnValue('John Doe'));
 
-        self::assertEquals('Hello John Doe', $this->greeter->greet($person));
+        static::assertEquals('Hello John Doe', $this->greeter->greet($person));
     }
 }

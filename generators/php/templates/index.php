@@ -1,7 +1,7 @@
 <?php
 
 /*
- * <%= projectName %><% if (projectHomepage) { -%> (<%= projectHomepage %>)<% } -%>.
+ * <%= projectName %><% if (projectHomepage !== '') { -%> (<%= projectHomepage %>)<% } -%>.
 <% if (projectDescription !== '') { -%>
  * <%= projectDescription %>.
 <% } -%>
@@ -9,10 +9,10 @@
 <% if (projectLicense !== 'none') { -%>
  * @license <%= projectLicense %>
 <% }
-if (projectHomepage) { -%>
+if (projectHomepage !== '') { -%>
  * @link <%= projectHomepage %>
 <% } -%>
- * @author <%= ownerName %><% if (ownerEmail) { -%> <<%= ownerEmail %>><% } -%>
+ * @author <%= ownerName %><% if (ownerEmail !== '') { -%> <<%= ownerEmail %>><% } -%>
 
  */
 

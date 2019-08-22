@@ -13,7 +13,7 @@ env:
   - COMPOSER_FLAGS="--prefer-stable --prefer-dist"
 
 php:
-<% if (projectPhpVersion <= 7.0 && projectTestPhpVersion != 7.0) { -%>
+<% if (projectTestPhpVersion != 7.0) { -%>
   - 7.0
 <% }
 if (projectPhpVersion <= 7.1 && projectTestPhpVersion != 7.1) { -%>
@@ -29,10 +29,10 @@ if (projectSupportNightly) { -%>
 matrix:
   fast_finish: true
   include:
-    - php: <%= projectPhpVersion %>
+    - php: <%= projectPhpVersion.toFixed(1) %>
       env:
         - COMPOSER_FLAGS="--prefer-lowest --prefer-stable --prefer-dist"
-    - php: <%= projectTestPhpVersion %>
+    - php: <%= projectTestPhpVersion.toFixed(1) %>
       env:
         - TEST_VERSION=true
         - COMPOSER_FLAGS="--prefer-stable --prefer-dist"

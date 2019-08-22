@@ -1,7 +1,7 @@
 <?php
 
 /*
- * <%= projectName %><% if (projectHomepage) { -%> (<%= projectHomepage %>)<% } -%>.
+ * <%= projectName %><% if (projectHomepage !== '') { -%> (<%= projectHomepage %>)<% } -%>.
 <% if (projectDescription !== '') { -%>
  * <%= projectDescription %>.
 <% } -%>
@@ -9,10 +9,10 @@
 <% if (projectLicense !== 'none') { -%>
  * @license <%= projectLicense %>
 <% }
-if (projectHomepage) { -%>
+if (projectHomepage !== '') { -%>
  * @link <%= projectHomepage %>
 <% } -%>
- * @author <%= ownerName %><% if (ownerEmail) { -%> <<%= ownerEmail %>><% } -%>
+ * @author <%= ownerName %><% if (ownerEmail !== '') { -%> <<%= ownerEmail %>><% } -%>
 
  */
 
@@ -37,7 +37,7 @@ class PersonTest extends TestCase
     {
         $person = new Person();
 
-        self::assertEquals('No one', $person->getName());
+        static::assertEquals('No one', $person->getName());
     }
 
     /**
@@ -58,7 +58,7 @@ class PersonTest extends TestCase
     {
         $person = new Person($name);
 
-        self::assertEquals($name, $person->getName());
+        static::assertEquals($name, $person->getName());
     }
 
     /**

@@ -1,9 +1,5 @@
 {
-<% if (projectPhpVersion < 7.0) { -%>
-  "version": "< 0.4.0",
-<% } else { -%>
   "version": ">= 0.4.0",
-<% } -%>
   "name": "<%= projectName %>",
   "provider": "virtualbox",
   "memory": 2048,

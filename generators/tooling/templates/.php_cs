@@ -1,7 +1,7 @@
 <?php
 
 /*
- * <%= projectName %><% if (projectHomepage) { -%> (<%= projectHomepage %>)<% } -%>.
+ * <%= projectName %><% if (projectHomepage !== '') { -%> (<%= projectHomepage %>)<% } -%>.
 <% if (projectDescription !== '') { -%>
  * <%= projectDescription %>.
 <% } -%>
@@ -9,10 +9,10 @@
 <% if (projectLicense !== 'none') { -%>
  * @license <%= projectLicense %>
 <% }
-if (projectHomepage) { -%>
+if (projectHomepage !== '') { -%>
  * @link <%= projectHomepage %>
 <% } -%>
- * @author <%= ownerName %><% if (ownerEmail) { -%> <<%= ownerEmail %>><% } -%>
+ * @author <%= ownerName %><% if (ownerEmail !== '') { -%> <<%= ownerEmail %>><% } -%>
 
  */
 
@@ -20,7 +20,7 @@ use PhpCsFixer\Config;
 use PhpCsFixer\Finder;
 
 $header = <<<'HEADER'
-<%= projectName %><% if (projectHomepage) { -%> (<%= projectHomepage %>)<% } -%>.
+<%= projectName %><% if (projectHomepage !== '') { -%> (<%= projectHomepage %>)<% } -%>.
 <% if (projectDescription !== '') { -%>
 <%= projectDescription %>.
 <% } -%>
@@ -28,10 +28,10 @@ $header = <<<'HEADER'
 <% if (projectLicense !== 'none') { -%>
 @license <%= projectLicense %>
 <% }
-if (projectHomepage) { -%>
+if (projectHomepage !== '') { -%>
 @link <%= projectHomepage %>
 <% } -%>
-@author <%= ownerName %><% if (ownerEmail) { -%> <<%= ownerEmail %>><% } -%>
+@author <%= ownerName %><% if (ownerEmail !== '') { -%> <<%= ownerEmail %>><% } -%>
 
 HEADER;
 
@@ -59,9 +59,7 @@ return Config::create()
             'spacing' => 'one'
         ],
         'declare_equal_normalize' => true,
-<% if (projectPhpVersion >= 7.0) { -%>
         'declare_strict_types' => true,
-<% } -%>
         'dir_constant' => true,
         'function_typehint_space' => true,
         'hash_to_slash_comment' => true,
@@ -140,11 +138,9 @@ return Config::create()
         'phpdoc_var_without_name' => true,
         'pow_to_exponentiation' => true,
         'random_api_migration' => true,
-<% if (projectPhpVersion >= 7.0) { -%>
         'return_type_declaration' => [
             'space_before' => 'none',
         ],
-<% } -%>
         'self_accessor' => true,
         'set_type_to_cast' => true,
         'short_scalar_cast' => true,
@@ -154,9 +150,7 @@ return Config::create()
         'standardize_increment' => true,
         'standardize_not_equals' => true,
         'ternary_operator_spaces' => true,
-<% if (projectPhpVersion >= 7.0) { -%>
         'ternary_to_null_coalescing' => true,
-<% } -%>
         'trailing_comma_in_multiline_array' => true,
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
