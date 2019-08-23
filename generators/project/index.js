@@ -49,33 +49,6 @@ module.exports = class extends Generator{
         message: 'What are the project keywords? (comma separated)',
         default: this.config.get('projectKeywords').join(', '),
         when: this.config.get('mode') !== 'quick'
-      },
-      {
-        name: 'homepage',
-        message: 'What is the project homepage?',
-        default: this.config.get('projectHomepage') ?
-          this.config.get('projectHomepage') :
-          (this.config.get('repositoryType') !== 'none' ? this.config.get('repositoryHomepage') : ''),
-        when: this.config.get('mode') !== 'quick'
-      },
-      {
-        type: 'list',
-        name: 'license',
-        message: 'What license do you want to use?',
-        choices: [
-          'Apache-2.0',
-          'BSD-2-Clause',
-          'BSD-3-Clause',
-          'BSD-4-Clause',
-          'GPL-2.0',
-          'GPL-3.0',
-          'LGPL-3.0',
-          'none',
-          'MIT',
-          'Proprietary'
-        ],
-        default: this.config.get('projectLicense'),
-        when: this.config.get('mode') !== 'quick'
       }
     ];
 
@@ -104,60 +77,107 @@ module.exports = class extends Generator{
           : [];
         this.config.set('projectKeywords', keywords);
 
-        let projectHomepage = _.trim(answers.homepage).split(' ').shift();
-        if (projectHomepage !== '') {
-          if (!validator.isURL(projectHomepage)) {
-            throw new Error(util.format('"%s" is not a valid URL', projectHomepage));
-          }
+        await this._homepage();
 
-          if (!/^https?:\/\//.test(projectHomepage)) {
-            projectHomepage = 'http://' + projectHomepage;
-          }
-        }
-        this.config.set('projectHomepage', projectHomepage);
+        await this._license();
 
-        this.config.set('projectLicense', answers.license);
-
-        if (answers.license !== 'none') {
-          let licenseFile = '';
-          switch (answers.license) {
-            case 'Apache-2.0':
-              licenseFile = 'apache-2';
-              break;
-            case 'BSD-2-Clause':
-              licenseFile = 'bsd-free';
-              break;
-            case 'BSD-3-Clause':
-              licenseFile = 'bsd-new';
-              break;
-            case 'BSD-4-Clause':
-              licenseFile = 'bsd-original';
-              break;
-            case 'GPL-2.0':
-              licenseFile = 'gpl-2';
-              break;
-            case 'GPL-3.0':
-              licenseFile = 'gpl-3';
-              break;
-            case 'LGPL-3.0':
-              licenseFile = 'lgpl-3';
-              break;
-            case 'MIT':
-              licenseFile = 'mit';
-              break;
-            case 'Proprietary':
-              licenseFile = 'proprietary';
-              break;
-          }
-
-          this.config.set('projectLicenseFile', licenseFile);
-        }
-
-        if (answers.changeDirs) {
-          await this._changeDirs();
-        }
+        await this._changeDirs();
       }
     });
+  }
+
+  _homepage() {
+    const prompts = [
+      {
+        name: 'homepage',
+        message: 'What is the project homepage?',
+        default: this.config.get('projectHomepage') ?
+          this.config.get('projectHomepage') :
+          (this.config.get('repositoryType') !== 'none' ? this.config.get('repositoryHomepage') : ''),
+        when: this.config.get('mode') !== 'quick'
+      }
+    ];
+
+    return this.prompt(prompts).then(async answers => {
+      let projectHomepage = _.trim(answers.homepage).split(' ').shift();
+      if (projectHomepage !== '') {
+        if (!validator.isURL(projectHomepage)) {
+          throw new Error(util.format('"%s" is not a valid URL', projectHomepage));
+        }
+
+        if (!/^https?:\/\//.test(projectHomepage)) {
+          projectHomepage = 'http://' + projectHomepage;
+        }
+      }
+
+      this.config.set('projectHomepage', projectHomepage);
+    })
+  }
+
+  _license() {
+    const prompts = [
+      {
+        type: 'list',
+        name: 'license',
+        message: 'What license do you want to use?',
+        choices: [
+          'Apache-2.0',
+          'BSD-2-Clause',
+          'BSD-3-Clause',
+          'BSD-4-Clause',
+          'GPL-2.0',
+          'GPL-3.0',
+          'LGPL-3.0',
+          'none',
+          'MIT',
+          'Proprietary'
+        ],
+        default: this.config.get('projectLicense'),
+        when: this.config.get('mode') !== 'quick'
+      }
+    ];
+
+    return this.prompt(prompts).then(async answers => {
+      if (this.config.get('mode') !== 'quick' && answers.license !== 'none') {
+        this.config.set('projectLicense', answers.license);
+
+        let licenseFile = '';
+        switch (answers.license) {
+          case 'Apache-2.0':
+            licenseFile = 'apache-2';
+            break;
+          case 'BSD-2-Clause':
+            licenseFile = 'bsd-free';
+            break;
+          case 'BSD-3-Clause':
+            licenseFile = 'bsd-new';
+            break;
+          case 'BSD-4-Clause':
+            licenseFile = 'bsd-original';
+            break;
+          case 'GPL-2.0':
+            licenseFile = 'gpl-2';
+            break;
+          case 'GPL-3.0':
+            licenseFile = 'gpl-3';
+            break;
+          case 'LGPL-3.0':
+            licenseFile = 'lgpl-3';
+            break;
+          case 'MIT':
+            licenseFile = 'mit';
+            break;
+          case 'Proprietary':
+            licenseFile = 'proprietary';
+            break;
+        }
+
+        this.config.set('projectLicenseFile', licenseFile);
+      } else {
+        this.config.set('projectLicense', 'none');
+        this.config.set('projectLicenseFile', null);
+      }
+    })
   }
 
   _changeDirs() {

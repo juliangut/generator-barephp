@@ -24,7 +24,7 @@ module.exports = class extends Generator{
         type: 'list',
         name: 'type',
         message: 'Would you like to assign a public repository?',
-        choices: ['none', 'github', 'bitbucket'],
+        choices: ['none', 'github', 'bitbucket', 'gitlab'],
         default: this.config.get('repositoryType')
       }
     ];
@@ -76,10 +76,14 @@ module.exports = class extends Generator{
           repositorySSH += 'bitbucket.com';
           repositoryUrl += 'bitbucket.org';
           break;
+        case 'gitlab':
+          repositorySSH += 'gitlab.com';
+          repositoryUrl += 'gitlab.com';
+          break;
       }
 
       this.config.set('accountRepository', accountRepository);
-      this.config.set('repositorySSH', repositoryUrl + ':' + accountRepository + '/');
+      this.config.set('repositorySSH', repositorySSH + ':' + accountRepository + '/');
       this.config.set('repositoryHomepage', repositoryUrl + '/' + accountRepository + '/');
     });
   }
