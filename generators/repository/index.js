@@ -29,11 +29,15 @@ module.exports = class extends Generator{
       }
     ];
 
-    return this.prompt(prompts).then(answers => {
+    return this.prompt(prompts).then(async answers => {
       this.config.set('repositoryType', answers.type);
 
       if (answers.type !== 'none') {
-        return this._repositoryAccount();
+        await this._repositoryAccount();
+
+        if (answers.type === 'github') {
+          await this._githubTemplates()
+        }
       }
     });
   }
@@ -86,5 +90,29 @@ module.exports = class extends Generator{
       this.config.set('repositorySSH', repositorySSH + ':' + accountRepository + '/');
       this.config.set('repositoryHomepage', repositoryUrl + '/' + accountRepository + '/');
     });
+  }
+
+  _githubTemplates() {
+    const prompts = [
+      {
+        type: 'confirm',
+        name: 'repositoryTemplates',
+        message: 'Would you like to include issue and pull request templates?',
+        default: this.config.get('controlRepositoryTemplates')
+      }
+    ];
+
+    return this.prompt(prompts).then(answers => {
+      this.config.set('controlRepositoryTemplates', answers.repositoryTemplates);
+    });
+  }
+
+  writing() {
+    if (!this.config.get('controlRepositoryTemplates')) {
+      return;
+    }
+
+    this.fs.copy(this.templatePath('ISSUE_TEMPLATE.md'), this.destinationPath('ISSUE_TEMPLATE.md'));
+    this.fs.copy(this.templatePath('PULL_REQUEST_TEMPLATE.md'), this.destinationPath('PULL_REQUEST_TEMPLATE.md'));
   }
 };
