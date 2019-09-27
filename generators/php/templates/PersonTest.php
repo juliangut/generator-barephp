@@ -20,11 +20,11 @@ declare(strict_types=1);
 
 namespace <%= projectNamespace %>\Tests;
 
-<% if (projectNamespace > 'PHPUnit\Framework\TestCase') { -%>
+<% if (projectNamespace[0] > 'P') { -%>
 use PHPUnit\Framework\TestCase;
 <% } -%>
 use <%= projectNamespace %>\Person;
-<% if (projectNamespace < 'PHPUnit\Framework\TestCase') { -%>
+<% if (projectNamespace[0] < 'P') { -%>
 use PHPUnit\Framework\TestCase;
 <% } -%>
 
@@ -33,14 +33,16 @@ use PHPUnit\Framework\TestCase;
  */
 class PersonTest extends TestCase
 {
-    public function testGreetDefaults()
+    public function testGreetDefaults()<% if (projectPhpVersion >= 7.1) { -%>: void<% } -%>
+
     {
         $person = new Person();
 
         static::assertEquals('No one', $person->getName());
     }
 
-    public function testInvalidName()
+    public function testInvalidName()<% if (projectPhpVersion >= 7.1) { -%>: void<% } -%>
+
     {
         $this->expectException(\InvalidArgumentException::class);
         $this->expectExceptionMessage('" " is not a valid name');
@@ -53,7 +55,8 @@ class PersonTest extends TestCase
      *
      * @param string $name
      */
-    public function testName(string $name)
+    public function testName(string $name)<% if (projectPhpVersion >= 7.1) { -%>: void<% } -%>
+
     {
         $person = new Person($name);
 

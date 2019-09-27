@@ -17,11 +17,11 @@ if (accountStyleci !== null) { -%>
 .styleci.yml        export-ignore
 <% } -%>
 infection.json.dist export-ignore
-<% if (controlDevEnv === 'homestead') { -%>
+<% if (projectType === 'project' && controlDevEnv === 'homestead') { -%>
 Vagrantfile         export-ignore
 vagrant/            export-ignore
 <% }
-if (controlDevEnv === 'docker') { -%>
+if (projectType === 'project' && controlDevEnv === 'docker') { -%>
 docker-compose.yml  export-ignore
 docker/             export-ignore
 <% }

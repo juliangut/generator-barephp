@@ -55,17 +55,15 @@ class Person
      *
      * @param string $name
      *
-     * @return void
-     *
      * @throws \InvalidArgumentException
      */
     public function setName(string $name)<% if (projectPhpVersion >= 7.1) { -%>: void<% } -%>
 
     {
-        if (trim($name) === '') {
-            throw new \InvalidArgumentException(sprintf('"%s" is not a valid name', $name));
+        if (\trim($name) === '') {
+            throw new \InvalidArgumentException(\sprintf('"%s" is not a valid name', $name));
         }
 
-        $this->name = trim($name);
+        $this->name = \trim($name);
     }
 }

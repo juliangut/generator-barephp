@@ -20,12 +20,12 @@ declare(strict_types=1);
 
 namespace <%= projectNamespace %>\Tests;
 
-<% if (projectNamespace > 'PHPUnit\Framework\TestCase') { -%>
+<% if (projectNamespace[0] > 'P') { -%>
 use PHPUnit\Framework\TestCase;
 <% } -%>
 use <%= projectNamespace %>\Greeter;
 use <%= projectNamespace %>\Person;
-<% if (projectNamespace < 'PHPUnit\Framework\TestCase') { -%>
+<% if (projectNamespace[0] < 'P') { -%>
 use PHPUnit\Framework\TestCase;
 <% } -%>
 
@@ -48,7 +48,8 @@ class GreeterTest extends TestCase
         $this->greeter = new Greeter();
     }
 
-    public function testGreet()
+    public function testGreet()<% if (projectPhpVersion >= 7.1) { -%>: void<% } -%>
+
     {
         $person = static::getMockBuilder(Person::class)->disableOriginalConstructor()->getMock();
         $person->expects(static::once())->method('getName')->will(static::returnValue('John Doe'));
