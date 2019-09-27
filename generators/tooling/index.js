@@ -352,68 +352,70 @@ module.exports = class extends Generator{
       );
     }
 
-    if (this.config.get('controlDevEnv') === 'homestead') {
-      this.fs.copyTpl(
-        this.templatePath(path.join('vagrant', 'Vagrantfile')),
-        this.destinationPath('Vagrantfile'),
-        this.config.getAll()
-      );
-
-      if (this.config.get('homesteadFormat') === 'json') {
+    if (this.config.get('projectType') === 'project') {
+      if (this.config.get('controlDevEnv') === 'homestead') {
         this.fs.copyTpl(
-          this.templatePath(path.join('vagrant', 'homestead.json')),
-          this.destinationPath(path.join('vagrant', 'homestead.json')),
+          this.templatePath(path.join('vagrant', 'Vagrantfile')),
+          this.destinationPath('Vagrantfile'),
           this.config.getAll()
         );
-      } else {
+
+        if (this.config.get('homesteadFormat') === 'json') {
+          this.fs.copyTpl(
+            this.templatePath(path.join('vagrant', 'homestead.json')),
+            this.destinationPath(path.join('vagrant', 'homestead.json')),
+            this.config.getAll()
+          );
+        } else {
+          this.fs.copyTpl(
+            this.templatePath(path.join('vagrant', 'homestead.yml')),
+            this.destinationPath(path.join('vagrant', 'homestead.yml')),
+            this.config.getAll()
+          );
+        }
+
         this.fs.copyTpl(
-          this.templatePath(path.join('vagrant', 'homestead.yml')),
-          this.destinationPath(path.join('vagrant', 'homestead.yml')),
+          this.templatePath(path.join('vagrant', 'provision.sh')),
+          this.destinationPath(path.join('vagrant', 'provision.sh')),
+          this.config.getAll()
+        );
+        this.fs.copy(
+          this.templatePath(path.join('vagrant', 'aliases')),
+          this.destinationPath(path.join('vagrant', 'aliases'))
+        );
+        this.fs.copy(
+          this.templatePath(path.join('vagrant', '_gitignore')),
+          this.destinationPath(path.join('vagrant', '.gitignore'))
+        );
+      }
+      if (this.config.get('controlDevEnv') === 'docker') {
+        this.fs.copy(
+          this.templatePath(path.join('docker', 'nginx.conf')),
+          this.destinationPath(path.join('docker', 'config', 'nginx.conf'))
+        );
+        this.fs.copy(
+          this.templatePath(path.join('docker', 'vhost.conf')),
+          this.destinationPath(path.join('docker', 'config', 'vhost.conf'))
+        );
+        this.fs.copy(
+          this.templatePath(path.join('docker', '_gitignore')),
+          this.destinationPath(path.join('docker', 'log', 'nginx', '.gitignore'))
+        );
+        this.fs.copy(
+          this.templatePath(path.join('docker', '_gitignore')),
+          this.destinationPath(path.join('docker', 'log', 'php', '.gitignore'))
+        );
+        this.fs.copy(
+          this.templatePath(path.join('docker', '_gitignore')),
+          this.destinationPath(path.join('docker', 'data', 'mysql', '.gitignore'))
+        );
+
+        this.fs.copyTpl(
+          this.templatePath(path.join('docker', 'docker-compose.yml')),
+          this.destinationPath(path.join('docker', 'docker-compose.yml')),
           this.config.getAll()
         );
       }
-
-      this.fs.copyTpl(
-        this.templatePath(path.join('vagrant', 'provision.sh')),
-        this.destinationPath(path.join('vagrant', 'provision.sh')),
-        this.config.getAll()
-      );
-      this.fs.copy(
-        this.templatePath(path.join('vagrant', 'aliases')),
-        this.destinationPath(path.join('vagrant', 'aliases'))
-      );
-      this.fs.copy(
-        this.templatePath(path.join('vagrant', '_gitignore')),
-        this.destinationPath(path.join('vagrant', '.gitignore'))
-      );
-    }
-    if (this.config.get('controlDevEnv') === 'docker') {
-      this.fs.copy(
-        this.templatePath(path.join('docker', 'nginx.conf')),
-        this.destinationPath(path.join('docker', 'config', 'nginx.conf'))
-      );
-      this.fs.copy(
-        this.templatePath(path.join('docker', 'vhost.conf')),
-        this.destinationPath(path.join('docker', 'config', 'vhost.conf'))
-      );
-      this.fs.copy(
-        this.templatePath(path.join('docker', '_gitignore')),
-        this.destinationPath(path.join('docker', 'log', 'nginx', '.gitignore'))
-      );
-      this.fs.copy(
-        this.templatePath(path.join('docker', '_gitignore')),
-        this.destinationPath(path.join('docker', 'log', 'php', '.gitignore'))
-      );
-      this.fs.copy(
-        this.templatePath(path.join('docker', '_gitignore')),
-        this.destinationPath(path.join('docker', 'data', 'mysql', '.gitignore'))
-      );
-
-      this.fs.copyTpl(
-        this.templatePath(path.join('docker', 'docker-compose.yml')),
-        this.destinationPath(path.join('docker', 'docker-compose.yml')),
-        this.config.getAll()
-      );
     }
   }
 };

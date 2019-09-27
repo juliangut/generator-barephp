@@ -185,16 +185,16 @@ module.exports = class extends Generator {
 
     if (this.config.get('projectType') === 'project') {
       mkdirp(this.config.get('dirPublic'));
-    }
 
-    if (this.config.get('controlDevEnv') === 'homestead') {
-      mkdirp('vagrant');
-    }
-    if (this.config.get('controlDevEnv') === 'docker') {
-      mkdirp('docker/config');
-      mkdirp('docker/log/nginx');
-      mkdirp('docker/log/php');
-      mkdirp('docker/data/mysql');
+      if (this.config.get('controlDevEnv') === 'homestead') {
+        mkdirp('vagrant');
+      }
+      if (this.config.get('controlDevEnv') === 'docker') {
+        mkdirp('docker/config');
+        mkdirp('docker/log/nginx');
+        mkdirp('docker/log/php');
+        mkdirp('docker/data/mysql');
+      }
     }
   }
 
