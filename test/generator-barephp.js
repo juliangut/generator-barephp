@@ -13,39 +13,86 @@ const helpers = require('yeoman-test');
 const assert = require('yeoman-assert');
 
 describe('yo barephp', function() {
-  before(function(done) {
+  it('creates default library', function() {
     helpers.run(path.join(__dirname, '../generators/app'))
+      .inDir(path.join(__dirname, 'tmp'))
       .withOptions({
         'skip-welcome-message': true,
         'skip-install': true
       })
       .withPrompts({
-        name: 'Julián Gutiérrez',
-        email: 'juliangut@gmail.com',
-        homepage: 'juliangut.com',
-        useRepository: true,
-        type: 'github',
-        account: 'juliangut',
-        projectType: 'library',
-        useLicense: false,
-        install: false,
-        tools: 'packagist, travis, coveralls, scrutinizer'
+        ownerName: 'Julián Gutiérrez',
+        ownerEmail: 'juliangut@gmail.com',
+        ownerHomepage: 'juliangut.com'
       })
-      .on('end', done);
+      .then(function () {
+        assert.noFile([
+          'docker/docker-compose.yml',
+          'public/index.php',
+        ]);
+
+        assert.file([
+          'src/Greeter.php',
+          'src/Person.php',
+          'tests/bootstrap.php',
+          'tests/Generator/GreeterTest.php',
+          'tests/Generator/PersonTest.php',
+          '.coveralls.yml',
+          '.editorconfig',
+          '.gitattributes',
+          '.gitignore',
+          '.php_cs',
+          '.scrutinizer.yml',
+          '.styleci.yml',
+          '.travis.yml',
+          'CONRIBUTING.md',
+          'LICENSE',
+          'README.md',
+          'composer.json',
+          'infection.json.dist',
+          'phpstan.neon',
+          'phpunit.xml.dist'
+        ]);
+      });
   });
 
-  it('creates project', function() {
-    assert.file([
-      '.coveralls.yml',
-      '.editorconfig',
-      '.gitattributes',
-      '.gitignore',
-      '.scrutinizer.yml',
-      '.travis.yml',
-      'composer.json',
-      '.php_cs',
-      'infection.json.dist',
-      'phpunit.xml.dist'
-    ]);
+  it('creates default project', function() {
+    helpers.run(path.join(__dirname, '../generators/app'))
+      .inDir(path.join(__dirname, 'tmp'))
+      .withOptions({
+        'skip-welcome-message': true,
+        'skip-install': true
+      })
+      .withPrompts({
+        ownerName: 'Julián Gutiérrez',
+        ownerEmail: 'juliangut@gmail.com',
+        ownerHomepage: 'juliangut.com'
+      })
+      .then(function () {
+        assert.file([
+          'docker/docker-compose.yml',
+          'public/index.php',
+          'src/Greeter.php',
+          'src/Person.php',
+          'tests/bootstrap.php',
+          'tests/Generator/GreeterTest.php',
+          'tests/Generator/PersonTest.php',
+          '.coveralls.yml',
+          '.editorconfig',
+          '.gitattributes',
+          '.gitignore',
+          '.php_cs',
+          '.scrutinizer.yml',
+          '.styleci.yml',
+          '.travis.yml',
+          'CONRIBUTING.md',
+          'LICENSE',
+          'README.md',
+          'composer.json',
+          'infection.json.dist',
+          'phpstan.neon',
+          'phpunit.xml.dist'
+        ]);
+      });
   });
 });

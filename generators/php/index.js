@@ -25,31 +25,31 @@ module.exports = class extends Generator{
     const defaultNamespace = _.capitalize(_.camelize(this.config.get('projectName')));
     const prompts = [
       {
-        type: 'list',
         name: 'phpVersion',
+        type: 'list',
         message: 'What is the minimum supported PHP version for the project?',
         choices: ['7.0', '7.1', '7.2', '7.3'],
         default: this.config.get('projectPhpVersion').toString()
       },
       {
+        name: 'controlPolyfills',
         type: 'confirm',
-        name: 'polyfills',
         message: 'Would you like to add polyfills up to newest PHP version?',
         default: this.config.get('controlPolyfills')
       },{
-        name: 'namespace',
+        name: 'projectNamespace',
         message: 'What is the base namespace of the project?',
         default: defaultNamespace
       },
       {
+        name: 'controlCode',
         type: 'confirm',
-        name: 'code',
         message: 'Would you like to bootstrap initial code?',
         default: this.config.get('controlCode')
       },
       {
+        name: 'controlInstall',
         type: 'confirm',
-        name: 'install',
         message: 'No global Composer installation found. Install Composer locally?',
         default: true,
         when: this.config.get('composer') === null
@@ -63,18 +63,18 @@ module.exports = class extends Generator{
       }
       this.config.set('projectPhpVersion', phpVersion);
 
-      this.config.set('controlPolyfills', answers.polyfills);
+      this.config.set('controlPolyfills', answers.controlPolyfills);
 
-      const namespace = _.clean(_.cleanDiacritics(answers.namespace));
-      if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(namespace) === false) {
-        throw new Error(util.format('"%s" is not a valid PHP namespace', namespace));
+      const projectNamespace = _.clean(_.cleanDiacritics(answers.projectNamespace));
+      if (/^[a-zA-Z][a-zA-Z0-9_-]+((\\[a-zA-Z][a-zA-Z0-9_-]+)+)?$/.test(projectNamespace) === false) {
+        throw new Error(util.format('"%s" is not a valid PHP namespace', projectNamespace));
       }
 
-      this.config.set('projectNamespace', namespace);
+      this.config.set('projectNamespace', projectNamespace);
 
-      this.config.set('controlCode', answers.code);
+      this.config.set('controlCode', answers.controlCode);
 
-      if (this.config.get('composer') === null && answers.install) {
+      if (this.config.get('composer') === null && answers.controlInstall) {
         this.config.set('composer', 'local');
       }
     });

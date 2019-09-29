@@ -26,8 +26,8 @@ module.exports = class extends Generator{
   prompting() {
     const prompts = [
       {
-        type: 'checkbox',
         name: 'tools',
+        type: 'checkbox',
         message: 'Which of this tools would you like to include?',
         choices: [
           {
@@ -103,7 +103,7 @@ module.exports = class extends Generator{
   _packagist() {
     const prompts = [
       {
-        name: 'account',
+        name: 'accountPackagist',
         message: 'What is your Packagist account name?',
         default: this.config.get('accountRepository') !== '' ?
           this.config.get('accountPackagist') :
@@ -112,14 +112,14 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(answers => {
-      this.config.set('accountPackagist', _.clean(answers.account).replace(/\s+/g, '_'));
+      this.config.set('accountPackagist', _.clean(answers.accountPackagist).replace(/\s+/g, '_'));
     });
   }
 
   _travis() {
     const prompts = [
       {
-        name: 'account',
+        name: 'accountTravis',
         message: 'What is your Travis account name?',
         default: this.config.get('accountRepository') !== '' ?
           this.config.get('accountTravis') :
@@ -127,23 +127,23 @@ module.exports = class extends Generator{
       },
       {
         type: 'confirm',
-        name: 'supportNightly',
+        name: 'projectSupportNightly',
         message: 'Want to support PHP nightly version on Travis?',
         default: this.config.get('projectSupportNightly')
       }
     ];
 
     return this.prompt(prompts).then(answers => {
-      this.config.set('accountTravis', _.clean(answers.account).replace(/\s+/g, '_'));
+      this.config.set('accountTravis', _.clean(answers.accountTravis).replace(/\s+/g, '_'));
 
-      this.config.set('projectSupportNightly', answers.supportNightly);
+      this.config.set('projectSupportNightly', answers.projectSupportNightly);
     });
   }
 
   _coveralls() {
     const prompts = [
       {
-        name: 'account',
+        name: 'accountCoveralls',
         message: 'What is your Coveralls account name?',
         default: this.config.get('accountRepository') !== '' ?
           this.config.get('accountCoveralls') :
@@ -152,14 +152,14 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(answers => {
-      this.config.set('accountCoveralls', _.clean(answers.account).replace(/\s+/g, '_'));
+      this.config.set('accountCoveralls', _.clean(answers.accountCoveralls).replace(/\s+/g, '_'));
     });
   }
 
   _scrutinizer() {
     const prompts = [
       {
-        name: 'account',
+        name: 'accountScrutinizer',
         message: 'What is your Scrutinizer account name?',
         default: this.config.get('accountRepository') !== '' ?
           this.config.get('accountScrutinizer') :
@@ -168,21 +168,21 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(answers => {
-      this.config.set('accountCoveralls', _.clean(answers.account).replace(/\s+/g, '_'));
+      this.config.set('accountCoveralls', _.clean(answers.accountScrutinizer).replace(/\s+/g, '_'));
     });
   }
 
   _styleci() {
     const prompts = [
       {
-        name: 'account',
+        name: 'accountStyleci',
         message: 'What is this project StyleCI repository code?',
         default: this.config.get('accountRepository') !== '' ? this.config.get('accountStyleci') : ''
       }
     ];
 
     return this.prompt(prompts).then(answers => {
-      const accountStyleci = _.clean(answers.account).replace(/\s+/g, '');
+      const accountStyleci = _.clean(answers.accountStyleci).replace(/\s+/g, '');
 
       this.config.set('accountStyleci', accountStyleci);
 
@@ -195,8 +195,8 @@ module.exports = class extends Generator{
   _documentation() {
     const prompts = [
       {
+        name: 'controlDocs',
         type: 'confirm',
-        name: 'docs',
         message: 'Would you like to add initial documentation?',
         default: this.config.get('controlDocs'),
         when: this.config.get('mode') !== 'quick'
@@ -204,15 +204,15 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(async answers => {
-      this.config.set('controlDocs', answers.docs);
+      this.config.set('controlDocs', answers.controlDocs);
     });
   }
 
   _devEnvironment() {
     const prompts = [
       {
+        name: 'controlDevEnv',
         type: 'list',
-        name: 'devenv',
         message: 'Which development environment do you want to use?',
         choices: ['none', 'docker', 'homestead'],
         default: this.config.get('controlDevEnv'),
@@ -221,7 +221,7 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(async answers => {
-      var devEnv = answers.devenv;
+      var devEnv = answers.controlDevEnv;
 
       this.config.set('controlDevEnv', devEnv);
 
@@ -239,23 +239,23 @@ module.exports = class extends Generator{
       sprintf('192.168.%1$d.%1$d', Math.max(100, Math.floor(Math.random() * 255)));
     const prompts = [
       {
+        name: 'homesteadFormat',
         type: 'list',
-        name: 'format',
         message: 'What Homestead configuration format you want to use?',
         choices: ['json', 'yaml'],
         default: this.config.get('homesteadFormat')
       },
       {
-        name: 'ip',
+        name: 'homesteadIp',
         message: 'What will be homestead local IP?',
         default: homesteadIP
       }
     ];
 
     return this.prompt(prompts).then(answers => {
-      this.config.set('homesteadFormat', answers.format);
+      this.config.set('homesteadFormat', answers.homesteadFormat);
 
-      const homesteadIp = _.trim(answers.ip);
+      const homesteadIp = _.trim(answers.homesteadIp);
 
       if (!validator.isIP(homesteadIp)) {
         throw new Error(util.format('"%s" is not a valid IP', homesteadIp));
@@ -269,14 +269,14 @@ module.exports = class extends Generator{
     const prompts = [
       {
         type: 'confirm',
-        name: 'usePhpmyadmin',
+        name: 'controlPhpMyAdmin',
         message: 'Would you like to install PhpMyAdmin?',
         default: this.config.get('controlPhpMyAdmin')
       }
     ];
 
     return this.prompt(prompts).then(answers => {
-      this.config.set('controlPhpMyAdmin', answers.usePhpmyadmin);
+      this.config.set('controlPhpMyAdmin', answers.controlPhpMyAdmin);
     });
   }
 

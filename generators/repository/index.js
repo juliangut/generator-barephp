@@ -21,8 +21,8 @@ module.exports = class extends Generator{
   prompting() {
     const prompts = [
       {
+        name: 'repositoryType',
         type: 'list',
-        name: 'type',
         message: 'Would you like to assign a public repository?',
         choices: ['none', 'github', 'bitbucket', 'gitlab'],
         default: this.config.get('repositoryType')
@@ -30,12 +30,12 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(async answers => {
-      this.config.set('repositoryType', answers.type);
+      this.config.set('repositoryType', answers.repositoryType);
 
-      if (answers.type !== 'none') {
+      if (answers.repositoryType !== 'none') {
         await this._repositoryAccount();
 
-        if (answers.type === 'github') {
+        if (answers.repositoryType === 'github') {
           await this._githubTemplates()
         }
       }
@@ -45,7 +45,7 @@ module.exports = class extends Generator{
   _repositoryAccount() {
     const prompts = [
       {
-        name: 'account',
+        name: 'repositoryAccount',
         message: 'What is your repository account name?',
         default: this.config.get('accountRepository') !== '' ?
           this.config.get('accountRepository') :
@@ -54,7 +54,7 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(answers => {
-      const accountRepository = _.cleanDiacritics(_.clean(answers.account)).replace(/\s+/g, '_');
+      const accountRepository = _.cleanDiacritics(_.clean(answers.repositoryAccount)).replace(/\s+/g, '_');
 
       if (this.config.get('accountPackagist') === '') {
         this.config.set('accountPackagist', accountRepository);
@@ -95,15 +95,15 @@ module.exports = class extends Generator{
   _githubTemplates() {
     const prompts = [
       {
+        name: 'controlRepositoryTemplates',
         type: 'confirm',
-        name: 'repositoryTemplates',
         message: 'Would you like to include issue and pull request templates?',
         default: this.config.get('controlRepositoryTemplates')
       }
     ];
 
     return this.prompt(prompts).then(answers => {
-      this.config.set('controlRepositoryTemplates', answers.repositoryTemplates);
+      this.config.set('controlRepositoryTemplates', answers.controlRepositoryTemplates);
     });
   }
 

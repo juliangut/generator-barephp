@@ -23,26 +23,26 @@ module.exports = class extends Generator{
   prompting() {
     const prompts = [
       {
-        name: 'name',
+        name: 'ownerName',
         message: 'What is your name?',
         default: this.config.get('ownerName')
       },
       {
-        name: 'email',
+        name: 'ownerEmail',
         message: 'What is your email?',
         default: this.config.get('ownerEmail')
       },
       {
-        name: 'homepage',
+        name: 'ownerHomepage',
         message: 'What is your homepage?',
         default: this.config.get('ownerHomepage')
       }
     ];
 
     return this.prompt(prompts).then(answers => {
-      this.config.set('ownerName', _.clean(answers.name));
+      this.config.set('ownerName', _.clean(answers.ownerName));
 
-      var ownerEmail = _.clean(answers.email).split(' ').shift();
+      var ownerEmail = _.clean(answers.ownerEmail).split(' ').shift();
       if (ownerEmail !== '' && !validator.isEmail(ownerEmail)) {
         throw new Error(util.format('"%s" is not a valid email', ownerEmail));
       }
@@ -53,7 +53,7 @@ module.exports = class extends Generator{
         _.clean(answers.name).replace(/\s+/g, '-');
       this.config.set('ownerCanonical', _.cleanDiacritics(canonical).toLowerCase());
 
-      var ownerHomepage = _.clean(answers.homepage).split(' ').shift();
+      var ownerHomepage = _.clean(answers.ownerHomepage).split(' ').shift();
       if (ownerHomepage !== '') {
         if (!validator.isURL(ownerHomepage)) {
           throw new Error(util.format('"%s" is not a valid URL', ownerHomepage));

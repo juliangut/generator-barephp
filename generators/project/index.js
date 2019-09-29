@@ -24,20 +24,20 @@ module.exports = class extends Generator{
   prompting() {
     const prompts = [
       {
-        name: 'name',
+        name: 'projectName',
         message: 'What is the project name?',
         default: this.config.get('projectName') ?
           this.config.get('projectName') :
           _.cleanDiacritics(process.cwd().split(path.sep).pop()).replace(/\s+/g, '_')
       },
       {
-        name: 'description',
+        name: 'projectDescription',
         message: 'What is the project description?',
         default: this.config.get('projectDescription'),
         when: this.config.get('mode') !== 'quick'
       },
       {
-        name: 'type',
+        name: 'projectType',
         type: 'list',
         message: 'What type is the project?',
         choices: ['library', 'project', 'metapackage', 'composer-plugin'],
@@ -45,7 +45,7 @@ module.exports = class extends Generator{
         when: this.config.get('mode') !== 'quick'
       },
       {
-        name: 'keywords',
+        name: 'projectKeywords',
         message: 'What are the project keywords? (comma separated)',
         default: this.config.get('projectKeywords').join(', '),
         when: this.config.get('mode') !== 'quick'
@@ -53,7 +53,7 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(async answers => {
-      this.config.set('projectName', _.clean(_.cleanDiacritics(answers.name)).replace(/\s+/g, '_'));
+      this.config.set('projectName', _.clean(_.cleanDiacritics(answers.projectName)).replace(/\s+/g, '_'));
 
       if (this.config.get('repositoryType') !== 'none') {
         this.config.set(
@@ -68,10 +68,10 @@ module.exports = class extends Generator{
       }
 
       if (this.config.get('mode') !== 'quick') {
-        this.config.set('projectDescription', _.trim(answers.description));
-        this.config.set('projectType',  answers.type);
+        this.config.set('projectDescription', _.trim(answers.projectDescription));
+        this.config.set('projectType',  answers.projectType);
 
-        let keywords = _.clean(answers.keywords);
+        let keywords = _.clean(answers.projectKeywords);
         keywords = keywords.length
           ? keywords.replace(/(\s+)?,\s+?/g, ',').replace(/,$/, '').split(',')
           : [];
@@ -89,7 +89,7 @@ module.exports = class extends Generator{
   _homepage() {
     const prompts = [
       {
-        name: 'homepage',
+        name: 'projectHomepage',
         message: 'What is the project homepage?',
         default: this.config.get('projectHomepage') ?
           this.config.get('projectHomepage') :
@@ -99,7 +99,7 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(async answers => {
-      let projectHomepage = _.trim(answers.homepage).split(' ').shift();
+      let projectHomepage = _.trim(answers.projectHomepage).split(' ').shift();
       if (projectHomepage !== '') {
         if (!validator.isURL(projectHomepage)) {
           throw new Error(util.format('"%s" is not a valid URL', projectHomepage));
@@ -117,8 +117,8 @@ module.exports = class extends Generator{
   _license() {
     const prompts = [
       {
+        name: 'projectLicense',
         type: 'list',
-        name: 'license',
         message: 'What license do you want to use?',
         choices: [
           'Apache-2.0',
@@ -138,11 +138,11 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(async answers => {
-      if (this.config.get('mode') !== 'quick' && answers.license !== 'none') {
-        this.config.set('projectLicense', answers.license);
+      if (this.config.get('mode') !== 'quick' && answers.projectLicense !== 'none') {
+        this.config.set('projectLicense', answers.projectLicense);
 
         let licenseFile = '';
-        switch (answers.license) {
+        switch (answers.projectLicense) {
           case 'Apache-2.0':
             licenseFile = 'apache-2';
             break;
@@ -190,8 +190,8 @@ module.exports = class extends Generator{
 
     const prompts = [
       {
-        type: 'confirm',
         name: 'changeDirs',
+        type: 'confirm',
         message: 'Would you like to change default directories? (' + defaultDirs + ')',
         default: false,
         when: this.config.get('mode') !== 'quick'
@@ -208,22 +208,22 @@ module.exports = class extends Generator{
   _selectDirs() {
     const prompts = [
       {
-        name: 'src',
+        name: 'dirSrc',
         message: 'What is the source directory?',
         default: this.config.get('dirSrc')
       },
       {
-        name: 'tests',
+        name: 'dirTests',
         message: 'What is the tests directory?',
         default: this.config.get('dirTests')
       },
       {
-        name: 'build',
+        name: 'dirBuild',
         message: 'What is the build directory?',
         default: this.config.get('dirBuild')
       },
       {
-        name: 'public',
+        name: 'dirPublic',
         message: 'What is the public directory?',
         default: this.config.get('dirPublic'),
         when: this.config.get('projectType') === 'project'
@@ -231,12 +231,12 @@ module.exports = class extends Generator{
     ];
 
     return this.prompt(prompts).then(answers => {
-      this.config.set('dirSrc', answers.src);
-      this.config.set('dirTests', answers.tests);
-      this.config.set('dirBuild', answers.build);
+      this.config.set('dirSrc', answers.dirSrc);
+      this.config.set('dirTests', answers.dirTests);
+      this.config.set('dirBuild', answers.dirBuild);
 
       if (this.config.get('projectType') === 'project') {
-        this.config.set('dirPublic', answers.public);
+        this.config.set('dirPublic', answers.dirPublic);
       }
     });
   }
