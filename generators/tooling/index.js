@@ -270,7 +270,7 @@ module.exports = class extends Generator{
       {
         type: 'confirm',
         name: 'usePhpmyadmin',
-        message: 'Would you like to install PhpMyAdmin in Homestead?',
+        message: 'Would you like to install PhpMyAdmin?',
         default: this.config.get('controlPhpMyAdmin')
       }
     ];
@@ -292,9 +292,10 @@ module.exports = class extends Generator{
       this.config.getAll()
     );
 
-    this.fs.copy(
+    this.fs.copyTpl(
       this.templatePath('.editorconfig'),
-      this.destinationPath('.editorconfig')
+      this.destinationPath('.editorconfig'),
+      this.config.getAll()
     );
 
     this.fs.copyTpl(

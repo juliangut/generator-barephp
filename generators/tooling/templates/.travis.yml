@@ -53,7 +53,7 @@ install:
 <% } -%>
 
 script:
-  - if [[ $TEST_VERSION ]]; then composer qa <% if (accountCoveralls !== null) { -%>&& composer phpunit-clover <% } -%>; fi
+  - if [[ $TEST_VERSION ]]; then composer qa <% if (accountCoveralls !== null) { -%>&& composer report-phpunit-clover <% } -%>; fi
   - if [[ -z $TEST_VERSION ]]; then composer phpunit ; fi
 <% if (accountCoveralls !== null) { -%>
 

@@ -28,8 +28,8 @@ coding_style:
         true_false_null: lower
     spaces:
       around_operators:
-          concatenation: true
-          negation: false
+        concatenation: true
+        negation: false
       other:
         after_type_cast: true
 
