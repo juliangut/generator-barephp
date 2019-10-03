@@ -18,12 +18,12 @@ describe('yo barephp', function() {
       .inDir(path.join(__dirname, 'tmp'))
       .withOptions({
         'skip-welcome-message': true,
-        'skip-install': true
+        'skip-install': true,
       })
       .withPrompts({
         ownerName: 'Julián Gutiérrez',
         ownerEmail: 'juliangut@gmail.com',
-        ownerHomepage: 'juliangut.com'
+        ownerHomepage: 'juliangut.com',
       })
       .then(function () {
         assert.noFile([
@@ -51,7 +51,7 @@ describe('yo barephp', function() {
           'composer.json',
           'infection.json.dist',
           'phpstan.neon',
-          'phpunit.xml.dist'
+          'phpunit.xml.dist',
         ]);
       });
   });
@@ -61,12 +61,12 @@ describe('yo barephp', function() {
       .inDir(path.join(__dirname, 'tmp'))
       .withOptions({
         'skip-welcome-message': true,
-        'skip-install': true
+        'skip-install': true,
       })
       .withPrompts({
         ownerName: 'Julián Gutiérrez',
         ownerEmail: 'juliangut@gmail.com',
-        ownerHomepage: 'juliangut.com'
+        ownerHomepage: 'juliangut.com',
       })
       .then(function () {
         assert.file([
@@ -91,7 +91,7 @@ describe('yo barephp', function() {
           'composer.json',
           'infection.json.dist',
           'phpstan.neon',
-          'phpunit.xml.dist'
+          'phpunit.xml.dist',
         ]);
       });
   });

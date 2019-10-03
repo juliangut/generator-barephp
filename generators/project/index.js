@@ -14,7 +14,7 @@ const _ = require('underscore.string');
 const path = require('path');
 const validator = require('validator');
 
-module.exports = class extends Generator{
+module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
 
@@ -26,15 +26,15 @@ module.exports = class extends Generator{
       {
         name: 'projectName',
         message: 'What is the project name?',
-        default: this.config.get('projectName') ?
-          this.config.get('projectName') :
-          _.cleanDiacritics(process.cwd().split(path.sep).pop()).replace(/\s+/g, '_')
+        default: this.config.get('projectName')
+          ? this.config.get('projectName')
+          : _.cleanDiacritics(process.cwd().split(path.sep).pop()).replace(/\s+/g, '_'),
       },
       {
         name: 'projectDescription',
         message: 'What is the project description?',
         default: this.config.get('projectDescription'),
-        when: this.config.get('mode') !== 'quick'
+        when: this.config.get('mode') !== 'quick',
       },
       {
         name: 'projectType',
@@ -42,14 +42,14 @@ module.exports = class extends Generator{
         message: 'What type is the project?',
         choices: ['library', 'project', 'metapackage', 'composer-plugin'],
         default: this.config.get('projectType'),
-        when: this.config.get('mode') !== 'quick'
+        when: this.config.get('mode') !== 'quick',
       },
       {
         name: 'projectKeywords',
         message: 'What are the project keywords? (comma separated)',
         default: this.config.get('projectKeywords').join(', '),
-        when: this.config.get('mode') !== 'quick'
-      }
+        when: this.config.get('mode') !== 'quick',
+      },
     ];
 
     return this.prompt(prompts).then(async answers => {
@@ -91,11 +91,11 @@ module.exports = class extends Generator{
       {
         name: 'projectHomepage',
         message: 'What is the project homepage?',
-        default: this.config.get('projectHomepage') ?
-          this.config.get('projectHomepage') :
-          (this.config.get('repositoryType') !== 'none' ? this.config.get('repositoryHomepage') : ''),
-        when: this.config.get('mode') !== 'quick'
-      }
+        default: this.config.get('projectHomepage')
+          ? this.config.get('projectHomepage')
+          : (this.config.get('repositoryType') !== 'none' ? this.config.get('repositoryHomepage') : ''),
+        when: this.config.get('mode') !== 'quick',
+      },
     ];
 
     return this.prompt(prompts).then(async answers => {
@@ -111,7 +111,7 @@ module.exports = class extends Generator{
       }
 
       this.config.set('projectHomepage', projectHomepage);
-    })
+    });
   }
 
   _license() {
@@ -130,11 +130,11 @@ module.exports = class extends Generator{
           'LGPL-3.0',
           'none',
           'MIT',
-          'Proprietary'
+          'Proprietary',
         ],
         default: this.config.get('projectLicense'),
-        when: this.config.get('mode') !== 'quick'
-      }
+        when: this.config.get('mode') !== 'quick',
+      },
     ];
 
     return this.prompt(prompts).then(async answers => {
@@ -177,11 +177,11 @@ module.exports = class extends Generator{
         this.config.set('projectLicense', 'none');
         this.config.set('projectLicenseFile', null);
       }
-    })
+    });
   }
 
   _changeDirs() {
-    var defaultDirs = this.config.get('dirSrc') +
+    let defaultDirs = this.config.get('dirSrc') +
       ', ' + this.config.get('dirTests') +
       ', ' + this.config.get('dirBuild');
     if (this.config.get('projectType') === 'project') {
@@ -194,15 +194,15 @@ module.exports = class extends Generator{
         type: 'confirm',
         message: 'Would you like to change default directories? (' + defaultDirs + ')',
         default: false,
-        when: this.config.get('mode') !== 'quick'
-      }
+        when: this.config.get('mode') !== 'quick',
+      },
     ];
 
     return this.prompt(prompts).then(async answers => {
         if (answers.changeDirs) {
           await this._selectDirs();
         }
-    })
+    });
   }
 
   _selectDirs() {
@@ -210,24 +210,24 @@ module.exports = class extends Generator{
       {
         name: 'dirSrc',
         message: 'What is the source directory?',
-        default: this.config.get('dirSrc')
+        default: this.config.get('dirSrc'),
       },
       {
         name: 'dirTests',
         message: 'What is the tests directory?',
-        default: this.config.get('dirTests')
+        default: this.config.get('dirTests'),
       },
       {
         name: 'dirBuild',
         message: 'What is the build directory?',
-        default: this.config.get('dirBuild')
+        default: this.config.get('dirBuild'),
       },
       {
         name: 'dirPublic',
         message: 'What is the public directory?',
         default: this.config.get('dirPublic'),
-        when: this.config.get('projectType') === 'project'
-      }
+        when: this.config.get('projectType') === 'project',
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -247,9 +247,9 @@ module.exports = class extends Generator{
     }
 
     const configs = {
-      accountStyleci: this.config.get('accountStyleci') === null ?
-        null :
-        this.config.get('accountStyleci') !== '' ? this.config.get('accountStyleci') : 'XXXXXXXX'
+      accountStyleci: this.config.get('accountStyleci') === null
+        ? null
+        : this.config.get('accountStyleci') !== '' ? this.config.get('accountStyleci') : 'XXXXXXXX',
     };
 
     this.fs.copyTpl(

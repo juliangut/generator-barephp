@@ -13,7 +13,7 @@ const util = require('util');
 const _ = require('underscore.string');
 const validator = require('validator');
 
-module.exports = class extends Generator{
+module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
 
@@ -25,35 +25,35 @@ module.exports = class extends Generator{
       {
         name: 'ownerName',
         message: 'What is your name?',
-        default: this.config.get('ownerName')
+        default: this.config.get('ownerName'),
       },
       {
         name: 'ownerEmail',
         message: 'What is your email?',
-        default: this.config.get('ownerEmail')
+        default: this.config.get('ownerEmail'),
       },
       {
         name: 'ownerHomepage',
         message: 'What is your homepage?',
-        default: this.config.get('ownerHomepage')
-      }
+        default: this.config.get('ownerHomepage'),
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
       this.config.set('ownerName', _.clean(answers.ownerName));
 
-      var ownerEmail = _.clean(answers.ownerEmail).split(' ').shift();
+      const ownerEmail = _.clean(answers.ownerEmail).split(' ').shift();
       if (ownerEmail !== '' && !validator.isEmail(ownerEmail)) {
         throw new Error(util.format('"%s" is not a valid email', ownerEmail));
       }
       this.config.set('ownerEmail', ownerEmail);
 
-      const canonical = ownerEmail !== '' ?
-        ownerEmail.split('@')[0] :
-        _.clean(answers.name).replace(/\s+/g, '-');
+      const canonical = ownerEmail !== ''
+        ? ownerEmail.split('@')[0]
+        : _.clean(answers.name).replace(/\s+/g, '-');
       this.config.set('ownerCanonical', _.cleanDiacritics(canonical).toLowerCase());
 
-      var ownerHomepage = _.clean(answers.ownerHomepage).split(' ').shift();
+      let ownerHomepage = _.clean(answers.ownerHomepage).split(' ').shift();
       if (ownerHomepage !== '') {
         if (!validator.isURL(ownerHomepage)) {
           throw new Error(util.format('"%s" is not a valid URL', ownerHomepage));

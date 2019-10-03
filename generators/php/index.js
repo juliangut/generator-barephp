@@ -14,7 +14,7 @@ const _ = require('underscore.string');
 const fs = require('fs');
 const shell = require('shelljs');
 
-module.exports = class extends Generator{
+module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
 
@@ -29,31 +29,32 @@ module.exports = class extends Generator{
         type: 'list',
         message: 'What is the minimum supported PHP version for the project?',
         choices: ['7.0', '7.1', '7.2', '7.3', '7.4'],
-        default: this.config.get('projectPhpVersion').toString()
+        default: this.config.get('projectPhpVersion').toString(),
       },
       {
         name: 'controlPolyfills',
         type: 'confirm',
         message: 'Would you like to add polyfills up to newest PHP version?',
-        default: this.config.get('controlPolyfills')
-      },{
+        default: this.config.get('controlPolyfills'),
+      },
+      {
         name: 'projectNamespace',
         message: 'What is the base namespace of the project?',
-        default: defaultNamespace
+        default: defaultNamespace,
       },
       {
         name: 'controlCode',
         type: 'confirm',
         message: 'Would you like to bootstrap initial code?',
-        default: this.config.get('controlCode')
+        default: this.config.get('controlCode'),
       },
       {
         name: 'controlInstall',
         type: 'confirm',
         message: 'No global Composer installation found. Install Composer locally?',
         default: true,
-        when: this.config.get('composer') === null
-      }
+        when: this.config.get('composer') === null,
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -81,26 +82,27 @@ module.exports = class extends Generator{
   }
 
   writing() {
-    let configs = {
+    const configs = {
       projectDependencies: [],
 
       projectComposerGitHooksVersion: '^2.5',
-      projectPhpCsFixerVersion: "^2.0",
+      projectPhpCsFixerVersion: '^2.0',
       projectInfectionVersion: '~0.10',
-      projectHomesteadVersion: this.config.get('projectType') === 'project' && this.config.get('controlDevEnv') === 'homestead'
-        ? '^6.0'
-        : null,
-      projectPhpmdVersion: "^2.0",
-      projectPhpmetricsVersion: this.config.get('projectType') === 'project' ? "^2.0" : null,
+      projectHomesteadVersion: this.config.get('projectType') === 'project' &&
+        this.config.get('controlDevEnv') === 'homestead'
+          ? '^6.0'
+          : null,
+      projectPhpmdVersion: '^2.0',
+      projectPhpmetricsVersion: this.config.get('projectType') === 'project' ? '^2.0' : null,
       projectPhpstanExtensionInstallerVersion: '^1.0.1',
       projectPhpstanVersion: '~0.11.12',
-      projectPhpstanDeprecationRulesVersion: "~0.11.2",
-      projectPhpstanStrictRulesVersion: "~0.11.1",
+      projectPhpstanDeprecationRulesVersion: '~0.11.2',
+      projectPhpstanStrictRulesVersion: '~0.11.1',
       projectPhpunitVersion: '^7.0|^8.0',
       projectPhpmndVersion: '^2.0',
-      projectPhpcpdVersion: "^4.0",
-      projectPhpCodeSnifferVersion: "^3.0",
-      projectTheCodingMachinePhpstanStrictRulesVersion: "~0.11.2"
+      projectPhpcpdVersion: '^4.0',
+      projectPhpCodeSnifferVersion: '^3.0',
+      projectTheCodingMachinePhpstanStrictRulesVersion: '~0.11.2',
     };
 
     switch (this.config.get('projectPhpVersion')) {
@@ -112,7 +114,7 @@ module.exports = class extends Generator{
         configs.projectPhpstanStrictRulesVersion = '^0.9';
         configs.projectPhpunitVersion = '^6.0';
         configs.projectPhpmndVersion = '^1.1';
-        configs.projectPhpcpdVersion = "^2.0|^4.0";
+        configs.projectPhpcpdVersion = '^2.0|^4.0';
         configs.projectTheCodingMachinePhpstanStrictRulesVersion = null;
 
         if (this.config.get('controlPolyfills')) {
@@ -120,7 +122,7 @@ module.exports = class extends Generator{
             ['symfony/polyfill-php71', '^1.12'],
             ['symfony/polyfill-php72', '^1.12'],
             ['symfony/polyfill-php73', '^1.12'],
-            ['symfony/polyfill-php74', '^1.12']
+            ['symfony/polyfill-php74', '^1.12'],
           ];
         }
         break;
@@ -132,7 +134,7 @@ module.exports = class extends Generator{
           configs.projectDependencies = [
             ['symfony/polyfill-php72', '^1.12'],
             ['symfony/polyfill-php73', '^1.12'],
-            ['symfony/polyfill-php74', '^1.12']
+            ['symfony/polyfill-php74', '^1.12'],
           ];
         }
         break;
@@ -141,7 +143,7 @@ module.exports = class extends Generator{
         if (this.config.get('controlPolyfills')) {
           configs.projectDependencies = [
             ['symfony/polyfill-php73', '^1.12'],
-            ['symfony/polyfill-php74', '^1.12']
+            ['symfony/polyfill-php74', '^1.12'],
           ];
         }
         break;
@@ -149,7 +151,7 @@ module.exports = class extends Generator{
       case 7.3:
         if (this.config.get('controlPolyfills')) {
           configs.projectDependencies = [
-            ['symfony/polyfill-php74', '^1.12']
+            ['symfony/polyfill-php74', '^1.12'],
           ];
         }
         break;

@@ -11,7 +11,7 @@
 const Generator = require('yeoman-generator');
 const _ = require('underscore.string');
 
-module.exports = class extends Generator{
+module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
 
@@ -25,8 +25,8 @@ module.exports = class extends Generator{
         type: 'list',
         message: 'Would you like to assign a public repository?',
         choices: ['none', 'github', 'bitbucket', 'gitlab'],
-        default: this.config.get('repositoryType')
-      }
+        default: this.config.get('repositoryType'),
+      },
     ];
 
     return this.prompt(prompts).then(async answers => {
@@ -36,7 +36,7 @@ module.exports = class extends Generator{
         await this._repositoryAccount();
 
         if (answers.repositoryType === 'github') {
-          await this._githubTemplates()
+          await this._githubTemplates();
         }
       }
     });
@@ -47,10 +47,10 @@ module.exports = class extends Generator{
       {
         name: 'repositoryAccount',
         message: 'What is your repository account name?',
-        default: this.config.get('accountRepository') !== '' ?
-          this.config.get('accountRepository') :
-          this.config.get('ownerCanonical')
-      }
+        default: this.config.get('accountRepository') !== ''
+          ? this.config.get('accountRepository')
+          : this.config.get('ownerCanonical'),
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -98,8 +98,8 @@ module.exports = class extends Generator{
         name: 'controlRepositoryTemplates',
         type: 'confirm',
         message: 'Would you like to include issue and pull request templates?',
-        default: this.config.get('controlRepositoryTemplates')
-      }
+        default: this.config.get('controlRepositoryTemplates'),
+      },
     ];
 
     return this.prompt(prompts).then(answers => {

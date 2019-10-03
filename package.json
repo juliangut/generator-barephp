@@ -4,13 +4,10 @@
   "description": "PHP project scaffold with lots of integrations",
   "keywords": [
     "yeoman-generator",
-    "gulp",
-    "grunt",
     "php",
     "composer",
     "packagist",
     "phpunit",
-    "phplint",
     "phpcs",
     "php-cs-fixer",
     "phpmd",
@@ -20,10 +17,10 @@
     "coveralls",
     "scrutinizer",
     "styleci",
+    "docker",
     "vagrant",
     "homestead",
-    "phpmyadmin",
-    "browsersync"
+    "phpmyadmin"
   ],
   "homepage": "https://github.com/juliangut/generator-barephp",
   "license": "BSD-3-Clause",
@@ -42,6 +39,7 @@
   ],
   "main": "generators/app/index.js",
   "scripts": {
+    "eslint": "eslint generators/**/index.js test/. --config .eslintrc",
     "test": "mocha"
   },
   "dependencies": {
@@ -56,10 +54,8 @@
     "yosay": "^2.0.0"
   },
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-jscs": "^3.0.0",
-    "gulp-jshint": "^2.0.0",
-    "jshint-stylish": "^2.2.0",
+    "eslint": "^5.16",
+    "husky": "^3.0.8",
     "mocha": "^2.2.0",
     "run-sequence": "^1.2.0",
     "yeoman-assert": "^3.1.0",
@@ -68,5 +64,10 @@
   "engines": {
     "node": ">=0.10.0",
     "npm": ">=1.2.10"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run eslint && npm test"
+    }
   }
 }

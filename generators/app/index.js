@@ -26,7 +26,7 @@ module.exports = class extends Generator {
       {
         desc: 'Skips the welcome message',
         type: Boolean,
-        default: false
+        default: false,
       }
     );
 
@@ -82,7 +82,7 @@ module.exports = class extends Generator {
       dirPublic: 'public',
 
       homesteadFormat: 'yaml',
-      homesteadIP: null
+      homesteadIP: null,
     };
 
     this.config.defaults(this.defaultConfigs);
@@ -110,12 +110,16 @@ module.exports = class extends Generator {
     }
 
     if (fs.existsSync('composer.json')) {
-      var configs = JSON.parse(fs.readFileSync('composer.json'));
+      const configs = JSON.parse(fs.readFileSync('composer.json'));
 
       if (configs.authors && configs.authors instanceof Array) {
         this.config.set('ownerName', configs.authors[0].name ? configs.authors[0].name : this.config.get('ownerName'));
-        this.config.set('ownerEmail', configs.authors[0].email ? configs.authors[0].email : this.config.get('ownerEmail'));
-        this.config.set('ownerHomepage', configs.authors[0].homepage ? configs.authors[0].homepage : this.config.get('ownerHomepage'));
+        this.config.set('ownerEmail', configs.authors[0].email
+          ? configs.authors[0].email
+          : this.config.get('ownerEmail'));
+        this.config.set('ownerHomepage', configs.authors[0].homepage
+          ? configs.authors[0].homepage
+          : this.config.get('ownerHomepage'));
       }
 
       if (configs.description) {
@@ -140,14 +144,6 @@ module.exports = class extends Generator {
     }
   }
 
-  welcome() {
-    if (!this.options['skip-welcome-message']) {
-      this.log(
-        yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Travis, Docker and many more integrations!')
-      );
-    }
-  }
-
   initializing() {
     this.composeWith(require.resolve('../owner'));
     this.composeWith(require.resolve('../repository'));
@@ -157,13 +153,19 @@ module.exports = class extends Generator {
   }
 
   prompting() {
+    if (!this.options['skip-welcome-message']) {
+      this.log(
+        yosay('\'Allo \'allo!\nOut of the box I include GIT, Composer, Travis, Docker and many more integrations!')
+      );
+    }
+
     const prompts = [
       {
         type: 'confirm',
         name: 'quickMode',
         message: 'Would you like the quick assistant?',
-        default: this.config.get('mode') === 'quick'
-      }
+        default: this.config.get('mode') === 'quick',
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -211,12 +213,12 @@ module.exports = class extends Generator {
         if (this.config.get('composer') === 'global' || this.config.get('composer') === 'local') {
           if (this.config.get('composer') === 'global') {
             this.log('Running ' + chalk.yellow.bold('composer install') +
-                       ' for you to install the required PHP dependencies. If this fails, try running the command yourself');
+               ' for you to install the required PHP dependencies. If this fails, try running the command yourself');
 
             shell.exec('composer install');
           } else {
             this.log('Running ' + chalk.yellow.bold('php composer.phar install') +
-                       ' for you to install the required PHP dependencies. If this fails, try running the command yourself');
+               ' for you to install the required PHP dependencies. If this fails, try running the command yourself');
 
             shell.exec('php composer.phar install');
           }

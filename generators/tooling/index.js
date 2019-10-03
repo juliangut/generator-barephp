@@ -16,7 +16,7 @@ const chalk = require('chalk');
 const sprintf = require('sprintf-js').sprintf;
 const validator = require('validator');
 
-module.exports = class extends Generator{
+module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
 
@@ -33,31 +33,31 @@ module.exports = class extends Generator{
           {
             value: 'packagist',
             name: 'Packagist',
-            checked: this.config.get('controlPackagist')
+            checked: this.config.get('controlPackagist'),
           },
           {
             value: 'travis',
             name: 'Travis',
-            checked: this.config.get('controlTravis')
+            checked: this.config.get('controlTravis'),
           },
           {
             value: 'coveralls',
             name: 'Coveralls',
-            checked: this.config.get('controlCoveralls')
+            checked: this.config.get('controlCoveralls'),
           },
           {
             value: 'scrutinizer',
             name: 'Scrutinizer',
-            checked: this.config.get('controlScrutinizer')
+            checked: this.config.get('controlScrutinizer'),
           },
           {
             value: 'styleci',
             name: 'StyleCI',
-            checked: this.config.get('controlStyleci')
+            checked: this.config.get('controlStyleci'),
           },
         ],
-        when: this.config.get('mode') !== 'quick'
-      }
+        when: this.config.get('mode') !== 'quick',
+      },
     ];
 
     return this.prompt(prompts).then(async answers => {
@@ -105,10 +105,10 @@ module.exports = class extends Generator{
       {
         name: 'accountPackagist',
         message: 'What is your Packagist account name?',
-        default: this.config.get('accountRepository') !== '' ?
-          this.config.get('accountPackagist') :
-          this.config.get('ownerCanonical')
-      }
+        default: this.config.get('accountRepository') !== ''
+          ? this.config.get('accountPackagist')
+          : this.config.get('ownerCanonical'),
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -121,16 +121,16 @@ module.exports = class extends Generator{
       {
         name: 'accountTravis',
         message: 'What is your Travis account name?',
-        default: this.config.get('accountRepository') !== '' ?
-          this.config.get('accountTravis') :
-          this.config.get('ownerCanonical')
+        default: this.config.get('accountRepository') !== ''
+          ? this.config.get('accountTravis')
+          : this.config.get('ownerCanonical'),
       },
       {
         type: 'confirm',
         name: 'projectSupportNightly',
         message: 'Want to support PHP nightly version on Travis?',
-        default: this.config.get('projectSupportNightly')
-      }
+        default: this.config.get('projectSupportNightly'),
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -145,10 +145,10 @@ module.exports = class extends Generator{
       {
         name: 'accountCoveralls',
         message: 'What is your Coveralls account name?',
-        default: this.config.get('accountRepository') !== '' ?
-          this.config.get('accountCoveralls') :
-          this.config.get('ownerCanonical')
-      }
+        default: this.config.get('accountRepository') !== ''
+          ? this.config.get('accountCoveralls')
+          : this.config.get('ownerCanonical'),
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -161,10 +161,10 @@ module.exports = class extends Generator{
       {
         name: 'accountScrutinizer',
         message: 'What is your Scrutinizer account name?',
-        default: this.config.get('accountRepository') !== '' ?
-          this.config.get('accountScrutinizer') :
-          this.config.get('ownerCanonical')
-      }
+        default: this.config.get('accountRepository') !== ''
+          ? this.config.get('accountScrutinizer')
+          : this.config.get('ownerCanonical'),
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -177,8 +177,8 @@ module.exports = class extends Generator{
       {
         name: 'accountStyleci',
         message: 'What is this project StyleCI repository code?',
-        default: this.config.get('accountRepository') !== '' ? this.config.get('accountStyleci') : ''
-      }
+        default: this.config.get('accountRepository') !== '' ? this.config.get('accountStyleci') : '',
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -187,7 +187,7 @@ module.exports = class extends Generator{
       this.config.set('accountStyleci', accountStyleci);
 
       if (accountStyleci === '') {
-        console.log(chalk.yellow.bold('  Remember to assign StyleCI repository code on README file'));
+        this.log(chalk.yellow.bold('  Remember to assign StyleCI repository code on README file'));
       }
     });
   }
@@ -199,8 +199,8 @@ module.exports = class extends Generator{
         type: 'confirm',
         message: 'Would you like to add initial documentation?',
         default: this.config.get('controlDocs'),
-        when: this.config.get('mode') !== 'quick'
-      }
+        when: this.config.get('mode') !== 'quick',
+      },
     ];
 
     return this.prompt(prompts).then(async answers => {
@@ -216,12 +216,12 @@ module.exports = class extends Generator{
         message: 'Which development environment do you want to use?',
         choices: ['none', 'docker', 'homestead'],
         default: this.config.get('controlDevEnv'),
-        when: this.config.get('mode') !== 'quick' && this.config.get('projectType') === 'project'
-      }
+        when: this.config.get('mode') !== 'quick' && this.config.get('projectType') === 'project',
+      },
     ];
 
     return this.prompt(prompts).then(async answers => {
-      var devEnv = answers.controlDevEnv;
+      const devEnv = answers.controlDevEnv;
 
       this.config.set('controlDevEnv', devEnv);
 
@@ -234,22 +234,22 @@ module.exports = class extends Generator{
   }
 
   _homestead() {
-    const homesteadIP = this.config.get('homesteadIP') ?
-      this.config.get('homesteadIP') :
-      sprintf('192.168.%1$d.%1$d', Math.max(100, Math.floor(Math.random() * 255)));
+    const homesteadIP = this.config.get('homesteadIP')
+      ? this.config.get('homesteadIP')
+      : sprintf('192.168.%1$d.%1$d', Math.max(100, Math.floor(Math.random() * 255)));
     const prompts = [
       {
         name: 'homesteadFormat',
         type: 'list',
         message: 'What Homestead configuration format you want to use?',
         choices: ['json', 'yaml'],
-        default: this.config.get('homesteadFormat')
+        default: this.config.get('homesteadFormat'),
       },
       {
         name: 'homesteadIp',
         message: 'What will be homestead local IP?',
-        default: homesteadIP
-      }
+        default: homesteadIP,
+      },
     ];
 
     return this.prompt(prompts).then(answers => {
@@ -271,8 +271,8 @@ module.exports = class extends Generator{
         type: 'confirm',
         name: 'controlPhpMyAdmin',
         message: 'Would you like to install PhpMyAdmin?',
-        default: this.config.get('controlPhpMyAdmin')
-      }
+        default: this.config.get('controlPhpMyAdmin'),
+      },
     ];
 
     return this.prompt(prompts).then(answers => {

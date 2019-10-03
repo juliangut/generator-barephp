@@ -1,9 +1,0 @@
-{
-  "preset": "google",
-  "maxErrors": 20,
-  "maximumLineLength": 120,
-  "disallowEmptyBlocks": true,
-  "requireOperatorBeforeLineBreak": false,
-  "requireCamelCaseOrUpperCaseIdentifiers": "ignoreProperties",
-  "validateQuoteMarks": { "mark": "'", "escape": true }
-}
