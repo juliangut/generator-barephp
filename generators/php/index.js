@@ -28,7 +28,7 @@ module.exports = class extends Generator{
         name: 'phpVersion',
         type: 'list',
         message: 'What is the minimum supported PHP version for the project?',
-        choices: ['7.0', '7.1', '7.2', '7.3'],
+        choices: ['7.0', '7.1', '7.2', '7.3', '7.4'],
         default: this.config.get('projectPhpVersion').toString()
       },
       {

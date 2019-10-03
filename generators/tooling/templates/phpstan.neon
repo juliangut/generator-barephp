@@ -1,4 +1,4 @@
-<% if (projectPhpVersion === 7.0) { -%>
+<% if (projectPhpVersion < 7.1) { -%>
 includes:
   - vendor/phpstan/phpstan-strict-rules/rules.neon
 
