@@ -28,7 +28,7 @@ module.exports = class extends Generator {
         name: 'phpVersion',
         type: 'list',
         message: 'What is the minimum supported PHP version for the project?',
-        choices: ['7.0', '7.1', '7.2', '7.3', '7.4'],
+        choices: ['7.1', '7.2', '7.3', '7.4'],
         default: this.config.get('projectPhpVersion').toString(),
       },
       {
@@ -85,50 +85,30 @@ module.exports = class extends Generator {
     const configs = {
       projectDependencies: [],
 
-      projectComposerGitHooksVersion: '^2.5',
-      projectPhpCsFixerVersion: '^2.0',
-      projectInfectionVersion: '~0.10',
+      projectComposerGitHooksVersion: '^2.8',
+      projectPhpCsFixerVersion: '^2.16',
+      projectInfectionVersion: '^0.15',
       projectHomesteadVersion: this.config.get('projectType') === 'project' &&
         this.config.get('controlDevEnv') === 'homestead'
           ? '^6.0'
           : null,
-      projectPhpmdVersion: '^2.0',
+      projectPhpmdVersion: '^2.8',
       projectPhpmetricsVersion: this.config.get('projectType') === 'project' ? '^2.0' : null,
-      projectPhpstanExtensionInstallerVersion: '^1.0.1',
-      projectPhpstanVersion: '~0.11.12',
-      projectPhpstanDeprecationRulesVersion: '~0.11.2',
-      projectPhpstanStrictRulesVersion: '~0.11.1',
-      projectPhpunitVersion: '^7.0|^8.0',
-      projectPhpmndVersion: '^2.0',
+      projectPhpstanExtensionInstallerVersion: '^1.0.3',
+      projectPhpstanVersion: '^0.12',
+      projectPhpstanDeprecationRulesVersion: '^0.12',
+      projectPhpstanStrictRulesVersion: '^0.12',
+      projectPhpunitVersion: '^8.0',
+      projectPhpmndVersion: '^2.1',
       projectPhpcpdVersion: '^4.0',
       projectPhpCodeSnifferVersion: '^3.0',
-      projectTheCodingMachinePhpstanStrictRulesVersion: '~0.11.2',
+      projectTheCodingMachinePhpstanStrictRulesVersion: '^0.12',
     };
 
     switch (this.config.get('projectPhpVersion')) {
-      case 7.0:
-        configs.projectInfectionVersion = '^0.8';
-        configs.projectPhpstanExtensionInstallerVersion = null;
-        configs.projectPhpstanVersion = '^0.8|^0.9';
-        configs.projectPhpstanDeprecationRulesVersion = null;
-        configs.projectPhpstanStrictRulesVersion = '^0.9';
-        configs.projectPhpunitVersion = '^6.0';
-        configs.projectPhpmndVersion = '^1.1';
-        configs.projectPhpcpdVersion = '^2.0|^4.0';
-        configs.projectTheCodingMachinePhpstanStrictRulesVersion = null;
-
-        if (this.config.get('controlPolyfills')) {
-          configs.projectDependencies = [
-            ['symfony/polyfill-php71', '^1.12'],
-            ['symfony/polyfill-php72', '^1.12'],
-            ['symfony/polyfill-php73', '^1.12'],
-            ['symfony/polyfill-php74', '^1.12'],
-          ];
-        }
-        break;
-
       case 7.1:
-        configs.projectPhpunitVersion = '^6.0|^7.0';
+        configs.projectInfectionVersion = '^0.13|^0.15';
+        configs.projectPhpunitVersion = '^7.5|^8.0';
 
         if (this.config.get('controlPolyfills')) {
           configs.projectDependencies = [

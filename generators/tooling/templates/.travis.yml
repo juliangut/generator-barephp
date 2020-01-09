@@ -13,14 +13,14 @@ env:
   - COMPOSER_FLAGS="--prefer-stable --prefer-dist"
 
 php:
-<% if (projectTestPhpVersion != 7.0) { -%>
-  - 7.0
-<% }
-if (projectPhpVersion <= 7.1 && projectTestPhpVersion != 7.1) { -%>
+<% if (projectTestPhpVersion != 7.1) { -%>
   - 7.1
 <% }
 if (projectPhpVersion <= 7.2 && projectTestPhpVersion != 7.2) { -%>
   - 7.2
+<% }
+if (projectPhpVersion <= 7.3 && projectTestPhpVersion != 7.3) { -%>
+  - 7.3
 <% }
 if (projectSupportNightly) { -%>
   - nightly

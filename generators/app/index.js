@@ -48,8 +48,8 @@ module.exports = class extends Generator {
       projectHomepage: '',
       projectLicense: 'MIT',
       projectLicenseFile: null,
-      projectPhpVersion: 7.3,
-      projectTestPhpVersion: 7.3,
+      projectPhpVersion: 7.4,
+      projectTestPhpVersion: 7.4,
       projectNamespace: null,
       projectSupportNightly: true,
 
