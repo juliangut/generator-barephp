@@ -24,7 +24,7 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
 * Integration with Github and Bitbucket accounts
 * Composer ready (global/local detection, or local installation)
 * Project ready to be added to [Packagist](https://packagist.org)
-* Select minimum [supported PHP version](https://secure.php.net/supported-versions.php) (from 5.6 up)
+* Select minimum [supported PHP version](https://secure.php.net/supported-versions.php) (7.1 and up)
 * Symfony polyfills compatibility packages included based on minimum supported PHP version
 * [Editorconfig](http://editorconfig.org/) definitions file
 * Development environment integration
@@ -43,7 +43,7 @@ Let Yeoman do the heavy lifting and get your projects scaffold and ready to star
   * [PHPStan](https://github.com/phpstan/phpstan) for static analysis of the code
   * Composer [outdated](https://getcomposer.org/doc/03-cli.md#outdated) for packages updates availability check
 * External tools
-  * Already configured [Travis CI](https://travis-ci.org) integration (PHP >=5.6, and nightly)
+  * Already configured [Travis CI](https://travis-ci.org) integration
   * [Coveralls](https://coveralls.io) integration (triggered by Travis build)
   * [Scrutinizer](https://scrutinizer-ci.com) integration
   * [StyleCI](https://styleci.io) integration
