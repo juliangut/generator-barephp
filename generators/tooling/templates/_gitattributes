@@ -25,8 +25,9 @@ if (projectType === 'project' && controlDevEnv === 'docker') { -%>
 docker-compose.yml  export-ignore
 docker/             export-ignore
 <% }
+tests/              export-ignore
 if (controlDocs) { -%>
-README.md           export-ignore
 CONTRIBUTING.md     export-ignore
 <% } -%>
+phpstan.neon        export-ignore
 phpunit.xml.dist    export-ignore
